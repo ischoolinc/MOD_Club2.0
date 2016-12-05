@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "K12.Club.General.ImportClubScore", "K12.Club.General.ImportClubScore\K12.Club.General.ImportClubScore.csproj", "{7268BED0-5F4D-4E8D-A2E9-813A279253E9}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 2
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://10.1.1.204:8080/tfs/tfs2008
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = K12.Club.General.ImportClubScore\\K12.Club.General.ImportClubScore.csproj
+		SccProjectName1 = K12.Club.General.ImportClubScore
+		SccLocalPath1 = K12.Club.General.ImportClubScore
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7268BED0-5F4D-4E8D-A2E9-813A279253E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7268BED0-5F4D-4E8D-A2E9-813A279253E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7268BED0-5F4D-4E8D-A2E9-813A279253E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7268BED0-5F4D-4E8D-A2E9-813A279253E9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

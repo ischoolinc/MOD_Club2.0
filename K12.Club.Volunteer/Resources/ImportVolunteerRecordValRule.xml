@@ -1,0 +1,58 @@
+<ValidateRule>
+  <DuplicateDetection>
+    <Detector Name="PrimaryKey1">
+      <Field Name="學號"/>
+    </Detector>
+  </DuplicateDetection>
+  <FieldList>
+    <Field Required="True" Name="學號" Description="學生的學號">
+      <Validate AutoCorrect="False" Description="「學號」不允許空白。" ErrorType="Error" Validator="不可空白" When=""/>
+      <Validate AutoCorrect="False" Description="「學號」長度必須小於12個文字。" ErrorType="Error" Validator="文字12" When=""/>
+      <Validate AutoCorrect="False" Description="「學號」不存在於系統中。" ErrorType="Error" Validator="學號是否存在系統" When=""/>
+      <Validate AutoCorrect="False" Description="「學號」建議使用英文數字組合(不包含空白)。" ErrorType="Warning" Validator="多個英數字元" When=""/>
+      <Validate AutoCorrect="False" Description="「學號」於系統內有多名學生。" ErrorType="Error" Validator="學號是否重覆" When=""/>
+      <Validate AutoCorrect="False" Description="「學號」於系統內必須是一般或延修生。" ErrorType="Error" Validator="學號必須是一般生" When=""/>
+    </Field>
+    <Field Required="True" Name="學年度" Description="學年度/學期/社團名稱為鍵值必填">
+      <Validate AutoCorrect="False" Description="「學年度」不允許空白。" ErrorType="Error" Validator="不可空白" When=""/>
+      <Validate AutoCorrect="False" Description="「學年度」必須是數字。" ErrorType="Error" Validator="Integer極限" When=""/>
+    </Field>
+    <Field Required="True" Name="學期" Description="學年度/學期/社團名稱為鍵值必填">
+      <Validate AutoCorrect="False" Description="「學期」不允許空白。" ErrorType="Error" Validator="不可空白" When=""/>
+      <Validate AutoCorrect="False" Description="「學期」只允許「1、2」。" ErrorType="Error" Validator="學期列舉" When=""/>
+    </Field>
+  </FieldList>
+  <ValidatorList>
+    <FieldValidator Name="學號是否存在系統" Type="STUDENTNUMBEREXISTENCE"/>
+    <FieldValidator Name="學號是否重覆" Type="STUDENTNUMBERREPEAT"/>
+    <FieldValidator Name="學號必須是一般生" Type="STUDENTNUMBERSTATUS"/>
+    <FieldValidator Name="不可空白" Type="STRINGLENGTH">
+      <MinLength>1</MinLength>
+    </FieldValidator>
+    <FieldValidator Name="Integer極限" Type="Integer">
+      <MinValue>0</MinValue>
+      <MaxValue>2000000000</MaxValue>
+    </FieldValidator>
+    <FieldValidator Name="學期列舉" Type="Enumeration">
+      <Item Value="1"/>
+      <Item Value="2"/>
+    </FieldValidator>
+    <FieldValidator Name="文字12" Type="STRINGLENGTH">
+      <MinLength>0</MinLength>
+      <MaxLength>12</MaxLength>
+    </FieldValidator>
+    <FieldValidator Name="多個英數字元" Type="Regex">
+      <ValidPattern>
+        <![CDATA[^[A-Za-z0-9]+$]]> <!-- 正規表示法 -->
+      </ValidPattern>
+    </FieldValidator>
+    <!-- 學生的志願項目,將會透過 RowValidate 處理-->
+    <RowValidator Name="相同社團不可重覆輸入" Type="CLUBNOTBEREPEATEDFILL" />
+    <RowValidator Name="志願社團是否存在系統內" Type="CLUBVOLUNTEERNAMECHECK" />
+  </ValidatorList>
+  <RowValidate>
+    <Validate AutoCorrect="false" Description="「志願社團名稱」不可重覆填入" ErrorType="Error" Validator="相同社團不可重覆輸入" When=""/>
+    <Validate AutoCorrect="false" Description="「學年度/學期/志願社團名稱」必須是系統內現有社團" ErrorType="Error" Validator="志願社團是否存在系統內" When=""/>
+  </RowValidate>
+  <ConditionList/>
+</ValidateRule>

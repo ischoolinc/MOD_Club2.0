@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<?xml-stylesheet type="text/xsl" href="format.xsl" ?>
+<ValidateRule>
+  <DuplicateDetection>
+    <Detector Name="PrimaryKey1">
+      <Field Name="學年度"/>
+      <Field Name="學期"/>
+      <Field Name="社團名稱"/>
+    </Detector>
+  </DuplicateDetection>
+  <FieldList>
+    <Field Required="True" Name="學年度" Description="學年度/學期/社團名稱為鍵值必填">
+      <Validate AutoCorrect="False" Description="「學年度」不允許空白。" ErrorType="Error" Validator="不可空白" When=""/>
+      <Validate AutoCorrect="False" Description="「學年度」必須是數字。" ErrorType="Error" Validator="Integer極限" When=""/>
+    </Field>
+    <Field Required="True" Name="學期" Description="學年度/學期/社團名稱為鍵值必填">
+      <Validate AutoCorrect="False" Description="「學期」不允許空白。" ErrorType="Error" Validator="不可空白" When=""/>
+      <Validate AutoCorrect="False" Description="「學期」只允許「1、2」。" ErrorType="Error" Validator="學期列舉" When=""/>
+    </Field>
+    <Field Required="True" Name="社團名稱" Description="學年度/學期/社團名稱為鍵值必填">
+      <Validate AutoCorrect="False" Description="「社團名稱」不允許空白。" ErrorType="Error" Validator="不可空白" When=""/>
+    </Field>
+    <Field Required="False" Name="代碼" EmptyAlsoValidate="False" Description="">
+      <Validate AutoCorrect="False" Description="「代碼」必須是英數字元。" ErrorType="Error" Validator="多個英數字元" When=""/>
+    </Field>
+    <Field Required="False" Name="場地" EmptyAlsoValidate="False" Description="社團的上課場地">
+    </Field>
+    <Field Required="False" Name="類型" EmptyAlsoValidate="False" Description="社團活動之類型">
+    </Field>
+    <Field Required="False" Name="老師1" EmptyAlsoValidate="False" Description="社團的上課老師,暱稱請以( )括號隔開">
+      <Validate AutoCorrect="False" Description="「老師1」不存在於ischool老師清單中" ErrorType="Error" Validator="老師是否存在系統" When="" />
+    </Field>
+    <Field Required="False" Name="老師2" EmptyAlsoValidate="False" Description="社團的上課老師,暱稱請以( )括號隔開">
+      <Validate AutoCorrect="False" Description="「老師2」不存在於ischool老師清單中" ErrorType="Error" Validator="老師是否存在系統" When="" />
+    </Field>
+    <Field Required="False" Name="老師3" EmptyAlsoValidate="False" Description="社團的上課老師,暱稱請以( )括號隔開">
+      <Validate AutoCorrect="False" Description="「老師3」不存在於ischool老師清單中" ErrorType="Error" Validator="老師是否存在系統" When="" />
+    </Field>
+    <Field Required="False" Name="簡介" EmptyAlsoValidate="False" Description="可說明社團特色">
+    </Field>
+    <Field Required="False" Name="限制:性別" EmptyAlsoValidate="False">
+      <Validate AutoCorrect="True" Description="「性別」只允許「男」與「女」" ErrorType="Error" Validator="性別列舉" When="" />
+    </Field>
+    <Field Required="False" Name="限制:科別" EmptyAlsoValidate="False" Description="高中學校專用欄位,填入[科別對照表]內的科別名稱,多個科別請以斜線[/]分割,例如[資訊科/汽修科/幼保科]">
+      <Validate AutoCorrect="False" Description="「限制:科別」不存在於ischool科別清單中" ErrorType="Error" Validator="科別是否存在系統" When=""/>
+    </Field>
+    <Field Required="False" Name="限制:一年級人數" EmptyAlsoValidate="False" Description="社團的人數限制,影響選社或志願序分配">
+      <Validate AutoCorrect="False" Description="「限制:一年級人數」必須是數字。" ErrorType="Error" Validator="Integer極限" When=""/>
+    </Field>
+    <Field Required="False" Name="限制:二年級人數" EmptyAlsoValidate="False" Description="社團的人數限制,影響選社或志願序分配">
+      <Validate AutoCorrect="False" Description="「限制:二年級人數」必須是數字。" ErrorType="Error" Validator="Integer極限" When=""/>
+    </Field>
+    <Field Required="False" Name="限制:三年級人數" EmptyAlsoValidate="False" Description="社團的人數限制,影響選社或志願序分配">
+      <Validate AutoCorrect="False" Description="「限制:三年級人數」必須是數字。" ErrorType="Error" Validator="Integer極限" When=""/>
+    </Field>
+    <Field Required="False" Name="限制:人數上限" EmptyAlsoValidate="False" Description="社團的人數限制,影響選社或志願序分配">
+      <Validate AutoCorrect="False" Description="「限制:人數上限」必須是數字。" ErrorType="Error" Validator="Integer極限" When=""/>
+    </Field>
+  </FieldList>
+  <ValidatorList>
+    <!-- 是否存在ischool教師-->
+    <FieldValidator Name="老師是否存在系統" Type="TeacherInischoolCheck"/>
+    <FieldValidator Name="科別是否存在系統" Type="DeptRestrictCheck"/>
+    <FieldValidator Name="不可空白" Type="STRINGLENGTH">
+      <MinLength>1</MinLength>
+    </FieldValidator>
+    <FieldValidator Name="Integer極限" Type="Integer">
+      <MinValue>0</MinValue>
+      <MaxValue>2000000000</MaxValue>
+    </FieldValidator>
+    <FieldValidator Name="學期列舉" Type="Enumeration">
+      <Item Value="1"/>
+      <Item Value="2"/>
+    </FieldValidator>
+    <FieldValidator Name="多個英數字元" Type="Regex">
+      <ValidPattern>
+        <![CDATA[^[A-Za-z0-9]+$]]>
+        <!-- 正規表示法 -->
+      </ValidPattern>
+    </FieldValidator>
+    <FieldValidator Name="性別列舉" Type="Enumeration">
+      <!--<Item Value="男"/>
+			<Item Value="女"/>-->
+      <Item Value="男">
+        <Variation>1</Variation>
+        <Variation>-1</Variation>
+        <Variation>t</Variation>
+        <Variation>true</Variation>
+        <Variation>M</Variation>
+        <Variation>m</Variation>
+      </Item>
+      <Item Value="女">
+        <Variation>0</Variation>
+        <Variation>f</Variation>
+        <Variation>F</Variation>
+        <Variation>false</Variation>
+      </Item>
+    </FieldValidator>
+    <!-- <RowValidator Name="社團學年期名稱是否重覆" Type="CLUBNAMECHECK" /> -->
+  </ValidatorList>
+
+  <RowValidate>
+    <!--  <Validate AutoCorrect="false" Description="「學年度/學期/社團名稱」匯入資料與系統資料不可重覆組合" ErrorType="Error" Validator="社團學年期名稱是否重覆" When=""/> -->
+  </RowValidate>
+  <ConditionList/>
+</ValidateRule>
