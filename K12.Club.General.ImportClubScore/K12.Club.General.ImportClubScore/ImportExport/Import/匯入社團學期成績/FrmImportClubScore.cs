@@ -86,6 +86,7 @@ namespace K12.Club.General.ImportClubScore.ImportExport.Import.匯入社團學�
                     string clubName = Utility.GetIRowValueString(row, Global._ColClubName);
                     decimal? clubScore = Utility.GetIRowValueDecimal(row, Global._ColClubScore);
                     string cadreName = Utility.GetIRowValueString(row, Global._ColCadreName);
+                    string clubLevel = Utility.GetIRowValueString(row, Global._ColClubLevel);
 
                     // 透過學號換成學生ID
                     if (Global._AllStudentNumberIDTemp.ContainsKey(studentNumber))
@@ -123,6 +124,8 @@ namespace K12.Club.General.ImportClubScore.ImportExport.Import.匯入社團學�
                         rec.ResultScore = clubScore;
                         // 社團幹部
                         rec.CadreName = cadreName;
+                        //社團評等
+                        rec.ClubLevel = clubLevel;
 
                         #endregion
 
@@ -145,6 +148,9 @@ namespace K12.Club.General.ImportClubScore.ImportExport.Import.匯入社團學�
                         // 社團幹部
                         if (_Option.SelectedFields.Contains(Global._ColCadreName))
                             rec.CadreName = cadreName;
+
+                        if (_Option.SelectedFields.Contains(Global._ColClubLevel))
+                            rec.ClubLevel = clubLevel;
 
                         #endregion
 

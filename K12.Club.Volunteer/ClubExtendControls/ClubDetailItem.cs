@@ -85,6 +85,8 @@ namespace K12.Club.Volunteer
             DataListener.Add(new ComboBoxSource(cbCategory, ComboBoxSource.ListenAttribute.Text));
             //DataListener.Add(new ComboBoxSource(cbPresident, ComboBoxSource.ListenAttribute.Text));
             DataListener.Add(new ComboBoxSource(cbLocation, ComboBoxSource.ListenAttribute.Text));
+
+            DataListener.Add(new ComboBoxSource(cbRank, ComboBoxSource.ListenAttribute.Text));
             //DataListener.Add(new ComboBoxSource(cbVicePresident, ComboBoxSource.ListenAttribute.Text));
             DataListener.StatusChanged += new EventHandler<ChangeEventArgs>(DataListener_StatusChanged);
 
@@ -95,6 +97,10 @@ namespace K12.Club.Volunteer
 
             Save_BGW.DoWork += new DoWorkEventHandler(Save_BGW_DoWork);
             Save_BGW.RunWorkerCompleted += new RunWorkerCompletedEventHandler(Save_BGW_RunWorkerCompleted);
+
+            cbRank.Items.Add("優等");
+            cbRank.Items.Add("甲等");
+            cbRank.Items.Add("乙等");
 
         }
 
@@ -110,7 +116,7 @@ namespace K12.Club.Volunteer
             }
         }
 
-        //切換學生
+        //切換社團
         protected override void OnPrimaryKeyChanged(EventArgs e)
         {
             Changed();
@@ -244,6 +250,11 @@ namespace K12.Club.Volunteer
             lbSchoolYear.Text = ClubPrimary.SchoolYear + "學年度　第" + ClubPrimary.Semester + "學期";
             txtAbout.Text = ClubPrimary.About.Replace("<br>", "\r\n");
             //tbCategory.Text = ClubPrimary.ClubCategory;
+            
+            cbRank.Text = ClubPrimary.Level;
+
+
+
 
             #region 社團老師
 
@@ -493,6 +504,10 @@ namespace K12.Club.Volunteer
             if (!string.IsNullOrEmpty(chenge))
                 sb.AppendLine(chenge);
 
+            chenge = GetStringTeacher("評等", Log_ClubPrimary.Level, ClubPrimary.Level);
+            if (!string.IsNullOrEmpty(chenge))
+                sb.AppendLine(chenge);
+
             return sb;
         }
 
@@ -592,6 +607,9 @@ namespace K12.Club.Volunteer
 
             //社團編號(8/7)
             ClubPrimary.ClubNumber = tbCLUBNumber.Text;
+
+            //評等
+            ClubPrimary.Level = cbRank.Text;
         }
 
         private bool CheckData()

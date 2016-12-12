@@ -144,6 +144,8 @@ namespace K12.Club.Volunteer
 
                             update_rsr.ClubName = cr.ClubName;
 
+                            update_rsr.ClubLevel = cr.Level; //社團評等
+
                             #region 成績
                             if (!string.IsNullOrEmpty(scj.Score))
                             {
@@ -197,6 +199,8 @@ namespace K12.Club.Volunteer
                             rsr.RefSCJoinID = scj.UID; //參與記錄ID
 
                             rsr.ClubName = cr.ClubName;
+
+                            rsr.ClubLevel = cr.Level; //社團評等
 
 
                             if (!string.IsNullOrEmpty(scj.Score))

@@ -150,7 +150,7 @@ namespace K12.Club.Volunteer
 
         public ClubAdmin()
         {
-            Group = "志願序社團";
+            Group = "社團";
 
             #region 事件
 

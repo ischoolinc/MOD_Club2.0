@@ -146,5 +146,11 @@ namespace AllProveReport.UDT
         /// </summary>
         [Field(Field = "photo2", Indexed = false)]
         public string Photo2 { get; set; }
+
+        /// <summary>
+        /// 評等
+        /// </summary>
+        [Field(Field = "level", Indexed = false)]
+        public string Level { get; set; }
     }
 }

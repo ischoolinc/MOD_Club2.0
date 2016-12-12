@@ -24,6 +24,7 @@ namespace K12.Club.Volunteer
             FieldList.Add("社團名稱"); //目前欄位
             FieldList.Add("學期成績"); //目前欄位
             FieldList.Add("幹部名稱"); //目前欄位
+            FieldList.Add("社團評等"); //目前欄位
 
             wizard.ExportableFields.AddRange(FieldList);
 
@@ -52,6 +53,7 @@ namespace K12.Club.Volunteer
                                 case "社團名稱": row.Add(field, records[i].ClubName); break;
                                 case "學期成績": row.Add(field, records[i].ResultScore.HasValue ? records[i].ResultScore.Value.ToString() : ""); break;
                                 case "幹部名稱": row.Add(field, records[i].CadreName); break;
+                                case "社團評等": row.Add(field, records[i].ClubLevel); break;
                             }
                         }
                     }

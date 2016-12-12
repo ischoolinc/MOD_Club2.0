@@ -30,6 +30,7 @@ namespace K12.Club.Volunteer.CLUB
             FieldList.Add("場地");
             FieldList.Add("類型");
 
+            FieldList.Add("評等");
             FieldList.Add("老師1");
             FieldList.Add("老師2");
             FieldList.Add("老師3");
@@ -85,7 +86,8 @@ namespace K12.Club.Volunteer.CLUB
                                 case "社團名稱": row.Add(field, records[i].ClubName); break;
                                 case "代碼": row.Add(field, records[i].ClubNumber); break;
                                 case "場地": row.Add(field, records[i].Location); break;
-                                case "類型": row.Add(field, records[i].ClubCategory); break;
+                                case "類型": row.Add(field, records[i].ClubCategory); break;                                
+                                case "評等": row.Add(field, records[i].Level); break;
                                 case "老師1": row.Add(field, teacher1); break;
                                 case "老師2": row.Add(field, teacher2); break;
                                 case "老師3": row.Add(field, teacher3); break;

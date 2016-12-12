@@ -124,6 +124,7 @@ namespace AllProveReport.Report
 
             foreach (ResultScoreRecord each in ResultList)
             {
+                
                 //if (string.IsNullOrEmpty(each.CadreName))
                 //    continue;
 
@@ -357,6 +358,8 @@ namespace AllProveReport.Report
                     list.Add(obj.Semester.ToString());
                     list.Add(obj.ClubName);
                     list.Add(obj.CadreName);
+                    
+                    list.Add(obj.ClubLevel);
 
                     foreach (string listEach in list)
                     {

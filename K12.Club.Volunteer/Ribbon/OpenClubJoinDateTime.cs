@@ -39,8 +39,21 @@ namespace K12.Club.Volunteer
             //先將 Grid 填入此學校有的年級。
             FillGridViewGradeYear();
 
+           
+
+            //第一階段無 "不開放" 選項
+            chStage1_Mode.Items.Add("先搶先贏");
+            chStage1_Mode.Items.Add("志願序");
+            //chStage1_Mode.Items.Add("不開放");
+
+            chStage2_Mode.Items.Add("先搶先贏");
+            chStage2_Mode.Items.Add("志願序");
+            chStage2_Mode.Items.Add("不開放");
+
             //將對應年級的時間填入。
             FillTimes();
+
+
         }
 
         private void FillTimes()
@@ -53,8 +66,18 @@ namespace K12.Club.Volunteer
             foreach (DTClub each in Low_DTClubList)
             {
                 string grade = each.GradeYear.ToString();
-                string startTime = each.Start.HasValue ? each.Start.Value.ToString(DateTimeFormat) : "";
-                string endTime = each.End.HasValue ? each.End.Value.ToString(DateTimeFormat) : "";
+
+                string startTime1 = each.Start1.HasValue ? each.Start1.Value.ToString(DateTimeFormat) : "";
+                string endTime1 = each.End1.HasValue ? each.End1.Value.ToString(DateTimeFormat) : "";
+
+                string startTime2 = each.Start2.HasValue ? each.Start2.Value.ToString(DateTimeFormat) : "";
+                string endTime2 = each.End2.HasValue ? each.End2.Value.ToString(DateTimeFormat) : "";
+
+                string stage1_Mode = each.Stage1_Mode;
+                string stage2_Mode = each.Stage2_Mode;
+
+
+
 
                 foreach (DataGridViewRow eachRow in dgvTimes.Rows)
                 {
@@ -62,8 +85,16 @@ namespace K12.Club.Volunteer
 
                     if (rowgrade == grade)
                     {
-                        eachRow.Cells[chStartTime.Index].Value = startTime;
-                        eachRow.Cells[chEndTime.Index].Value = endTime;
+                        eachRow.Cells[chStartTime1.Index].Value = startTime1;
+                        eachRow.Cells[chEndTime1.Index].Value = endTime1;
+
+                        eachRow.Cells[chStartTime2.Index].Value = startTime2;
+                        eachRow.Cells[chEndTime2.Index].Value = endTime2;
+
+                        eachRow.Cells[chStage1_Mode.Index].Value = stage1_Mode;
+                        eachRow.Cells[chStage2_Mode.Index].Value = stage2_Mode;
+
+
                         break;
                     }
                 }
@@ -116,21 +147,52 @@ namespace K12.Club.Volunteer
                 foreach (DataGridViewRow each in dgvTimes.Rows)
                 {
                     string Grade = "" + each.Cells[chGradeYear.Index].Value;
-                    string Start = "" + each.Cells[chStartTime.Index].Value;
-                    string End = "" + each.Cells[chEndTime.Index].Value;
+
+                    string Start1 = "" + each.Cells[chStartTime1.Index].Value;
+                    string End1 = "" + each.Cells[chEndTime1.Index].Value;
+
+                    string Start2 = "" + each.Cells[chStartTime2.Index].Value;
+                    string End2 = "" + each.Cells[chEndTime2.Index].Value;
+
+                    string stage1_Mode = ""+ each.Cells[chStage1_Mode.Index].Value;
+                    string stage2_Mode = "" + each.Cells[chStage2_Mode.Index].Value;
+
 
                     DTClub dt = new DTClub();
 
                     dt.GradeYear = int.Parse(Grade);
 
-                    if (!string.IsNullOrEmpty(Start))
+                    if (!string.IsNullOrEmpty(Start1))
                     {
-                        dt.Start = DateTime.Parse(Start);
+                        dt.Start1 = DateTime.Parse(Start1);
                     }
-                    if (!string.IsNullOrEmpty(End))
+                    if (!string.IsNullOrEmpty(End1))
                     {
-                        dt.End = DateTime.Parse(End);
+                        dt.End1 = DateTime.Parse(End1);
                     }
+
+                    if (!string.IsNullOrEmpty(Start2))
+                    {
+                        dt.Start2 = DateTime.Parse(Start2);
+                    }
+                    if (!string.IsNullOrEmpty(End2))
+                    {
+                        dt.End2 = DateTime.Parse(End2);
+                    }
+
+                    if (!string.IsNullOrEmpty(stage1_Mode))
+                    {
+                        dt.Stage1_Mode = stage1_Mode;
+                    }
+                    if (!string.IsNullOrEmpty(stage2_Mode))
+                    {
+                        dt.Stage2_Mode = stage2_Mode;
+                    }
+
+
+
+                    
+
                     DTClubList.Add(dt);
                 }
 
@@ -142,12 +204,24 @@ namespace K12.Club.Volunteer
                     DTClubList.Sort(SortDTClub);
                     StringBuilder sb = new StringBuilder();
                     sb.AppendLine("已修改開放選社時間");
+
+                    
                     foreach (DTClub each in DTClubList)
                     {
-                        string start = each.Start.HasValue ? each.Start.Value.ToString("yyyy/MM/dd HH:mm") : "";
-                        string end = each.End.HasValue ? each.End.Value.ToString("yyyy/MM/dd HH:mm") : "";
-                        sb.AppendLine(string.Format("「{0}」年級：開始時間「{1}」結束時間「{2}」", each.GradeYear, start, end));
+                        if (each.Start1.HasValue && each.End1.HasValue) {
+                            string start1 = each.Start1.HasValue ? each.Start1.Value.ToString("yyyy/MM/dd HH:mm") : "";
+                            string end1 = each.End1.HasValue ? each.End1.Value.ToString("yyyy/MM/dd HH:mm") : "";
+                            sb.AppendLine(string.Format("階段1"+ "「{0}」年級：開始時間「{1}」結束時間「{2}」", each.GradeYear, start1, end1));                        
+                        }
+                        if (each.Start2.HasValue && each.End2.HasValue)
+                        {
+                            string start2 = each.Start2.HasValue ? each.Start2.Value.ToString("yyyy/MM/dd HH:mm") : "";
+                            string end2 = each.End2.HasValue ? each.End2.Value.ToString("yyyy/MM/dd HH:mm") : "";
+                            sb.AppendLine(string.Format("階段" + "「{0}」年級：開始時間「{1}」結束時間「{2}」", each.GradeYear, start2, end2));
+                        }
+                        
                     }
+
 
                     FISCA.LogAgent.ApplicationLog.Log("社團", "修改選社時間", sb.ToString());
                 }
@@ -212,18 +286,21 @@ namespace K12.Club.Volunteer
         {
             DataGridViewRow row = dgvTimes.Rows[e.RowIndex];
 
-            string startTime = row.Cells[chStartTime.Index].Value + "";
-            string endTime = row.Cells[chEndTime.Index].Value + "";
+            string startTime1 = row.Cells[chStartTime1.Index].Value + "";
+            string endTime1 = row.Cells[chEndTime1.Index].Value + "";
+
+            string startTime2 = row.Cells[chStartTime2.Index].Value + "";
+            string endTime2 = row.Cells[chEndTime2.Index].Value + "";
 
             row.ErrorText = "";
-            if (string.IsNullOrEmpty(startTime) && string.IsNullOrEmpty(endTime))
+            if (string.IsNullOrEmpty(startTime1) && string.IsNullOrEmpty(endTime1))
             {
                 //這裡沒有程式。
             }
-            else if (!string.IsNullOrEmpty(startTime) && !string.IsNullOrEmpty(endTime))
+            else if (!string.IsNullOrEmpty(startTime1) && !string.IsNullOrEmpty(endTime1))
             {
-                DateTime? objStart = DateTimeHelper.Parse(startTime);
-                DateTime? objEnd = DateTimeHelper.Parse(endTime);
+                DateTime? objStart = DateTimeHelper.Parse(startTime1);
+                DateTime? objEnd = DateTimeHelper.Parse(endTime1);
 
                 if (objStart.HasValue && objEnd.HasValue)
                 {
@@ -232,7 +309,45 @@ namespace K12.Club.Volunteer
                 }
             }
             else
+            {
                 row.ErrorText = "請輸入正確的時間限制資料(必需同時有資料或同時沒有資料)。";
+            }
+
+            if (string.IsNullOrEmpty(startTime2) && string.IsNullOrEmpty(endTime2))
+            {
+                //這裡沒有程式。
+            }
+            else if (!string.IsNullOrEmpty(startTime2) && !string.IsNullOrEmpty(endTime2))
+            {
+                DateTime? objStart = DateTimeHelper.Parse(startTime2);
+                DateTime? objEnd = DateTimeHelper.Parse(endTime2);
+
+                if (objStart.HasValue && objEnd.HasValue)
+                {
+                    if (objStart.Value >= objEnd.Value)
+                        row.ErrorText = "截止時間必須在開始時間之後。";
+                }
+            }
+            else
+            {
+                row.ErrorText = "請輸入正確的時間限制資料(必需同時有資料或同時沒有資料)。";
+            }
+
+
+            if (!string.IsNullOrEmpty(endTime1) && !string.IsNullOrEmpty(startTime2))
+            {
+                DateTime? objendTime1 = DateTimeHelper.Parse(endTime1);
+                DateTime? objstartTime2 = DateTimeHelper.Parse(startTime2);
+
+                if (objendTime1.HasValue && objstartTime2.HasValue)
+                {
+                    if (objendTime1.Value > objstartTime2.Value)
+                        row.ErrorText = "選社階段1、2時段不得重疊。";
+                }
+            }
+
+
+                
         }
 
         private void dgvTimes_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
@@ -248,7 +363,7 @@ namespace K12.Club.Volunteer
 
         private void ValidateCellData(int columnIndex, int rowIndex, string value)
         {
-            if (columnIndex == chStartTime.Index || columnIndex == chEndTime.Index)
+            if (columnIndex == chStartTime1.Index || columnIndex == chEndTime1.Index || columnIndex == chStartTime2.Index || columnIndex == chEndTime2.Index)
             {
                 DataGridViewCell cell = dgvTimes.Rows[rowIndex].Cells[columnIndex];
                 cell.ErrorText = "";
@@ -272,22 +387,22 @@ namespace K12.Club.Volunteer
             //TryToCorrectData(e.ColumnIndex, e.RowIndex);
         }
 
-        private void TryToCorrectData(int columnIndex, int rowIndex)
-        {
-            if (columnIndex == chStartTime.Index || columnIndex == chEndTime.Index)
-            {
-                DataGridViewRow row = dgvTimes.Rows[rowIndex];
-                row.Cells[columnIndex].ErrorText = string.Empty;
-                string time = row.Cells[columnIndex].Value + "";
+        //private void TryToCorrectData(int columnIndex, int rowIndex)
+        //{
+        //    if (columnIndex == chStartTime.Index || columnIndex == chEndTime.Index)
+        //    {
+        //        DataGridViewRow row = dgvTimes.Rows[rowIndex];
+        //        row.Cells[columnIndex].ErrorText = string.Empty;
+        //        string time = row.Cells[columnIndex].Value + "";
 
-                if (string.IsNullOrEmpty(time)) //沒有資料就不作任何檢查。
-                    return;
+        //        if (string.IsNullOrEmpty(time)) //沒有資料就不作任何檢查。
+        //            return;
 
-                DateTime? objStart = DateTimeHelper.ParseGregorian(time, PaddingMethod.First);
+        //        DateTime? objStart = DateTimeHelper.ParseGregorian(time, PaddingMethod.First);
 
-                if (objStart.HasValue)
-                    row.Cells[columnIndex].Value = objStart.Value.ToString(DateTimeFormat);
-            }
-        }
+        //        if (objStart.HasValue)
+        //            row.Cells[columnIndex].Value = objStart.Value.ToString(DateTimeFormat);
+        //    }
+        //}
     }
 }

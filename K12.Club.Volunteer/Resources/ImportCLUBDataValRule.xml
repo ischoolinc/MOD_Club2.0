@@ -25,6 +25,8 @@
     </Field>
     <Field Required="False" Name="場地" EmptyAlsoValidate="False" Description="社團的上課場地">
     </Field>
+     <Field Required="False" Name="評等" EmptyAlsoValidate="False" Description="社團的學期評等">
+    </Field>
     <Field Required="False" Name="類型" EmptyAlsoValidate="False" Description="社團活動之類型">
     </Field>
     <Field Required="False" Name="老師1" EmptyAlsoValidate="False" Description="社團的上課老師,暱稱請以( )括號隔開">

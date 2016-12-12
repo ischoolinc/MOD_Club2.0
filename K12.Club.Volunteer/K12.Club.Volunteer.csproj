@@ -647,12 +647,12 @@
     <Content Include="Library\SmartSchool.ErrorReporting.pdb" />
     <Content Include="Library\SmartSchool.ErrorReporting.xml" />
     <Content Include="Report\班級社團成績單\不及格的定義.txt" />
+    <Content Include="這個社團是社團2.0.txt" />
     <None Include="Resources\presentation_a_config_64.png" />
     <None Include="Resources\admissions_ok_64.png" />
     <None Include="Resources\group_up_64.png" />
     <None Include="Resources\ImportCLUBDataValRule.xml" />
     <None Include="Resources\ImportVolunteerRecordValRule.xml" />
-    <Content Include="這個社團是志願序社團.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\health_and_leisure_add_64.png" />

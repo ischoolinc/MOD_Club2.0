@@ -388,6 +388,7 @@ namespace K12.Club.Volunteer
                     list.Add(obj.Semester.ToString());
                     list.Add(obj.ClubName);
                     list.Add(obj.CadreName);
+                    list.Add(obj.ClubLevel);
 
                     foreach (string listEach in list)
                     {

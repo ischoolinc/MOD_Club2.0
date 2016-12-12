@@ -56,5 +56,12 @@ namespace Across.Report
         /// </summary>
         [Field(Field = "cadre_name", Indexed = false)]
         public string CadreName { get; set; }
+
+        /// <summary>
+        /// 社團評等
+        /// </summary>
+        [Field(Field = "club_level", Indexed = false)]
+        public string ClubLevel { get; set; }
+
     }
 }

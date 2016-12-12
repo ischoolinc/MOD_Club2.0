@@ -74,6 +74,8 @@ namespace K12.Club.Volunteer
             club.Location = Row.GetValue("場地");
             club.ClubCategory = Row.GetValue("類型");
 
+            club.Level = Row.GetValue("評等");
+
             club.RefTeacherID = checkTeacherName("" + Row.GetValue("老師1"));
             club.RefTeacherID2 = checkTeacherName("" + Row.GetValue("老師2"));
             club.RefTeacherID3 = checkTeacherName("" + Row.GetValue("老師3"));
@@ -230,6 +232,9 @@ namespace K12.Club.Volunteer
 
             if (log.lo_CLUB.ClubCategory != log.New_club.ClubCategory)
                 sb.AppendLine(ByOne("類型", log.lo_CLUB.ClubCategory, log.New_club.ClubCategory));
+
+            if (log.lo_CLUB.Level != log.New_club.Level)
+                sb.AppendLine(ByOne("評等", log.lo_CLUB.Level, log.New_club.Level));
 
             if (log.lo_CLUB.RefTeacherID != log.New_club.RefTeacherID)
                 ByTeacher("老師1", log.lo_CLUB.RefTeacherID, log.New_club.RefTeacherID);

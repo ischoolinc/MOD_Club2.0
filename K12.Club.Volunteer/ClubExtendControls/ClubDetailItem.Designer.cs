@@ -46,6 +46,8 @@
             this.lbTeacher3 = new DevComponents.DotNetBar.LabelX();
             this.cbTeacher3 = new DevComponents.DotNetBar.Controls.ComboBoxEx();
             this.labelX1 = new DevComponents.DotNetBar.LabelX();
+            this.cbRank = new DevComponents.DotNetBar.Controls.ComboBoxEx();
+            this.labelX2 = new DevComponents.DotNetBar.LabelX();
             this.SuspendLayout();
             // 
             // txtClubName
@@ -68,7 +70,7 @@
             // 
             this.txtAbout.Border.Class = "TextBoxBorder";
             this.txtAbout.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.txtAbout.Location = new System.Drawing.Point(67, 157);
+            this.txtAbout.Location = new System.Drawing.Point(67, 204);
             this.txtAbout.Margin = new System.Windows.Forms.Padding(4);
             this.txtAbout.Multiline = true;
             this.txtAbout.Name = "txtAbout";
@@ -95,7 +97,7 @@
             this.cbTeacher1.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.cbTeacher1.FormattingEnabled = true;
             this.cbTeacher1.ItemHeight = 19;
-            this.cbTeacher1.Location = new System.Drawing.Point(315, 52);
+            this.cbTeacher1.Location = new System.Drawing.Point(315, 87);
             this.cbTeacher1.Name = "cbTeacher1";
             this.cbTeacher1.Size = new System.Drawing.Size(188, 25);
             this.cbTeacher1.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -124,7 +126,7 @@
             // 
             this.lbTeacher1.BackgroundStyle.Class = "";
             this.lbTeacher1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.lbTeacher1.Location = new System.Drawing.Point(268, 54);
+            this.lbTeacher1.Location = new System.Drawing.Point(268, 89);
             this.lbTeacher1.Name = "lbTeacher1";
             this.lbTeacher1.Size = new System.Drawing.Size(41, 21);
             this.lbTeacher1.TabIndex = 9;
@@ -152,7 +154,7 @@
             // 
             this.lbAbout.BackgroundStyle.Class = "";
             this.lbAbout.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.lbAbout.Location = new System.Drawing.Point(28, 159);
+            this.lbAbout.Location = new System.Drawing.Point(28, 216);
             this.lbAbout.Name = "lbAbout";
             this.lbAbout.Size = new System.Drawing.Size(34, 21);
             this.lbAbout.TabIndex = 15;
@@ -195,7 +197,7 @@
             // 
             this.lbCLUBNumber.BackgroundStyle.Class = "";
             this.lbCLUBNumber.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.lbCLUBNumber.Location = new System.Drawing.Point(268, 19);
+            this.lbCLUBNumber.Location = new System.Drawing.Point(268, 54);
             this.lbCLUBNumber.Name = "lbCLUBNumber";
             this.lbCLUBNumber.Size = new System.Drawing.Size(34, 21);
             this.lbCLUBNumber.TabIndex = 7;
@@ -208,7 +210,7 @@
             // 
             this.tbCLUBNumber.Border.Class = "TextBoxBorder";
             this.tbCLUBNumber.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbCLUBNumber.Location = new System.Drawing.Point(315, 17);
+            this.tbCLUBNumber.Location = new System.Drawing.Point(315, 52);
             this.tbCLUBNumber.Margin = new System.Windows.Forms.Padding(4);
             this.tbCLUBNumber.Name = "tbCLUBNumber";
             this.tbCLUBNumber.Size = new System.Drawing.Size(188, 25);
@@ -234,7 +236,7 @@
             // 
             this.lbTeacher2.BackgroundStyle.Class = "";
             this.lbTeacher2.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.lbTeacher2.Location = new System.Drawing.Point(268, 89);
+            this.lbTeacher2.Location = new System.Drawing.Point(268, 124);
             this.lbTeacher2.Name = "lbTeacher2";
             this.lbTeacher2.Size = new System.Drawing.Size(41, 21);
             this.lbTeacher2.TabIndex = 11;
@@ -248,7 +250,7 @@
             this.cbTeacher2.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.cbTeacher2.FormattingEnabled = true;
             this.cbTeacher2.ItemHeight = 19;
-            this.cbTeacher2.Location = new System.Drawing.Point(315, 87);
+            this.cbTeacher2.Location = new System.Drawing.Point(315, 122);
             this.cbTeacher2.Name = "cbTeacher2";
             this.cbTeacher2.Size = new System.Drawing.Size(188, 25);
             this.cbTeacher2.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -263,7 +265,7 @@
             // 
             this.lbTeacher3.BackgroundStyle.Class = "";
             this.lbTeacher3.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.lbTeacher3.Location = new System.Drawing.Point(268, 124);
+            this.lbTeacher3.Location = new System.Drawing.Point(268, 159);
             this.lbTeacher3.Name = "lbTeacher3";
             this.lbTeacher3.Size = new System.Drawing.Size(41, 21);
             this.lbTeacher3.TabIndex = 13;
@@ -277,7 +279,7 @@
             this.cbTeacher3.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.cbTeacher3.FormattingEnabled = true;
             this.cbTeacher3.ItemHeight = 19;
-            this.cbTeacher3.Location = new System.Drawing.Point(315, 122);
+            this.cbTeacher3.Location = new System.Drawing.Point(315, 157);
             this.cbTeacher3.Name = "cbTeacher3";
             this.cbTeacher3.Size = new System.Drawing.Size(188, 25);
             this.cbTeacher3.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -292,16 +294,44 @@
             // 
             this.labelX1.BackgroundStyle.Class = "";
             this.labelX1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX1.Location = new System.Drawing.Point(505, 54);
+            this.labelX1.Location = new System.Drawing.Point(505, 89);
             this.labelX1.Name = "labelX1";
             this.labelX1.Size = new System.Drawing.Size(42, 21);
             this.labelX1.TabIndex = 17;
             this.labelX1.Text = "(評分)";
             // 
+            // cbRank
+            // 
+            this.cbRank.DisplayMember = "Text";
+            this.cbRank.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cbRank.FormattingEnabled = true;
+            this.cbRank.ItemHeight = 19;
+            this.cbRank.Location = new System.Drawing.Point(68, 157);
+            this.cbRank.Name = "cbRank";
+            this.cbRank.Size = new System.Drawing.Size(187, 25);
+            this.cbRank.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
+            this.cbRank.TabIndex = 19;
+            // 
+            // labelX2
+            // 
+            this.labelX2.AutoSize = true;
+            // 
+            // 
+            // 
+            this.labelX2.BackgroundStyle.Class = "";
+            this.labelX2.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX2.Location = new System.Drawing.Point(28, 159);
+            this.labelX2.Name = "labelX2";
+            this.labelX2.Size = new System.Drawing.Size(34, 21);
+            this.labelX2.TabIndex = 18;
+            this.labelX2.Text = "評等";
+            // 
             // ClubDetailItem
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.cbRank);
+            this.Controls.Add(this.labelX2);
             this.Controls.Add(this.cbCategory);
             this.Controls.Add(this.txtAbout);
             this.Controls.Add(this.txtClubName);
@@ -321,7 +351,7 @@
             this.Controls.Add(this.lbClubName);
             this.Controls.Add(this.labelX1);
             this.Name = "ClubDetailItem";
-            this.Size = new System.Drawing.Size(550, 240);
+            this.Size = new System.Drawing.Size(550, 280);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -347,5 +377,7 @@
         private DevComponents.DotNetBar.LabelX lbTeacher3;
         private DevComponents.DotNetBar.Controls.ComboBoxEx cbTeacher3;
         private DevComponents.DotNetBar.LabelX labelX1;
+        public DevComponents.DotNetBar.Controls.ComboBoxEx cbRank;
+        private DevComponents.DotNetBar.LabelX labelX2;
     }
 }

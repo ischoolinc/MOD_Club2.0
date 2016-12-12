@@ -38,6 +38,7 @@
             this.lbHelp2 = new DevComponents.DotNetBar.LabelX();
             this.checkBoxX1 = new DevComponents.DotNetBar.Controls.CheckBoxX();
             this.checkBoxX2 = new DevComponents.DotNetBar.Controls.CheckBoxX();
+            this.checkBoxX3 = new DevComponents.DotNetBar.Controls.CheckBoxX();
             ((System.ComponentModel.ISupportInitialize)(this.intSchoolYear)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.intSemester)).BeginInit();
             this.SuspendLayout();
@@ -132,7 +133,7 @@
             this.btnStart.AutoSize = true;
             this.btnStart.BackColor = System.Drawing.Color.Transparent;
             this.btnStart.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnStart.Location = new System.Drawing.Point(213, 245);
+            this.btnStart.Location = new System.Drawing.Point(217, 285);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(75, 25);
             this.btnStart.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -146,7 +147,7 @@
             this.btnClose.AutoSize = true;
             this.btnClose.BackColor = System.Drawing.Color.Transparent;
             this.btnClose.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnClose.Location = new System.Drawing.Point(294, 245);
+            this.btnClose.Location = new System.Drawing.Point(298, 285);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(75, 25);
             this.btnClose.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -204,11 +205,29 @@
             this.checkBoxX2.TabIndex = 9;
             this.checkBoxX2.Text = "複製社團<b><u>幹部</u></b>(複製學生需被勾選)";
             // 
+            // checkBoxX3
+            // 
+            this.checkBoxX3.AutoSize = true;
+            this.checkBoxX3.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.checkBoxX3.BackgroundStyle.Class = "";
+            this.checkBoxX3.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.checkBoxX3.Location = new System.Drawing.Point(35, 236);
+            this.checkBoxX3.Name = "checkBoxX3";
+            this.checkBoxX3.Size = new System.Drawing.Size(139, 20);
+            this.checkBoxX3.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
+            this.checkBoxX3.TabIndex = 10;
+            this.checkBoxX3.Text = "僅複製<b><u>社長、副社長</u></b>";
+            this.checkBoxX3.CheckedChanged += new System.EventHandler(this.checkBoxX3_CheckedChanged);
+            // 
             // CopyClub
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(379, 279);
+            this.ClientSize = new System.Drawing.Size(379, 322);
+            this.Controls.Add(this.checkBoxX3);
             this.Controls.Add(this.checkBoxX2);
             this.Controls.Add(this.checkBoxX1);
             this.Controls.Add(this.lbHelp2);
@@ -242,5 +261,6 @@
         private DevComponents.DotNetBar.LabelX lbHelp2;
         private DevComponents.DotNetBar.Controls.CheckBoxX checkBoxX1;
         private DevComponents.DotNetBar.Controls.CheckBoxX checkBoxX2;
+        private DevComponents.DotNetBar.Controls.CheckBoxX checkBoxX3;
     }
 }

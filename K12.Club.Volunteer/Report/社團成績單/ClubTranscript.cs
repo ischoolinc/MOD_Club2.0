@@ -67,6 +67,8 @@ namespace K12.Club.Volunteer
             }
             ColumnNameList.Add("學期成績");
 
+            ColumnNameList.Add("社團幹部");
+
             int ColumnNameIndex = 0;
             foreach (string each in ColumnNameList)
             {
@@ -74,7 +76,7 @@ namespace K12.Club.Volunteer
                 ptws.Cells[2, ColumnNameIndex].PutValue(each);
                 if (ColumnNameIndex >= 5)
                 {
-                    ptws.Cells.SetColumnWidth(ColumnNameIndex, 10);
+                    ptws.Cells.SetColumnWidth(ColumnNameIndex, 8);
                     tool.SetCellBro(ptws, 2, ColumnNameIndex, 1, 1);
                 }
                 ColumnNameIndex++;
@@ -168,10 +170,20 @@ namespace K12.Club.Volunteer
                     //學期成績
                     if (each.RSR != null)
                     {
-                        ws.Cells.SetColumnWidth(ColumnNameList.Count - 1, 8);
-                        tool.SetCellBro(ws, dataIndex, ColumnNameList.Count - 1, 1, 1);
+                        ws.Cells.SetColumnWidth(ColumnNameList.Count - 2, 8);
+                        tool.SetCellBro(ws, dataIndex, ColumnNameList.Count - 2, 1, 1);
                         string Score = each.RSR.ResultScore.HasValue ? each.RSR.ResultScore.Value.ToString() : "";
                         ws.Cells[dataIndex, ColumnNameList.Count - 1].PutValue(Score);
+                        //ws.Cells[dataIndex, ColumnNameList.Count - 1].Style = sy;
+                    }
+
+                    //社團幹部
+                    if (each.RSR != null)
+                    {
+                        ws.Cells.SetColumnWidth(ColumnNameList.Count - 1, 8);
+                        tool.SetCellBro(ws, dataIndex, ColumnNameList.Count - 1, 1, 1);
+                        string CardreName = each.RSR.CadreName;
+                        ws.Cells[dataIndex, ColumnNameList.Count - 1].PutValue(CardreName);
                         //ws.Cells[dataIndex, ColumnNameList.Count - 1].Style = sy;
                     }
 

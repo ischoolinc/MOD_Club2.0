@@ -30,6 +30,7 @@
 		  <Validate AutoCorrect="False" Description="「學期成績」必須是數字。" ErrorType="Error" Validator="Integer極限" When=""/>
     </Field>
     <Field Required="False" Name="幹部名稱" EmptyAlsoValidate="False" Description="" />
+    <Field Required="False" Name="社團評等" EmptyAlsoValidate="False" Description="社團評等" />
   </FieldList>
   <ValidatorList>
     <FieldValidator Name="學生是否存在系統" Type="K12CLUBGENERALCLUBSCORECHECKSTUDENTNUMBER"/>
