@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // 組件的一般資訊是由下列的屬性集控制。
 // 變更這些屬性的值即可修改組件的相關
 // 資訊。
-[assembly: AssemblyTitle("K12.Societies.Shinmin")]
+[assembly: AssemblyTitle("K12.Club.Volunteer")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("office")]
-[assembly: AssemblyProduct("K12.Societies.Shinmin")]
-[assembly: AssemblyCopyright("Copyright © office 2012")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("K12.Club.Volunteer")]
+[assembly: AssemblyCopyright("Copyright © ischool")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // 您可以指定所有的值，也可以依照以下的方式，使用 '*' 將組建和修訂編號
 // 指定為預設值:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.3.13")]
-[assembly: AssemblyFileVersion("1.0.3.13")]
+[assembly: AssemblyVersion("1.0.4.0")]
+[assembly: AssemblyFileVersion("1.0.4.0")]
