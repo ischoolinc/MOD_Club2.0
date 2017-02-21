@@ -102,6 +102,7 @@ namespace K12.Club.Volunteer
                         }
                     }
                 }
+                Node1.Expand();
             }
             else
             {

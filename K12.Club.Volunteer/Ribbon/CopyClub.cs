@@ -22,9 +22,9 @@ namespace K12.Club.Volunteer
         AccessHelper _AccessHelper = new AccessHelper();
         QueryHelper _QueryHelper = new QueryHelper();
 
-        bool StudentCopy = false;
-        bool CadresCopy = false;
-        bool Only_President_And_VicePresident_Copy = false;
+        bool _CopyOtherStudent = false;
+        bool _CopyCadresStudent = false;
+        bool _CopyPresidentStudent = false;
 
         int _SchoolYear = 90;
         int _Semester = 1;
@@ -32,29 +32,17 @@ namespace K12.Club.Volunteer
         /// <summary>
         /// 所要拷貝的社團
         /// </summary>
-        List<CLUBRecord> Copylist = new List<CLUBRecord>();
-        /// <summary>
-        /// 重覆需要移除的社團
-        /// </summary>
-        List<string> removelist = new List<string>();
-
+        List<CLUBRecord> _CopyList = new List<CLUBRecord>();
         /// <summary>
         /// 所要複製的社團
         /// </summary>
-        List<CLUBRecord> newInsertList = new List<CLUBRecord>();
+        List<CLUBRecord> _NewInsertList = new List<CLUBRecord>();
 
-        /// <summary>
-        /// 所要複製的社團幹部
-        /// </summary>
-        List<CadresRecord> newInsertCadresList = new List<CadresRecord>();
+        List<SCJoin> _InsertSCJList = new List<SCJoin>();
 
-        List<SCJoin> ScjStudentList = new List<SCJoin>();
+        List<string> _SkipList = new List<string>();
 
-        List<CadresRecord> CadreStudentList = new List<CadresRecord>();
-
-        List<SCJoin> insertSCJList = new List<SCJoin>();
-
-        List<CadresRecord> insertCadreList = new List<CadresRecord>();
+        List<CadresRecord> _InsertCadreList = new List<CadresRecord>();
 
         public CopyClub()
         {
@@ -101,13 +89,13 @@ namespace K12.Club.Volunteer
         {
             bool IsTrue = true;
             string stringUDT = string.Join("','", ClubAdmin.Instance.SelectedSource);
-            Copylist = _AccessHelper.Select<CLUBRecord>("uid in ('" + stringUDT + "')");
-            if (Copylist.Count > 0)
+            _CopyList = _AccessHelper.Select<CLUBRecord>("uid in ('" + stringUDT + "')");
+            if (_CopyList.Count > 0)
             {
-                _SchoolYear = Copylist[0].SchoolYear;
-                _Semester = Copylist[0].Semester;
+                _SchoolYear = _CopyList[0].SchoolYear;
+                _Semester = _CopyList[0].Semester;
 
-                foreach (CLUBRecord each in Copylist)
+                foreach (CLUBRecord each in _CopyList)
                 {
                     if (_SchoolYear == each.SchoolYear && _Semester == each.Semester)
                         continue;
@@ -126,9 +114,9 @@ namespace K12.Club.Volunteer
                 intSchoolYear.Enabled = false;
                 intSemester.Enabled = false;
 
-                StudentCopy = checkBoxX1.Checked;
-                CadresCopy = checkBoxX2.Checked;
-                Only_President_And_VicePresident_Copy = checkBoxX3.Checked;
+                _CopyOtherStudent = checkBoxX1.Checked;
+                _CopyCadresStudent = checkBoxX2.Checked;
+                _CopyPresidentStudent = checkBoxX3.Checked;
 
                 _SchoolYear = intSchoolYear.Value;
                 _Semester = intSemester.Value;
@@ -143,113 +131,53 @@ namespace K12.Club.Volunteer
 
         void BGW_DoWork(object sender, DoWorkEventArgs e)
         {
-
             //檢查目標學年期,是否有相同名稱之社團資料
             //如果有則移除該社團
             //並透過覆製功能進行新增動作
-            removelist = CheckOldReMoveClub();
-            Dictionary<string, List<SCJoin>> studentSCJDic = new Dictionary<string, List<SCJoin>>();
+            _SkipList = GetExistClub();
 
-            if (StudentCopy | Only_President_And_VicePresident_Copy)
+            var copyClubList = new List<CLUBRecord>();
+            var copyClubIDList = new List<string>();
+
+
+            foreach (var item in _CopyList)
             {
-                //取得原有社團之學生社團記錄
-                ScjStudentList = _AccessHelper.Select<SCJoin>(string.Format("ref_club_id in ('{0}')", string.Join("','", ClubAdmin.Instance.SelectedSource)));
-
-                foreach (SCJoin each in ScjStudentList)
+                //如果是重覆社團則不處理
+                if (!_SkipList.Contains(item.ClubName))
                 {
-                    if (!studentSCJDic.ContainsKey(each.RefClubID))
-                    {
-                        studentSCJDic.Add(each.RefClubID, new List<SCJoin>());
-                    }
-                    studentSCJDic[each.RefClubID].Add(each);
+                    copyClubList.Add(item);
+                    copyClubIDList.Add(item.UID);
                 }
             }
 
-            Dictionary<string, List<CadresRecord>> studentCadreDic = new Dictionary<string, List<CadresRecord>>();
-
-            Dictionary<string, List<SCJoin>> _studentSCJDic = new Dictionary<string, List<SCJoin>>();
-
-            if (CadresCopy)
-            {
-                //取得原有社團之學生社團記錄
-                CadreStudentList = _AccessHelper.Select<CadresRecord>(string.Format("ref_club_id in ('{0}')", string.Join("','", ClubAdmin.Instance.SelectedSource)));
-
-                foreach (CadresRecord each in CadreStudentList)
-                {
-                    if (!studentCadreDic.ContainsKey(each.RefClubID))
-                    {
-                        studentCadreDic.Add(each.RefClubID, new List<CadresRecord>());
-                    }
-                    studentCadreDic[each.RefClubID].Add(each);
-                }
-            }
-
-
+            if (copyClubList.Count == 0) return;
 
             int LogSchoolYear = 90;
             int LogSemester = 1;
 
-            if (Copylist.Count > 0)
+            if (copyClubList.Count > 0)
             {
-                LogSchoolYear = Copylist[0].SchoolYear;
-                LogSemester = Copylist[0].Semester;
+                LogSchoolYear = copyClubList[0].SchoolYear;
+                LogSemester = copyClubList[0].Semester;
             }
 
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("已進行複製社團作業：");
             sb.AppendLine(string.Format("由學年度「{0}」學期「{1}」複製至學年度「{2}」學期「{3}」", LogSchoolYear.ToString(), LogSemester.ToString(), _SchoolYear.ToString(), _Semester.ToString()));
-            if (StudentCopy)
+            if (_CopyOtherStudent)
             {
                 sb.AppendLine("(已勾選複製學生選項)");
             }
             sb.AppendLine("");
             sb.AppendLine("新學期社團清單如下：");
 
-            foreach (CLUBRecord each in Copylist)
+            foreach (CLUBRecord each in copyClubList)
             {
                 #region 複製社團基本資料
 
                 //如果是重覆社團則不處理
-                if (removelist.Contains(each.ClubName))
+                if (_SkipList.Contains(each.ClubName))
                     continue;
-
-                //是否複製學生
-                if (StudentCopy)
-                {
-                    CopyClubRecord new_ccr = new CopyClubRecord(each);
-                    if (studentSCJDic.ContainsKey(each.UID))
-                    {
-                        new_ccr.SetSCJ(studentSCJDic[each.UID]);
-                    }
-                }
-
-                //是否僅複製社長、副社長
-                if (Only_President_And_VicePresident_Copy)
-                {
-                    CopyClubRecord new_ccr = new CopyClubRecord(each);
-
-                    
-                    if (studentSCJDic.ContainsKey(each.UID))
-                    {
-                        foreach (var item in studentSCJDic[each.UID]) 
-                        {
-                            if (item.RefStudentID == each.President | item.RefStudentID == each.VicePresident)
-                            {
-                                if (!_studentSCJDic.ContainsKey(each.UID)) {
-
-                                    _studentSCJDic.Add(each.UID, new List<SCJoin>());
-
-                                }
-                                
-                                _studentSCJDic[each.UID].Add(item);
-                        
-                            }
-                        
-                        }
-                        new_ccr.SetSCJ(_studentSCJDic[each.UID]);
-                    }
-                }
-                
 
                 CLUBRecord cr = new CLUBRecord();
                 cr.About = each.About;
@@ -270,21 +198,17 @@ namespace K12.Club.Volunteer
                 cr.RefTeacherID3 = each.RefTeacherID3;
                 cr.Level = each.Level;
 
-                if (CadresCopy | Only_President_And_VicePresident_Copy)
+                if (_CopyPresidentStudent)
                 {
                     //社長,副社長
                     cr.President = each.President;
                     cr.VicePresident = each.VicePresident;
-
-                    //處理其它幹部
-
-                    //newInsertCadresList
                 }
 
                 //使用者所設定之學年度學期
                 cr.SchoolYear = _SchoolYear;
                 cr.Semester = _Semester;
-                newInsertList.Add(cr);
+                _NewInsertList.Add(cr);
 
                 sb.AppendLine(string.Format("學年度「{0}」學期「{1}」社團名稱「{2}」", cr.SchoolYear.ToString(), cr.Semester.ToString(), cr.ClubName));
 
@@ -294,11 +218,11 @@ namespace K12.Club.Volunteer
             }
 
             //新增之社團ID
-            List<string> IDList = new List<string>();
+            List<string> newIDList = new List<string>();
 
             try
             {
-                IDList = _AccessHelper.InsertValues(newInsertList);
+                newIDList = _AccessHelper.InsertValues(_NewInsertList);
             }
             catch (Exception ex)
             {
@@ -309,188 +233,147 @@ namespace K12.Club.Volunteer
 
             FISCA.LogAgent.ApplicationLog.Log("社團", "複製社團", sb.ToString());
 
-            //取得社團
-            List<CLUBRecord> ListInsertRecord = _AccessHelper.Select<CLUBRecord>(string.Format("UID in('{0}')", string.Join("','", IDList)));
-            //如果有勾選複製社團
-            //要把複製的社團取得ID,並且比隊其對應的原社團
-            if (StudentCopy)
+            if (_CopyOtherStudent || _CopyCadresStudent || _CopyPresidentStudent)
             {
                 #region 複製社團學生
 
-                if (IDList.Count != 0)
+                //取得社團
+                List<CLUBRecord> newClubRecord = _AccessHelper.Select<CLUBRecord>(string.Format("UID in('{0}')", string.Join("','", newIDList)));
+
+                Dictionary<string, List<CadresRecord>> studentCadreDic = new Dictionary<string, List<CadresRecord>>();
+
+                Dictionary<string, List<SCJoin>> studentSCJDic = new Dictionary<string, List<SCJoin>>();
+
+                //取得原有社團之學生社團記錄
+                List<SCJoin> scjStudentList = _AccessHelper.Select<SCJoin>(string.Format("ref_club_id in ('{0}')", string.Join("','", copyClubIDList)));
+
+                foreach (SCJoin each in scjStudentList)
                 {
-
-                    //建立學生的社團記錄Record
-                    //所要複製的社團
-                    List<CopyClubRecord> new_list = new List<CopyClubRecord>();
-                    foreach (CLUBRecord each1 in Copylist)
+                    if (!studentSCJDic.ContainsKey(each.RefClubID))
                     {
-                        CopyClubRecord new_ccr = new CopyClubRecord(each1);
-                        if (studentSCJDic.ContainsKey(each1.UID))
-                        {
-                            new_ccr.SetSCJ(studentSCJDic[each1.UID]);
-                            new_list.Add(new_ccr);
-                        }
+                        studentSCJDic.Add(each.RefClubID, new List<SCJoin>());
                     }
+                    studentSCJDic[each.RefClubID].Add(each);
+                }
 
-                    foreach (CLUBRecord each in ListInsertRecord)
+                //取得原有社團之學生幹部記錄
+                List<CadresRecord> cadreStudentList = _AccessHelper.Select<CadresRecord>(string.Format("ref_club_id in ('{0}')", string.Join("','", copyClubIDList)));
+
+                foreach (CadresRecord each in cadreStudentList)
+                {
+                    if (!studentCadreDic.ContainsKey(each.RefClubID))
                     {
-                        foreach (CopyClubRecord each2 in new_list)
+                        studentCadreDic.Add(each.RefClubID, new List<CadresRecord>());
+                    }
+                    studentCadreDic[each.RefClubID].Add(each);
+                }
+
+                _InsertSCJList = new List<SCJoin>();
+                List<CadresRecord> newCadresRecordList = new List<CadresRecord>();
+
+                foreach (CLUBRecord newClubRec in newClubRecord)
+                {
+                    foreach (CLUBRecord copyClubRec in copyClubList)
+                    {
+                        if (newClubRec.ClubName == copyClubRec.ClubName)
                         {
-                            if (each.ClubName == each2._Club.ClubName)
+                            if (studentSCJDic.ContainsKey(copyClubRec.UID))
                             {
-                                each2._new_Club = each;
-                                break;
+                                foreach (var scjRec in studentSCJDic[copyClubRec.UID])
+                                {
+                                    if (_CopyPresidentStudent
+                                        && (copyClubRec.President == scjRec.RefStudentID
+                                        || copyClubRec.VicePresident == scjRec.RefStudentID))
+                                    {
+                                        #region 複製社長副社長
+                                        SCJoin scj = new SCJoin();
+                                        scj.RefStudentID = scjRec.RefStudentID;
+                                        scj.RefClubID = newClubRec.UID;
+                                        scj.Lock = true; //強制鎖定
+                                        _InsertSCJList.Add(scj);
+                                        #endregion
+                                        continue;
+                                    }
+                                    if (_CopyCadresStudent
+                                        && studentCadreDic.ContainsKey(copyClubRec.UID))
+                                    {
+                                        bool match = false;
+                                        #region 複製社團幹部
+                                        foreach (var cadresRec in studentCadreDic[copyClubRec.UID])
+                                        {
+                                            if (cadresRec.RefStudentID == scjRec.RefStudentID)
+                                            {
+                                                CadresRecord cadre = new CadresRecord();
+                                                cadre.RefStudentID = cadresRec.RefStudentID; //學生
+                                                cadre.CadreName = cadresRec.CadreName; //幹部名稱
+                                                cadre.RefClubID = newClubRec.UID;
+                                                newCadresRecordList.Add(cadre);
+
+                                                SCJoin scj = new SCJoin();
+                                                scj.RefStudentID = scjRec.RefStudentID;
+                                                scj.RefClubID = newClubRec.UID;
+                                                scj.Lock = true; //強制鎖定
+                                                _InsertSCJList.Add(scj);
+                                                match = true;
+                                                break;
+                                            }
+                                        }
+                                        #endregion
+                                        if(match)
+                                            continue;
+                                    }
+
+                                    if (_CopyOtherStudent)
+                                    {
+                                        #region 複製一般社員
+                                        SCJoin scj = new SCJoin();
+                                        scj.RefStudentID = scjRec.RefStudentID;
+                                        scj.RefClubID = newClubRec.UID;
+                                        scj.Lock = true; //強制鎖定
+                                        _InsertSCJList.Add(scj);
+                                        #endregion
+                                        continue;
+                                    }
+                                }
                             }
                         }
-                    }
-
-                    //新增社團清單
-                    insertSCJList = new List<SCJoin>();
-                    foreach (CopyClubRecord each in new_list)
-                    {
-                        insertSCJList.AddRange(each.GetNewSCJoinList());
-                    }
-
-                    try
-                    {
-                        _AccessHelper.InsertValues(insertSCJList);
-                    }
-                    catch (Exception ex)
-                    {
-                        SmartSchool.ErrorReporting.ReportingService.ReportException(ex);
-                        e.Cancel = true;
-                        return;
                     }
                 }
 
-                #endregion
-            }
-
-            if (Only_President_And_VicePresident_Copy)
-            {
-                #region 僅複製社團社長、副社長
-
-                if (IDList.Count != 0)
+                
+                try
                 {
-
-                    //建立學生的社團記錄Record
-                    //所要複製的社團
-                    List<CopyClubRecord> new_list = new List<CopyClubRecord>();
-                    foreach (CLUBRecord each1 in Copylist)
-                    {
-                        CopyClubRecord new_ccr = new CopyClubRecord(each1);
-                        if (_studentSCJDic.ContainsKey(each1.UID))
-                        {
-                            new_ccr.SetSCJ(_studentSCJDic[each1.UID]);
-                            new_list.Add(new_ccr);
-                        }
-                    }
-
-                    foreach (CLUBRecord each in ListInsertRecord)
-                    {
-                        foreach (CopyClubRecord each2 in new_list)
-                        {
-                            if (each.ClubName == each2._Club.ClubName)
-                            {
-                                each2._new_Club = each;
-                                break;
-                            }
-                        }
-                    }
-
-                    //新增社團清單
-                    insertSCJList = new List<SCJoin>();
-                    foreach (CopyClubRecord each in new_list)
-                    {
-                        insertSCJList.AddRange(each.GetNewSCJoinList());
-                    }
-
-                    try
-                    {
-                        _AccessHelper.InsertValues(insertSCJList);
-                    }
-                    catch (Exception ex)
-                    {
-                        SmartSchool.ErrorReporting.ReportingService.ReportException(ex);
-                        e.Cancel = true;
-                        return;
-                    }
+                    _AccessHelper.InsertValues(_InsertSCJList);
+                    _AccessHelper.InsertValues(newCadresRecordList);
                 }
-
-                #endregion
-            }
-
-
-            if (CadresCopy)
-            {
-                #region 複製社團幹部 -2
-
-                if (IDList.Count != 0)
+                catch (Exception ex)
                 {
-                    List<CopyClubRecord> new_list = new List<CopyClubRecord>();
-                    foreach (CLUBRecord each1 in Copylist)
-                    {
-                        CopyClubRecord new_ccr = new CopyClubRecord(each1);
-                        if (studentCadreDic.ContainsKey(each1.UID))
-                        {
-                            new_ccr.SetSCJ(studentCadreDic[each1.UID]);
-                            new_list.Add(new_ccr);
-                        }
-                    }
-
-                    foreach (CLUBRecord each in ListInsertRecord)
-                    {
-                        foreach (CopyClubRecord each2 in new_list)
-                        {
-                            if (each.ClubName == each2._Club.ClubName)
-                            {
-                                each2._new_Club = each;
-                                break;
-                            }
-                        }
-                    }
-
-                    //新增社團清單
-                    insertCadreList = new List<CadresRecord>();
-                    foreach (CopyClubRecord each in new_list)
-                    {
-                        insertCadreList.AddRange(each.GetNewCadresList());
-                    }
-
-                    try
-                    {
-                        _AccessHelper.InsertValues(insertCadreList);
-                    }
-                    catch (Exception ex)
-                    {
-                        SmartSchool.ErrorReporting.ReportingService.ReportException(ex);
-                        e.Cancel = true;
-                        return;
-                    }
+                    SmartSchool.ErrorReporting.ReportingService.ReportException(ex);
+                    e.Cancel = true;
+                    return;
                 }
 
                 #endregion
             }
         }
 
-        private List<string> CheckOldReMoveClub()
+        private List<string> GetExistClub()
         {
-            List<string> list_2 = new List<string>();
+            List<string> existList = new List<string>();
             List<CLUBRecord> list = _AccessHelper.Select<CLUBRecord>(string.Format("school_year={0} and semester={1}", _SchoolYear, _Semester));
 
-            foreach (CLUBRecord each1 in Copylist)
+            foreach (CLUBRecord each1 in _CopyList)
             {
                 foreach (CLUBRecord each2 in list)
                 {
                     if (each1.ClubName == each2.ClubName)
                     {
-                        list_2.Add(each2.ClubName);
+                        existList.Add(each2.ClubName);
                         break;
                     }
                 }
             }
-            return list_2;
+            return existList;
         }
 
         void BGW_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -508,43 +391,44 @@ namespace K12.Club.Volunteer
                 return;
             }
 
-            if (removelist.Count != 0)
+            if (_SkipList.Count != 0)
             {
                 StringBuilder sb = new StringBuilder();
-                sb.AppendLine("共" + newInsertList.Count + "個社團複製成功!!\n");
-                sb.AppendLine("共" + removelist.Count + "個重覆社團,已略過處理!!");
-                if (StudentCopy)
+                sb.AppendLine("共" + _NewInsertList.Count + "個社團複製成功!!\n");
+                sb.AppendLine("共" + _SkipList.Count + "個重覆社團,已略過處理!!");
+                if (_CopyOtherStudent)
                 {
-                    sb.AppendLine("已同步建立" + insertSCJList.Count + "名學生的社團參與記錄!!");
+                    sb.AppendLine("已同步建立" + _InsertSCJList.Count + "名學生的社團參與記錄!!");
                 }
 
-                if (CadresCopy)
+                if (_CopyCadresStudent)
                 {
                     sb.AppendLine("已同步建立學生的社團幹部記錄!!");
                 }
-                if (Only_President_And_VicePresident_Copy) {
+                if (_CopyPresidentStudent)
+                {
 
                     sb.AppendLine("已同步複製社長、副社長社團參與紀錄");
                 }
 
-                sb.AppendLine(string.Join(",", removelist));
+                sb.AppendLine(string.Join(",", _SkipList));
 
                 MsgBox.Show(sb.ToString());
             }
             else
             {
                 StringBuilder sb = new StringBuilder();
-                sb.AppendLine("共" + newInsertList.Count + "個社團複製成功!!\n");
-                if (StudentCopy)
+                sb.AppendLine("共" + _NewInsertList.Count + "個社團複製成功!!\n");
+                if (_CopyOtherStudent)
                 {
-                    sb.AppendLine("已同步建立" + insertSCJList.Count + "名學生的社團參與記錄!!");
+                    sb.AppendLine("已同步建立" + _InsertSCJList.Count + "名學生的社團參與記錄!!");
                 }
 
-                if (CadresCopy)
+                if (_CopyCadresStudent)
                 {
                     sb.AppendLine("已同步建立學生的社團幹部記錄!!");
                 }
-                if (Only_President_And_VicePresident_Copy)
+                if (_CopyPresidentStudent)
                 {
 
                     sb.AppendLine("已同步複製社長、副社長社團參與紀錄");
@@ -565,31 +449,18 @@ namespace K12.Club.Volunteer
 
         private void checkBoxX1_CheckedChanged(object sender, EventArgs e)
         {
-            checkBoxX2.Enabled = checkBoxX1.Checked;
-            if (checkBoxX1.Checked == false)
-            {
-                checkBoxX2.Checked = false;
-            }
             if (checkBoxX1.Checked == true)
             {
-                checkBoxX3.Checked = false;
+                checkBoxX2.Checked = true;
             }
         }
 
-        private void checkBoxX3_CheckedChanged(object sender, EventArgs e)
+        private void checkBoxX2_CheckedChanged(object sender, EventArgs e)
         {
-            if (checkBoxX3.Checked)
+            if (checkBoxX2.Checked == true)
             {
-                checkBoxX1.Checked = false;
-                checkBoxX2.Checked = false;
-
+                checkBoxX3.Checked = true;
             }
-            else { 
-            
-            
-            }
-
-
         }
     }
 }
