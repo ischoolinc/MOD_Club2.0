@@ -347,6 +347,19 @@ namespace K12.Club.Volunteer
                         insert.ShowDialog();
                     }
                 };
+
+                check["檢查/批次社團鎖社"].Size = RibbonBarButton.MenuButtonSize.Medium;
+                check["檢查/批次社團鎖社"].Image = Properties.Resources.layers_64;
+                check["檢查/批次社團鎖社"].Enable = Permissions.檢查批次社團鎖社權限; 
+                check["檢查/批次社團鎖社"].Click += delegate
+                {                    
+                    Ribbon.檢查_批次社團鎖社.MutipleLockForm mutiplelock = new Ribbon.檢查_批次社團鎖社.MutipleLockForm();
+
+                    mutiplelock.ShowDialog();
+                                           
+                };
+
+
                 ClubAdmin.Instance.SelectedSourceChanged += delegate
                 {
                     //是否選擇大於0的社團
@@ -510,6 +523,7 @@ namespace K12.Club.Volunteer
             detail1.Add(new RibbonFeature(Permissions.學期結算, "學期結算"));
             detail1.Add(new RibbonFeature(Permissions.未選社團學生, "未選社團學生"));
             detail1.Add(new RibbonFeature(Permissions.調整社團學生, "調整社團學生"));
+            detail1.Add(new RibbonFeature(Permissions.檢查批次社團鎖社, "檢查/批次社團鎖社"));
             detail1.Add(new RibbonFeature(Permissions.開放選社時間, "開放選社時間"));
             detail1.Add(new RibbonFeature(Permissions.成績輸入時間, "成績輸入時間"));
             detail1.Add(new RibbonFeature(Permissions.重覆選社檢查, "重覆選社檢查"));

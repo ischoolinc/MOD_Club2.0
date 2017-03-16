@@ -80,14 +80,26 @@ namespace K12.Club.Volunteer
                 return FISCA.Permission.UserAcl.Current[未選社團學生].Executable;
             }
         }
-
+        
         public static string 調整社團學生 { get { return "K12.Club.Universal.SplitClasses.cs"; } }
+
+
 
         public static bool 調整社團學生權限
         {
             get
             {
                 return FISCA.Permission.UserAcl.Current[調整社團學生].Executable;
+            }
+        }
+
+        public static string 檢查批次社團鎖社 { get { return "K12.Club.Universal.MutipleLock.cs"; } }
+
+        public static bool 檢查批次社團鎖社權限
+        {
+            get
+            {
+                return FISCA.Permission.UserAcl.Current[檢查批次社團鎖社].Executable;
             }
         }
 

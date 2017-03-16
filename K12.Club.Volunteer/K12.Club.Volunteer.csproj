@@ -343,6 +343,13 @@
       <DependentUpon>V_Config.cs</DependentUpon>
     </Compile>
     <Compile Include="Ribbon\成績輸入\Log_Result.cs" />
+    <Compile Include="Ribbon\檢查_批次社團鎖社\ClubLockData.cs" />
+    <Compile Include="Ribbon\檢查_批次社團鎖社\MutipleLockForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ribbon\檢查_批次社團鎖社\MutipleLockForm.Designer.cs">
+      <DependentUpon>MutipleLockForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Ribbon\社團參與記錄清空\SCJReMove.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -542,6 +549,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Ribbon\志願_選社志願設定\V_Config.resx">
       <DependentUpon>V_Config.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ribbon\檢查_批次社團鎖社\MutipleLockForm.resx">
+      <DependentUpon>MutipleLockForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Ribbon\社團參與記錄清空\SCJReMove.resx">
       <DependentUpon>SCJReMove.cs</DependentUpon>
