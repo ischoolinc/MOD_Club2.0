@@ -24,16 +24,45 @@ namespace K12.Club.Volunteer
         Dictionary<string, StudentRecord> StudentDic { get; set; }
         Dictionary<string, StudRepeatObj> DataDic { get; set; }
 
+        //人為設定選社學年
+        string seting_school_year = "";
+
+        //人為設定選社學期
+        string seting_school_semester = "";
+
         public RepeatForm()
         {
             InitializeComponent();
 
             BGW.RunWorkerCompleted += new RunWorkerCompletedEventHandler(BGW_RunWorkerCompleted);
-            BGW.DoWork += new DoWorkEventHandler(BGW_DoWork);
+            BGW.DoWork += new DoWorkEventHandler(BGW_DoWork);            
         }
 
         private void RepeatForm_Load(object sender, EventArgs e)
         {
+            #region 因應需要支援跨學期選社，在這邊做檢查，防止使用者沒有設定 選社學年、學期
+            AccessHelper _AccessHelper = new AccessHelper();
+            List<UDT.OpenSchoolYearSemester> opensemester = new List<UDT.OpenSchoolYearSemester>();
+
+            opensemester = _AccessHelper.Select<UDT.OpenSchoolYearSemester>();
+
+            //填入之前的紀錄
+            if (opensemester.Count > 0)
+            {
+                seting_school_year = opensemester[0].SchoolYear;
+                seting_school_semester = opensemester[0].Semester;
+
+                labelX2.Text = string.Format("選社學年度  {0}學年度　第{1}學期 重覆選社清單：", seting_school_year, seting_school_semester);
+            }
+            else
+            {
+                MsgBox.Show("沒有設定 選社學年、選社學期，請至'選社開放時間'功能內設定。");
+
+                this.Close();
+                return;
+            }
+            #endregion 
+
             btnClear.Enabled = false;
             this.Text = "重覆選社檢查(資料讀取中...)";
             BGW.RunWorkerAsync();
@@ -91,7 +120,15 @@ namespace K12.Club.Volunteer
         private Dictionary<string, CLUBRecord> GetClubDic()
         {
             Dictionary<string, CLUBRecord> dic = new Dictionary<string, CLUBRecord>();
-            List<CLUBRecord> ClubList = _AccessHelper.Select<CLUBRecord>("school_year=" + School.DefaultSchoolYear + " and semester=" + School.DefaultSemester);
+
+
+            //舊的  會載入 系統系統學期的社團清單
+            //List<CLUBRecord> ClubList = _AccessHelper.Select<CLUBRecord>("school_year=" + School.DefaultSchoolYear + " and semester=" + School.DefaultSemester);
+
+            //新的 是載入 人為設定選社學年、學期
+            List<CLUBRecord> ClubList = _AccessHelper.Select<CLUBRecord>("school_year=" + seting_school_year + " and semester=" + seting_school_semester);
+
+
             foreach (CLUBRecord each in ClubList)
             {
                 if (!dic.ContainsKey(each.UID))

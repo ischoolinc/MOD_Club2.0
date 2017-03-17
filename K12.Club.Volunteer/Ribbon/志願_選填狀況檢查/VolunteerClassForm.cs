@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using FISCA.Presentation.Controls;
 using K12.Data;
 using System.Xml;
+using FISCA.UDT;
 
 namespace K12.Club.Volunteer
 {
@@ -63,8 +64,37 @@ namespace K12.Club.Volunteer
 
             btnRunStart.Enabled = false;
 
-            this.Text = "社團志願分配(資料取得中)";
-            BGW.RunWorkerAsync();
+
+            #region 因應需要支援跨學期選社，在這邊做檢查，防止使用者沒有設定 選社學年、學期
+            AccessHelper _AccessHelper = new AccessHelper();
+            List<UDT.OpenSchoolYearSemester> opensemester = new List<UDT.OpenSchoolYearSemester>();
+
+            opensemester = _AccessHelper.Select<UDT.OpenSchoolYearSemester>();
+
+            //人為設定選社學年
+            string seting_school_year = "";
+
+            //人為設定選社學期
+            string seting_school_semester = "";
+
+            //填入之前的紀錄
+            if (opensemester.Count > 0)
+            {
+                seting_school_year = opensemester[0].SchoolYear;
+                seting_school_semester = opensemester[0].Semester;
+
+                labelX3.Text = string.Format("選社學年度  {0}學年度　第{1}學期", seting_school_year, seting_school_semester);
+                this.Text = "社團志願分配(資料取得中)";
+                BGW.RunWorkerAsync();
+            }
+            else
+            {
+                MsgBox.Show("沒有設定 選社學年、選社學期，請至'選社開放時間'功能內設定。");
+
+                this.Close();
+                return;
+            }  
+            #endregion           
         }
 
         void BGW_DoWork(object sender, DoWorkEventArgs e)

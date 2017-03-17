@@ -4,18 +4,54 @@ using System.Linq;
 using System.Text;
 using K12.Data;
 using System.Data;
+using FISCA.UDT;
+using FISCA.Presentation.Controls;
 
 namespace K12.Club.Volunteer
 {
     static public class GetVolunteerData
     {
+        
+        
         /// <summary>
         /// 取得本學年度學期的社團清單
         /// </summary>
         static public Dictionary<string, CLUBRecord> GetSchoolYearClub()
         {
+
+            AccessHelper _AccessHelper = new AccessHelper();
+            List<UDT.OpenSchoolYearSemester> opensemester = new List<UDT.OpenSchoolYearSemester>();
+
+            //人為設定選社學年
+            string seting_school_year = "";
+
+            //人為設定選社學期
+            string seting_school_semester = "";
+
+            opensemester = _AccessHelper.Select<UDT.OpenSchoolYearSemester>();
+
+            //填入之前的紀錄
+            if (opensemester.Count > 0)
+            {
+                seting_school_year = opensemester[0].SchoolYear;
+                seting_school_semester = opensemester[0].Semester;
+            }
+            else 
+            {
+                MsgBox.Show("沒有設定 選社學年、選社學期，請至'選社開放時間'功能內設定。");
+                            
+            }
+
+
             Dictionary<string, CLUBRecord> dic = new Dictionary<string, CLUBRecord>();
-            List<CLUBRecord> ClubList = tool._A.Select<CLUBRecord>(string.Format("school_year={0} and semester={1}", School.DefaultSchoolYear, School.DefaultSemester));
+
+            //舊的 ClubList 會載入 系統系統學期的社團清單
+            //List<CLUBRecord> ClubList = tool._A.Select<CLUBRecord>(string.Format("school_year={0} and semester={1}", School.DefaultSchoolYear, School.DefaultSemester));
+
+            //新的 是載入 人為設定選社學年、學期
+            List<CLUBRecord> ClubList = tool._A.Select<CLUBRecord>(string.Format("school_year={0} and semester={1}", seting_school_year, seting_school_semester));
+
+
             foreach (CLUBRecord club in ClubList)
             {
                 if (!dic.ContainsKey(club.UID))
@@ -50,11 +86,41 @@ namespace K12.Club.Volunteer
         /// </summary>
         static public Dictionary<string, VolunteerRecord> GetVolunteerDic()
         {
+            AccessHelper _AccessHelper = new AccessHelper();
+            List<UDT.OpenSchoolYearSemester> opensemester = new List<UDT.OpenSchoolYearSemester>();
+
+            //人為設定選社學年
+            string seting_school_year = "";
+
+            //人為設定選社學期
+            string seting_school_semester = "";
+
+            opensemester = _AccessHelper.Select<UDT.OpenSchoolYearSemester>();
+
+            //填入之前的紀錄
+            if (opensemester.Count > 0)
+            {
+                seting_school_year = opensemester[0].SchoolYear;
+                seting_school_semester = opensemester[0].Semester;
+            }
+            else
+            {
+                MsgBox.Show("沒有設定 選社學年、選社學期，請至'選社開放時間'功能內設定。");
+
+            }
+
             Dictionary<string, VolunteerRecord> dic = new Dictionary<string, VolunteerRecord>();
             List<VolunteerRecord> VolList = new List<VolunteerRecord>();
 
             StringBuilder sb = new StringBuilder();
-            sb.AppendFormat("school_year={0} and semester={1}", School.DefaultSchoolYear, School.DefaultSemester);
+
+            //舊的  會載入 系統系統學期的社團清單
+            //sb.AppendFormat("school_year={0} and semester={1}", School.DefaultSchoolYear, School.DefaultSemester);
+
+            //新的 是載入 人為設定選社學年、學期
+            sb.AppendFormat("school_year={0} and semester={1}", seting_school_year, seting_school_semester);
+
+
             VolList = tool._A.Select<VolunteerRecord>(sb.ToString());
 
             foreach (VolunteerRecord each in VolList)

@@ -28,24 +28,28 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgvTimes = new DevComponents.DotNetBar.Controls.DataGridViewX();
+            this.chStage1_Mode = new DevComponents.DotNetBar.Controls.DataGridViewComboBoxExColumn();
+            this.chStage2_Mode = new DevComponents.DotNetBar.Controls.DataGridViewComboBoxExColumn();
             this.lblSemester = new DevComponents.DotNetBar.LabelX();
             this.btnClose = new DevComponents.DotNetBar.ButtonX();
             this.btnSave = new DevComponents.DotNetBar.ButtonX();
             this.labelX1 = new DevComponents.DotNetBar.LabelX();
+            this.comboBoxEx2 = new DevComponents.DotNetBar.Controls.ComboBoxEx();
+            this.labelX2 = new DevComponents.DotNetBar.LabelX();
+            this.comboBoxEx1 = new DevComponents.DotNetBar.Controls.ComboBoxEx();
+            this.labelX3 = new DevComponents.DotNetBar.LabelX();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.chGradeYear = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.chStage1_Mode = new DevComponents.DotNetBar.Controls.DataGridViewComboBoxExColumn();
             this.chStartTime1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.chEndTime1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.chStage2_Mode = new DevComponents.DotNetBar.Controls.DataGridViewComboBoxExColumn();
             this.chStartTime2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.chEndTime2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTimes)).BeginInit();
@@ -65,14 +69,14 @@
             this.chStage2_Mode,
             this.chStartTime2,
             this.chEndTime2});
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvTimes.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvTimes.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgvTimes.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(215)))), ((int)(((byte)(229)))));
             this.dgvTimes.Location = new System.Drawing.Point(13, 38);
             this.dgvTimes.Name = "dgvTimes";
@@ -86,6 +90,34 @@
             this.dgvTimes.RowValidated += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvTimes_RowValidated);
             this.dgvTimes.RowValidating += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dgvTimes_RowValidating);
             // 
+            // chStage1_Mode
+            // 
+            this.chStage1_Mode.DropDownHeight = 106;
+            this.chStage1_Mode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.chStage1_Mode.DropDownWidth = 121;
+            this.chStage1_Mode.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.chStage1_Mode.HeaderText = "階段1模式";
+            this.chStage1_Mode.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.chStage1_Mode.IntegralHeight = false;
+            this.chStage1_Mode.ItemHeight = 17;
+            this.chStage1_Mode.Name = "chStage1_Mode";
+            this.chStage1_Mode.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.chStage1_Mode.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            // 
+            // chStage2_Mode
+            // 
+            this.chStage2_Mode.DropDownHeight = 106;
+            this.chStage2_Mode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.chStage2_Mode.DropDownWidth = 121;
+            this.chStage2_Mode.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.chStage2_Mode.HeaderText = "階段2模式";
+            this.chStage2_Mode.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.chStage2_Mode.IntegralHeight = false;
+            this.chStage2_Mode.ItemHeight = 17;
+            this.chStage2_Mode.Name = "chStage2_Mode";
+            this.chStage2_Mode.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.chStage2_Mode.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            // 
             // lblSemester
             // 
             this.lblSemester.BackColor = System.Drawing.Color.Transparent;
@@ -94,12 +126,14 @@
             // 
             this.lblSemester.BackgroundStyle.Class = "";
             this.lblSemester.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.lblSemester.Enabled = false;
             this.lblSemester.Font = new System.Drawing.Font("微軟正黑體", 9.75F);
-            this.lblSemester.Location = new System.Drawing.Point(13, 9);
+            this.lblSemester.Location = new System.Drawing.Point(317, 207);
             this.lblSemester.Name = "lblSemester";
-            this.lblSemester.Size = new System.Drawing.Size(142, 23);
+            this.lblSemester.Size = new System.Drawing.Size(154, 23);
             this.lblSemester.TabIndex = 0;
             this.lblSemester.Text = "97學年度　第１學期";
+            this.lblSemester.Visible = false;
             // 
             // btnClose
             // 
@@ -144,10 +178,64 @@
             this.labelX1.TabIndex = 2;
             this.labelX1.Text = "說明：時間格式範例（2012/7/23 13:00）\r\n輸入（7/23）會自動替換為（2012/7/23 00:00）";
             // 
+            // comboBoxEx2
+            // 
+            this.comboBoxEx2.DisplayMember = "Text";
+            this.comboBoxEx2.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.comboBoxEx2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxEx2.FormattingEnabled = true;
+            this.comboBoxEx2.ItemHeight = 19;
+            this.comboBoxEx2.Location = new System.Drawing.Point(229, 7);
+            this.comboBoxEx2.Name = "comboBoxEx2";
+            this.comboBoxEx2.Size = new System.Drawing.Size(78, 25);
+            this.comboBoxEx2.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
+            this.comboBoxEx2.TabIndex = 8;
+            // 
+            // labelX2
+            // 
+            this.labelX2.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.labelX2.BackgroundStyle.Class = "";
+            this.labelX2.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX2.Location = new System.Drawing.Point(196, 9);
+            this.labelX2.Name = "labelX2";
+            this.labelX2.Size = new System.Drawing.Size(75, 23);
+            this.labelX2.TabIndex = 7;
+            this.labelX2.Text = "學期";
+            // 
+            // comboBoxEx1
+            // 
+            this.comboBoxEx1.DisplayMember = "Text";
+            this.comboBoxEx1.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.comboBoxEx1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxEx1.FormattingEnabled = true;
+            this.comboBoxEx1.ItemHeight = 19;
+            this.comboBoxEx1.Location = new System.Drawing.Point(112, 7);
+            this.comboBoxEx1.Name = "comboBoxEx1";
+            this.comboBoxEx1.Size = new System.Drawing.Size(78, 25);
+            this.comboBoxEx1.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
+            this.comboBoxEx1.TabIndex = 6;
+            // 
+            // labelX3
+            // 
+            this.labelX3.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.labelX3.BackgroundStyle.Class = "";
+            this.labelX3.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX3.Location = new System.Drawing.Point(64, 9);
+            this.labelX3.Name = "labelX3";
+            this.labelX3.Size = new System.Drawing.Size(75, 23);
+            this.labelX3.TabIndex = 5;
+            this.labelX3.Text = "學年度";
+            // 
             // dataGridViewTextBoxColumn1
             // 
-            dataGridViewCellStyle6.BackColor = System.Drawing.Color.LightCyan;
-            this.dataGridViewTextBoxColumn1.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.LightCyan;
+            this.dataGridViewTextBoxColumn1.DefaultCellStyle = dataGridViewCellStyle3;
             this.dataGridViewTextBoxColumn1.HeaderText = "年級";
             this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
             this.dataGridViewTextBoxColumn1.ReadOnly = true;
@@ -178,24 +266,11 @@
             // 
             // chGradeYear
             // 
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.LightCyan;
-            this.chGradeYear.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.LightCyan;
+            this.chGradeYear.DefaultCellStyle = dataGridViewCellStyle1;
             this.chGradeYear.HeaderText = "年級";
             this.chGradeYear.Name = "chGradeYear";
             this.chGradeYear.ReadOnly = true;
-            // 
-            // chStage1_Mode
-            // 
-            this.chStage1_Mode.DropDownHeight = 106;
-            this.chStage1_Mode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.chStage1_Mode.DropDownWidth = 121;
-            this.chStage1_Mode.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.chStage1_Mode.HeaderText = "階段1模式";
-            this.chStage1_Mode.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.chStage1_Mode.ItemHeight = 17;
-            this.chStage1_Mode.Name = "chStage1_Mode";
-            this.chStage1_Mode.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.chStage1_Mode.RightToLeft = System.Windows.Forms.RightToLeft.No;
             // 
             // chStartTime1
             // 
@@ -208,19 +283,6 @@
             this.chEndTime1.HeaderText = "階段1截止時間";
             this.chEndTime1.Name = "chEndTime1";
             this.chEndTime1.Width = 150;
-            // 
-            // chStage2_Mode
-            // 
-            this.chStage2_Mode.DropDownHeight = 106;
-            this.chStage2_Mode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.chStage2_Mode.DropDownWidth = 121;
-            this.chStage2_Mode.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.chStage2_Mode.HeaderText = "階段2模式";
-            this.chStage2_Mode.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.chStage2_Mode.ItemHeight = 17;
-            this.chStage2_Mode.Name = "chStage2_Mode";
-            this.chStage2_Mode.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.chStage2_Mode.RightToLeft = System.Windows.Forms.RightToLeft.No;
             // 
             // chStartTime2
             // 
@@ -241,6 +303,10 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnSave;
             this.ClientSize = new System.Drawing.Size(968, 253);
+            this.Controls.Add(this.comboBoxEx2);
+            this.Controls.Add(this.labelX2);
+            this.Controls.Add(this.comboBoxEx1);
+            this.Controls.Add(this.labelX3);
             this.Controls.Add(this.dgvTimes);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.btnClose);
@@ -275,5 +341,9 @@
         private DevComponents.DotNetBar.Controls.DataGridViewComboBoxExColumn chStage2_Mode;
         private System.Windows.Forms.DataGridViewTextBoxColumn chStartTime2;
         private System.Windows.Forms.DataGridViewTextBoxColumn chEndTime2;
+        private DevComponents.DotNetBar.Controls.ComboBoxEx comboBoxEx2;
+        private DevComponents.DotNetBar.LabelX labelX2;
+        private DevComponents.DotNetBar.Controls.ComboBoxEx comboBoxEx1;
+        private DevComponents.DotNetBar.LabelX labelX3;
     }
 }

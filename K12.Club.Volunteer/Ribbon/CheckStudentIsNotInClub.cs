@@ -45,6 +45,12 @@ namespace K12.Club.Volunteer
         /// </summary>
         List<StudRecord> IsStudentList = new List<StudRecord>();
 
+        //人為設定選社學年
+        string seting_school_year = "";
+
+        //人為設定選社學期
+        string seting_school_semester = "";
+
         public CheckStudentIsNotInClub()
         {
             InitializeComponent();
@@ -56,7 +62,11 @@ namespace K12.Club.Volunteer
             BGWSave.RunWorkerCompleted += new RunWorkerCompletedEventHandler(BGWSave_RunWorkerCompleted);
 
             K12.Presentation.NLDPanels.Student.TempSourceChanged += new EventHandler(Student_TempSourceChanged);
-            labelX1.Text = string.Format("{0}學年度　第{1}學期　未選社清單：", School.DefaultSchoolYear, School.DefaultSemester);
+
+            
+
+            //labelX1.Text = string.Format("{0}學年度　第{1}學期　未選社清單：", School.DefaultSchoolYear, School.DefaultSemester);
+
             labelX3.Text = string.Format("待處理學生：共{0}人", K12.Presentation.NLDPanels.Student.TempSource.Count);
         }
 
@@ -76,6 +86,31 @@ namespace K12.Club.Volunteer
 
             //3.
 
+            #region 因應需要支援跨學期選社，在這邊做檢查，防止使用者沒有設定 選社學年、學期
+            AccessHelper _AccessHelper = new AccessHelper();
+            List<UDT.OpenSchoolYearSemester> opensemester = new List<UDT.OpenSchoolYearSemester>();
+
+            opensemester = _AccessHelper.Select<UDT.OpenSchoolYearSemester>();
+
+
+
+            //填入之前的紀錄
+            if (opensemester.Count > 0)
+            {
+                seting_school_year = opensemester[0].SchoolYear;
+                seting_school_semester = opensemester[0].Semester;
+
+                labelX1.Text = string.Format("選社學年度  {0}學年度　第{1}學期 未選社清單：", seting_school_year, seting_school_semester);
+            }
+            else
+            {
+                MsgBox.Show("沒有設定 選社學年、選社學期，請至'選社開放時間'功能內設定。");
+
+                this.Close();
+                return;
+            }
+            #endregion 
+
             if (!BGW.IsBusy)
             {
                 btnSave.Enabled = false;
@@ -92,7 +127,12 @@ namespace K12.Club.Volunteer
 
             //取得本學期社團資料
             CLUBRecordList.Clear();
-            CLUBRecordList = _AccessHelper.Select<CLUBRecord>(string.Format("school_year={0} and semester={1}", School.DefaultSchoolYear, School.DefaultSemester));
+
+            //舊的  會載入 系統系統學期的社團清單
+            //CLUBRecordList = _AccessHelper.Select<CLUBRecord>(string.Format("school_year={0} and semester={1}", School.DefaultSchoolYear, School.DefaultSemester));
+
+            //新的 是載入 人為設定選社學年、學期
+            CLUBRecordList = _AccessHelper.Select<CLUBRecord>(string.Format("school_year={0} and semester={1}", seting_school_year, seting_school_semester));
 
             //取得本學期,所有社團參與記錄
             List<string> ClubRefIDList = new List<string>();
@@ -149,7 +189,14 @@ namespace K12.Club.Volunteer
             }
 
             #region 學生
-            labelX1.Text = string.Format("{0}學年度　第{1}學期　未選社清單(共{2}人)：", School.DefaultSchoolYear, School.DefaultSemester, IsStudentList.Count);
+
+            // 舊的 抓取 系統 學年度
+            //labelX1.Text = string.Format("{0}學年度　第{1}學期　未選社清單(共{2}人)：", School.DefaultSchoolYear, School.DefaultSemester, IsStudentList.Count);
+
+            // 新的 抓取 人為設定選社學年度
+            labelX1.Text = string.Format("{0}學年度　第{1}學期　未選社清單(共{2}人)：", seting_school_year, seting_school_semester, IsStudentList.Count);
+
+
             foreach (StudRecord re in IsStudentList)
             {
                 DataGridViewRow dataRow = new DataGridViewRow();

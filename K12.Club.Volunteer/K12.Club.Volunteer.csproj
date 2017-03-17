@@ -467,6 +467,7 @@
     <Compile Include="UDT\CLUBRecord.cs" />
     <Compile Include="UDT\ConfigRecord.cs" />
     <Compile Include="tools\GetVolunteerData.cs" />
+    <Compile Include="UDT\OpenSchoolYearSemester.cs" />
     <Compile Include="UDT\ResultScoreRecord.cs" />
     <Compile Include="UDT\SCJoin.cs" />
     <Compile Include="UDT\DTClub.cs" />

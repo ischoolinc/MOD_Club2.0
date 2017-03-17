@@ -13,6 +13,7 @@ using FISCA.Data;
 using FISCA.UDT;
 using FISCA.Presentation.Controls;
 
+
 namespace K12.Club.Volunteer
 {
     public partial class OpenClubJoinDateTime : FISCA.Presentation.Controls.BaseForm
@@ -25,6 +26,8 @@ namespace K12.Club.Volunteer
         AccessHelper _AccessHelper = new AccessHelper();
         QueryHelper _QueryHelper = new QueryHelper();
         List<DTClub> Low_DTClubList = new List<DTClub>();
+        List<UDT.OpenSchoolYearSemester> opensemester = new List<UDT.OpenSchoolYearSemester>();
+
 
         public OpenClubJoinDateTime()
         {
@@ -34,12 +37,33 @@ namespace K12.Club.Volunteer
 
         private void DailyLifeInputControl_Load(object sender, EventArgs e)
         {
-            lblSemester.Text = string.Format("{0}學年度　第{1}學期", School.DefaultSchoolYear, School.DefaultSemester);
+            // 2017/3/16 穎驊註解，因應 社團2.0 要支援跨學期選社，故將原顯示目前系統學年學期的Lable註解
+            //lblSemester.Text = string.Format("{0}學年度　第{1}學期", School.DefaultSchoolYear, School.DefaultSemester);
 
             //先將 Grid 填入此學校有的年級。
             FillGridViewGradeYear();
+            
+            // 學年為 上下加減一學年
+            comboBoxEx1.Items.Add("" + (int.Parse(School.DefaultSchoolYear) - 1));
+            comboBoxEx1.Items.Add(School.DefaultSchoolYear);
+            comboBoxEx1.Items.Add("" + (int.Parse(School.DefaultSchoolYear) + 1));
 
-           
+            // 學期為1、2
+            comboBoxEx2.Items.Add("1");
+            comboBoxEx2.Items.Add("2");
+
+            //預設為當下學年度、學期
+            comboBoxEx1.Text = School.DefaultSchoolYear;
+            comboBoxEx2.Text = School.DefaultSemester;
+
+            opensemester = _AccessHelper.Select<UDT.OpenSchoolYearSemester>();
+
+            //填入之前的紀錄
+            if(opensemester.Count>0)
+            {
+                comboBoxEx1.Text = opensemester[0].SchoolYear;
+                comboBoxEx2.Text = opensemester[0].Semester;
+            }
 
             //第一階段無 "不開放" 選項
             chStage1_Mode.Items.Add("先搶先贏");
@@ -142,6 +166,31 @@ namespace K12.Club.Volunteer
         {
             if (IsDataValidity())
             {
+
+                #region 儲存學年、學期紀錄
+               
+                //填入之前的紀錄
+                if (opensemester.Count > 0)
+                {
+                    opensemester[0].SchoolYear = comboBoxEx1.Text;
+                    opensemester[0].Semester = comboBoxEx2.Text;
+                    
+                    opensemester.SaveAll();
+                }
+                else 
+                {
+                    UDT.OpenSchoolYearSemester config = new UDT.OpenSchoolYearSemester();
+
+                    config.SchoolYear = comboBoxEx1.Text;
+                    config.Semester = comboBoxEx2.Text;
+
+                    config.Save();                
+                }
+
+                
+                
+                #endregion
+
                 #region 資料正確,進行儲存
                 List<DTClub> DTClubList = new List<DTClub>();
                 foreach (DataGridViewRow each in dgvTimes.Rows)
@@ -154,7 +203,7 @@ namespace K12.Club.Volunteer
                     string Start2 = "" + each.Cells[chStartTime2.Index].Value;
                     string End2 = "" + each.Cells[chEndTime2.Index].Value;
 
-                    string stage1_Mode = ""+ each.Cells[chStage1_Mode.Index].Value;
+                    string stage1_Mode = "" + each.Cells[chStage1_Mode.Index].Value;
                     string stage2_Mode = "" + each.Cells[chStage2_Mode.Index].Value;
 
 
@@ -191,7 +240,7 @@ namespace K12.Club.Volunteer
 
 
 
-                    
+
 
                     DTClubList.Add(dt);
                 }
@@ -205,13 +254,14 @@ namespace K12.Club.Volunteer
                     StringBuilder sb = new StringBuilder();
                     sb.AppendLine("已修改開放選社時間");
 
-                    
+
                     foreach (DTClub each in DTClubList)
                     {
-                        if (each.Start1.HasValue && each.End1.HasValue) {
+                        if (each.Start1.HasValue && each.End1.HasValue)
+                        {
                             string start1 = each.Start1.HasValue ? each.Start1.Value.ToString("yyyy/MM/dd HH:mm") : "";
                             string end1 = each.End1.HasValue ? each.End1.Value.ToString("yyyy/MM/dd HH:mm") : "";
-                            sb.AppendLine(string.Format("階段1"+ "「{0}」年級：開始時間「{1}」結束時間「{2}」", each.GradeYear, start1, end1));                        
+                            sb.AppendLine(string.Format("階段1" + "「{0}」年級：開始時間「{1}」結束時間「{2}」", each.GradeYear, start1, end1));
                         }
                         if (each.Start2.HasValue && each.End2.HasValue)
                         {
@@ -219,7 +269,7 @@ namespace K12.Club.Volunteer
                             string end2 = each.End2.HasValue ? each.End2.Value.ToString("yyyy/MM/dd HH:mm") : "";
                             sb.AppendLine(string.Format("階段" + "「{0}」年級：開始時間「{1}」結束時間「{2}」", each.GradeYear, start2, end2));
                         }
-                        
+
                     }
 
 
@@ -347,7 +397,7 @@ namespace K12.Club.Volunteer
             }
 
 
-                
+
         }
 
         private void dgvTimes_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
