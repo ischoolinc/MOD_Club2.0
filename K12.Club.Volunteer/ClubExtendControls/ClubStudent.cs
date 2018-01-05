@@ -46,7 +46,17 @@ namespace K12.Club.Volunteer
             Group = "參與學生";
 
             UserPermission = UserAcl.Current[FISCA.Permission.FeatureCodeAttribute.GetCode(GetType())];
-            this.Enabled = UserPermission.Editable;
+            //this.Enabled = UserPermission.Editable;
+            // 2018/1/5 羿均 因應文華訪談需求，社團常請公假，生輔組需在檢視模式下瀏覽社團學生以及操作待處理動作
+            listViewEx1.Enabled = true;
+            toolStripMenuItem2.Enabled = true; // 將學生加入待處理
+            清空學生待處理ToolStripMenuItem.Enabled = true; // 清空待處理
+
+            btnClearStudent.Enabled = UserPermission.Editable;
+            btnInserStudent.Enabled = UserPermission.Editable;
+            鎖定學生選社ToolStripMenuItem.Enabled = UserPermission.Editable;
+            移除選擇學生ToolStripMenuItem.Enabled = UserPermission.Editable;
+            移除選擇學生ToolStripMenuItem1.Enabled = UserPermission.Editable;
 
             //K12 - 當待處理學生更新後
             K12.Presentation.NLDPanels.Student.TempSourceChanged += new EventHandler(Student_TempSourceChanged);
@@ -124,7 +134,7 @@ namespace K12.Club.Volunteer
                 return;
 
             #region 更新畫面資料
-
+            
             listViewEx1.Items.Clear();
             foreach (StudentRecord each in scMAG.SCJoinStudent_LIst)
             {
