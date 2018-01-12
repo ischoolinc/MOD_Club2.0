@@ -14,6 +14,8 @@ using FISCA.UDT;
 using K12.Data;
 using System.Xml;
 using System.Diagnostics;
+using FISCA.Data;
+using System.Xml.Linq;
 
 namespace K12.Club.Volunteer
 {
@@ -32,7 +34,6 @@ namespace K12.Club.Volunteer
         public ClubPointsListForm()
         {
             InitializeComponent();
-
         }
 
         private void ClubPointsListForm_Load(object sender, EventArgs e)
@@ -40,10 +41,86 @@ namespace K12.Club.Volunteer
             BGW.DoWork += new DoWorkEventHandler(BGW_DoWork);
             BGW.RunWorkerCompleted += new RunWorkerCompletedEventHandler(BGW_RunWorkerCompleted);
 
-            dateTimeInput1.Value = DateTime.Today;
-            dateTimeInput2.Value = DateTime.Today.AddDays(6);
+            // 判斷有沒有日期設定檔
+            string selectSQL = "SELECT*FROM list WHERE name = 'DateSetting'";
+            QueryHelper query = new QueryHelper();
+            DataTable _DateSetting = query.Select(selectSQL);
+            UpdateHelper update = new UpdateHelper();
+            // 沒有。新增日期設定檔
+            if (_DateSetting.Rows.Count == 0)
+            {
+                string insertSQL = "INSERT INTO list(name,content) VALUES('DateSetting','')";
+                update.Execute(insertSQL);
+                // Init DateTimeInput
+                dateTimeInput1.Value = DateTime.Today;
+                dateTimeInput2.Value = DateTime.Today.AddDays(6);
+                GetDateTime_Click(null, null);
+                return;
+            }
+            // 有日期設定但沒資料。
+            if ("" + _DateSetting.Rows[0]["content"] == "")
+            {
+                // Init DateTimeInput
+                dateTimeInput1.Value = DateTime.Today;
+                dateTimeInput2.Value = DateTime.Today.AddDays(6);
+                GetDateTime_Click(null, null);
+                return;
+            }
+            // 有。讀取日期設定檔
+            if (_DateSetting.Rows.Count == 1 && "" + _DateSetting.Rows[0]["content"] != "")
+            {
+                XDocument DateSetting = new XDocument();
+                
+                foreach (DataRow dr in _DateSetting.Rows)
+                {
+                    //DateSetting = XDocument.Parse("<Root>< Child > Content </ Child ></ Root > ");
+                    DateSetting = XDocument.Parse("" + dr["content"]);
+                    //DateSetting = XDocument.Parse("<DateSetting><Weeks><Week name = \"Monday\" checked = \"true\"/><Week name = \"Tuesday\" checked = \"true\" /><Week name = \"true\" checked = \"true\" /><Week name = \"Thursday\" checked = \"true\" /><Week name = \"Friday\" checked = \"true\" /></Weeks><StarDate Date = \"2018/1/11 上午 12:00:00\" ></StarDate><EndDate Date = \"2018/1/31 上午 12:00:00\" ></EndDate></DateSetting>");
+                }
+                // Init DateTimeInput
+                DateTime StarDate = DateTime.Parse(DateSetting.Element("DateSetting").Element("StarDate").Attribute("Date").Value);
+                DateTime EndDate = DateTime.Parse(DateSetting.Element("DateSetting").Element("EndDate").Attribute("Date").Value);
+                dateTimeInput1.Value = StarDate;
+                dateTimeInput2.Value = EndDate;
+                // Init CheckBox
+                List<XElement> Weeks = DateSetting.Element("DateSetting").Element("Weeks").Elements("Week").ToList();
+                foreach (XElement week in Weeks)
+                {
+                    if (week.Attribute("name").Value == "Monday")
+                    {
+                        cbDay1.Checked = bool.Parse(week.Attribute("checked").Value);
+                    }
+                    if (week.Attribute("name").Value == "Tuesday")
+                    {
+                        cbDay2.Checked = bool.Parse(week.Attribute("checked").Value);
+                    }
+                    if (week.Attribute("name").Value == "Wednesday")
+                    {
+                        cbDay3.Checked = bool.Parse(week.Attribute("checked").Value);
+                    }
+                    if (week.Attribute("name").Value == "Thursday")
+                    {
+                        cbDay4.Checked = bool.Parse(week.Attribute("checked").Value);
+                    }
+                    if (week.Attribute("name").Value == "Friday")
+                    {
+                        cbDay5.Checked = bool.Parse(week.Attribute("checked").Value);
+                    }
+                }
+                // Init DataGridView
+                List<XElement> Dgv = DateSetting.Element("DateSetting").Element("DataGridView").Elements("Dgv").ToList();
+                foreach (XElement dgvr in Dgv)
+                {
+                    DataGridViewRow dr = new DataGridViewRow();
+                    dr.CreateCells(dataGridViewX1);
 
-            GetDateTime_Click(null, null);
+                    dr.Cells[0].Value = dgvr.Attribute("date").Value;
+                    dr.Cells[1].Value = dgvr.Attribute("week").Value;
+                    dataGridViewX1.Rows.Add(dr);
+                }
+            }
+            
+            //GetDateTime_Click(null, null);
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -81,6 +158,20 @@ namespace K12.Club.Volunteer
             btnSave.Enabled = false;
             BGW.RunWorkerAsync(dxXml.BaseElement);
 
+            //儲存 日期設定
+            #region 儲存日期設定
+            string node = "";
+            foreach (DataGridViewRow dr in dataGridViewX1.Rows)
+            {
+                node += "<Dgv date = \"" + dr.Cells["Column1"].Value + "\" week = \"" + dr.Cells["column2"].Value + "\"></Dgv>";
+            }
+            string dateSetting = string.Format(@"<DateSetting><Weeks><Week name = ""Monday"" checked = ""{0}""/><Week name = ""Tuesday"" checked = ""{1}"" /><Week name = ""Wednesday"" checked = ""{2}"" /><Week name = ""Thursday"" checked = ""{3}"" /><Week name = ""Friday"" checked = ""{4}"" /></Weeks><StarDate Date = ""{5}"" ></StarDate><EndDate Date = ""{6}"" ></EndDate><DataGridView>{7}</DataGridView></DateSetting>
+           ", cbDay1.Checked, cbDay2.Checked, cbDay3.Checked, cbDay4.Checked, cbDay5.Checked, dateTimeInput1.Value, dateTimeInput2.Value,node);
+            
+            string updateSQL = string.Format(@"UPDATE list SET content = '{0}' WHERE name ='DateSetting'", dateSetting);
+            UpdateHelper update = new UpdateHelper();
+            update.Execute(updateSQL);
+            #endregion
         }
 
         void BGW_DoWork(object sender, DoWorkEventArgs e)
