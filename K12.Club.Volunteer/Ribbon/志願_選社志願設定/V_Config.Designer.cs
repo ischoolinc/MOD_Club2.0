@@ -38,11 +38,13 @@
             this.btnExit = new DevComponents.DotNetBar.ButtonX();
             this.btnSave = new DevComponents.DotNetBar.ButtonX();
             this.labelX1 = new DevComponents.DotNetBar.LabelX();
+            this.viewCbx = new DevComponents.DotNetBar.Controls.CheckBoxX();
             ((System.ComponentModel.ISupportInitialize)(this.integerInput1)).BeginInit();
             this.SuspendLayout();
             // 
             // cbCover
             // 
+            this.cbCover.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.cbCover.AutoSize = true;
             this.cbCover.BackColor = System.Drawing.Color.Transparent;
             // 
@@ -51,7 +53,7 @@
             this.cbCover.BackgroundStyle.Class = "";
             this.cbCover.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.cbCover.CheckBoxStyle = DevComponents.DotNetBar.eCheckBoxStyle.RadioButton;
-            this.cbCover.Location = new System.Drawing.Point(164, 77);
+            this.cbCover.Location = new System.Drawing.Point(164, 83);
             this.cbCover.Name = "cbCover";
             this.cbCover.Size = new System.Drawing.Size(54, 21);
             this.cbCover.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -61,6 +63,7 @@
             // 
             // cbSkip
             // 
+            this.cbSkip.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.cbSkip.AutoSize = true;
             this.cbSkip.BackColor = System.Drawing.Color.Transparent;
             // 
@@ -72,7 +75,7 @@
             this.cbSkip.Checked = true;
             this.cbSkip.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbSkip.CheckValue = "Y";
-            this.cbSkip.Location = new System.Drawing.Point(233, 77);
+            this.cbSkip.Location = new System.Drawing.Point(233, 83);
             this.cbSkip.Name = "cbSkip";
             this.cbSkip.Size = new System.Drawing.Size(54, 21);
             this.cbSkip.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -81,6 +84,7 @@
             // 
             // lbHelp3
             // 
+            this.lbHelp3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.lbHelp3.AutoSize = true;
             this.lbHelp3.BackColor = System.Drawing.Color.Transparent;
             // 
@@ -88,7 +92,7 @@
             // 
             this.lbHelp3.BackgroundStyle.Class = "";
             this.lbHelp3.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.lbHelp3.Location = new System.Drawing.Point(12, 77);
+            this.lbHelp3.Location = new System.Drawing.Point(12, 83);
             this.lbHelp3.Name = "lbHelp3";
             this.lbHelp3.Size = new System.Drawing.Size(141, 21);
             this.lbHelp3.TabIndex = 2;
@@ -161,10 +165,11 @@
             // btnExit
             // 
             this.btnExit.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
+            this.btnExit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnExit.AutoSize = true;
             this.btnExit.BackColor = System.Drawing.Color.Transparent;
             this.btnExit.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnExit.Location = new System.Drawing.Point(229, 208);
+            this.btnExit.Location = new System.Drawing.Point(229, 214);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(75, 25);
             this.btnExit.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -175,10 +180,11 @@
             // btnSave
             // 
             this.btnSave.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
+            this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSave.AutoSize = true;
             this.btnSave.BackColor = System.Drawing.Color.Transparent;
             this.btnSave.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnSave.Location = new System.Drawing.Point(148, 208);
+            this.btnSave.Location = new System.Drawing.Point(148, 214);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 25);
             this.btnSave.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -188,6 +194,7 @@
             // 
             // labelX1
             // 
+            this.labelX1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.labelX1.AutoSize = true;
             this.labelX1.BackColor = System.Drawing.Color.Transparent;
             // 
@@ -196,18 +203,34 @@
             this.labelX1.BackgroundStyle.Class = "";
             this.labelX1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX1.ForeColor = System.Drawing.Color.Gray;
-            this.labelX1.Location = new System.Drawing.Point(13, 106);
+            this.labelX1.Location = new System.Drawing.Point(13, 112);
             this.labelX1.Name = "labelX1";
             this.labelX1.Size = new System.Drawing.Size(241, 91);
             this.labelX1.TabIndex = 9;
             this.labelX1.Text = "以上設定影響社團志願<重新分配>之用\r\n覆蓋:除鎖定之學生,全數重新分配\r\n略過:已分配至社團之學生不予調整\r\n僅處理尚有名額與未進入社團之學生\r\n(學生的志願社" +
     "團亦需尚有名額)";
             // 
+            // viewCbx
+            // 
+            this.viewCbx.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.viewCbx.BackgroundStyle.Class = "";
+            this.viewCbx.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.viewCbx.Location = new System.Drawing.Point(12, 54);
+            this.viewCbx.Name = "viewCbx";
+            this.viewCbx.Size = new System.Drawing.Size(206, 23);
+            this.viewCbx.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
+            this.viewCbx.TabIndex = 10;
+            this.viewCbx.Text = "學生可經由WEB查詢選社結果";
+            // 
             // V_Config
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(316, 241);
+            this.ClientSize = new System.Drawing.Size(316, 247);
+            this.Controls.Add(this.viewCbx);
             this.Controls.Add(this.labelX1);
             this.Controls.Add(this.cbSkip);
             this.Controls.Add(this.lbHelp3);
@@ -240,5 +263,6 @@
         private DevComponents.DotNetBar.ButtonX btnExit;
         private DevComponents.DotNetBar.ButtonX btnSave;
         private DevComponents.DotNetBar.LabelX labelX1;
+        private DevComponents.DotNetBar.Controls.CheckBoxX viewCbx;
     }
 }

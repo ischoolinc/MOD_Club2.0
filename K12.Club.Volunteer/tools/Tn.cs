@@ -25,6 +25,10 @@ namespace K12.Club.Volunteer
         /// 已有社團記錄時
         /// </summary>
         static public string SetupName_3 = "已有社團記錄時";
+        ///<summary>
+        /// 學生可經由WEB查詢選社結果
+        /// </summary>
+        static public string SetupName_4 = "學生可經由WEB查詢選社結果";
 
         //static public string _GraduateUDT = "\"$K12.Graduation.Modules.GraduateUDT.\"";
         //static public string _AllXMLDataUDT = "\"$K12.Graduation.Modules.AllXMLDataUDT.TestMode3\"";

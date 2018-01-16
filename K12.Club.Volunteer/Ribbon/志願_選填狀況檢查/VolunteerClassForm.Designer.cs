@@ -33,6 +33,13 @@
             this.btnRunStart = new DevComponents.DotNetBar.ButtonX();
             this.btnExit = new DevComponents.DotNetBar.ButtonX();
             this.dataGridViewX1 = new DevComponents.DotNetBar.Controls.DataGridViewX();
+            this.colYear = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colClassName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colTeacher = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colInsert = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colNowUp = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colCLUBRecord = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colLock = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.檢視學生選填明細ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.labelX1 = new DevComponents.DotNetBar.LabelX();
@@ -45,13 +52,6 @@
             this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colYear = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colClassName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colTeacher = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colInsert = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colNowUp = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colCLUBRecord = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colLock = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewX1)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
@@ -122,6 +122,60 @@
             this.dataGridViewX1.TabIndex = 2;
             this.dataGridViewX1.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridViewX1_CellMouseDoubleClick);
             this.dataGridViewX1.SelectionChanged += new System.EventHandler(this.dataGridViewX1_SelectionChanged);
+            // 
+            // colYear
+            // 
+            this.colYear.DataPropertyName = "_GradeYear";
+            this.colYear.HeaderText = "年級";
+            this.colYear.Name = "colYear";
+            this.colYear.ReadOnly = true;
+            this.colYear.Width = 65;
+            // 
+            // colClassName
+            // 
+            this.colClassName.DataPropertyName = "_Class";
+            this.colClassName.HeaderText = "班級";
+            this.colClassName.Name = "colClassName";
+            this.colClassName.ReadOnly = true;
+            this.colClassName.Width = 80;
+            // 
+            // colTeacher
+            // 
+            this.colTeacher.DataPropertyName = "_teacher";
+            this.colTeacher.HeaderText = "導師";
+            this.colTeacher.Name = "colTeacher";
+            this.colTeacher.ReadOnly = true;
+            this.colTeacher.Width = 80;
+            // 
+            // colInsert
+            // 
+            this.colInsert.DataPropertyName = "_StudentCount";
+            this.colInsert.HeaderText = "學生數";
+            this.colInsert.Name = "colInsert";
+            this.colInsert.ReadOnly = true;
+            this.colInsert.Width = 80;
+            // 
+            // colNowUp
+            // 
+            this.colNowUp.DataPropertyName = "_VolunteerCount";
+            this.colNowUp.HeaderText = "已填志願人數";
+            this.colNowUp.Name = "colNowUp";
+            this.colNowUp.ReadOnly = true;
+            this.colNowUp.Width = 110;
+            // 
+            // colCLUBRecord
+            // 
+            this.colCLUBRecord.DataPropertyName = "StudentSCJoinCount";
+            this.colCLUBRecord.HeaderText = "參與社團人數";
+            this.colCLUBRecord.Name = "colCLUBRecord";
+            this.colCLUBRecord.Width = 110;
+            // 
+            // colLock
+            // 
+            this.colLock.DataPropertyName = "LockStudentLockCount";
+            this.colLock.HeaderText = "社團鎖定人數";
+            this.colLock.Name = "colLock";
+            this.colLock.Width = 110;
             // 
             // contextMenuStrip1
             // 
@@ -236,60 +290,6 @@
             this.dataGridViewTextBoxColumn7.HeaderText = "志願分配失敗";
             this.dataGridViewTextBoxColumn7.Name = "dataGridViewTextBoxColumn7";
             this.dataGridViewTextBoxColumn7.Width = 120;
-            // 
-            // colYear
-            // 
-            this.colYear.DataPropertyName = "_GradeYear";
-            this.colYear.HeaderText = "年級";
-            this.colYear.Name = "colYear";
-            this.colYear.ReadOnly = true;
-            this.colYear.Width = 65;
-            // 
-            // colClassName
-            // 
-            this.colClassName.DataPropertyName = "_Class";
-            this.colClassName.HeaderText = "班級";
-            this.colClassName.Name = "colClassName";
-            this.colClassName.ReadOnly = true;
-            this.colClassName.Width = 80;
-            // 
-            // colTeacher
-            // 
-            this.colTeacher.DataPropertyName = "_teacher";
-            this.colTeacher.HeaderText = "導師";
-            this.colTeacher.Name = "colTeacher";
-            this.colTeacher.ReadOnly = true;
-            this.colTeacher.Width = 80;
-            // 
-            // colInsert
-            // 
-            this.colInsert.DataPropertyName = "_StudentCount";
-            this.colInsert.HeaderText = "學生數";
-            this.colInsert.Name = "colInsert";
-            this.colInsert.ReadOnly = true;
-            this.colInsert.Width = 80;
-            // 
-            // colNowUp
-            // 
-            this.colNowUp.DataPropertyName = "_VolunteerCount";
-            this.colNowUp.HeaderText = "已填志願人數";
-            this.colNowUp.Name = "colNowUp";
-            this.colNowUp.ReadOnly = true;
-            this.colNowUp.Width = 110;
-            // 
-            // colCLUBRecord
-            // 
-            this.colCLUBRecord.DataPropertyName = "StudentSCJoinCount";
-            this.colCLUBRecord.HeaderText = "參與社團人數";
-            this.colCLUBRecord.Name = "colCLUBRecord";
-            this.colCLUBRecord.Width = 110;
-            // 
-            // colLock
-            // 
-            this.colLock.DataPropertyName = "LockStudentLockCount";
-            this.colLock.HeaderText = "社團鎖定人數";
-            this.colLock.Name = "colLock";
-            this.colLock.Width = 110;
             // 
             // dataGridViewTextBoxColumn8
             // 

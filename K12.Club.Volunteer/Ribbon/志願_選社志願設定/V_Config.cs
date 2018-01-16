@@ -15,6 +15,7 @@ namespace K12.Club.Volunteer
         string SetupName_1 = "學生選填志願數";
         string SetupName_2 = "社團分配優先序";
         string SetupName_3 = "已有社團記錄時";
+        string SetupName_4 = "學生可經由WEB查詢選社結果";
 
         BackgroundWorker BGW = new BackgroundWorker();
 
@@ -54,6 +55,8 @@ namespace K12.Club.Volunteer
 
                     integerInput1.Value = ByV.學生選填志願數;
                     cbMeritsX1.Checked = ByV.社團分配優先序;
+                    viewCbx.Checked = ByV.學生可經由WEB查詢選社結果;
+
                     if (ByV.已有社團記錄時)
                         cbCover.Checked = true;
                     else
@@ -81,6 +84,7 @@ namespace K12.Club.Volunteer
                 Setup_ByV ByV = new Setup_ByV();
                 ByV.學生選填志願數 = integerInput1.Value;
                 ByV.社團分配優先序 = cbMeritsX1.Checked;
+                ByV.學生可經由WEB查詢選社結果 = viewCbx.Checked;
                 if (cbCover.Checked)
                     ByV.已有社團記錄時 = true;
                 else
@@ -120,6 +124,11 @@ namespace K12.Club.Volunteer
                 cr.Content = "True";
             else
                 cr.Content = "False";
+            InsertList.Add(cr);
+
+            cr = new ConfigRecord();
+            cr.ConfigName = SetupName_4;
+            cr.Content = ByV.學生可經由WEB查詢選社結果.ToString();
             InsertList.Add(cr);
 
             tool._A.InsertValues(InsertList);

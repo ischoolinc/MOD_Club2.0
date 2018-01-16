@@ -206,17 +206,18 @@ namespace K12.Club.Volunteer
 
                 totle["報表"].Size = RibbonBarButton.MenuButtonSize.Large;
                 totle["報表"].Image = Properties.Resources.Report;
-                totle["報表"]["社團點名單"].Enable = false;
-                totle["報表"]["社團點名單"].Click += delegate
-                {
-                    AssociationsPointList insert = new AssociationsPointList();
-                };
-                ClubAdmin.Instance.SelectedSourceChanged += delegate
-                {
-                    //是否選擇大於0的社團
-                    bool SourceCount = (ClubAdmin.Instance.SelectedSource.Count > 0);
-                    totle["報表"]["社團點名單"].Enable = SourceCount && Permissions.社團點名單權限;
-                };
+                // 2018/01/16 羿均 註解較舊功能
+                //totle["報表"]["社團點名單"].Enable = false;
+                //totle["報表"]["社團點名單"].Click += delegate
+                //{
+                //    AssociationsPointList insert = new AssociationsPointList();
+                //};
+                //ClubAdmin.Instance.SelectedSourceChanged += delegate
+                //{
+                //    //是否選擇大於0的社團
+                //    bool SourceCount = (ClubAdmin.Instance.SelectedSource.Count > 0);
+                //    totle["報表"]["社團點名單"].Enable = SourceCount && Permissions.社團點名單權限;
+                //};
 
                 totle["報表"]["社團點名單(套表列印)"].Enable = false;
                 totle["報表"]["社團點名單(套表列印)"].Click += delegate
@@ -263,14 +264,13 @@ namespace K12.Club.Volunteer
                     OpenClubJoinDateTime insert = new OpenClubJoinDateTime();
                     insert.ShowDialog();
                 };
-
-                oder["成績輸入時間"].Size = RibbonBarButton.MenuButtonSize.Medium;
-                oder["成績輸入時間"].Image = Properties.Resources.time_frame_refresh_128;
-                oder["成績輸入時間"].Enable = Permissions.成績輸入時間權限;
-                oder["成績輸入時間"].Click += delegate
+                // 2018/01/16 羿均 因應弘文高中需求新增
+                oder["匯出選社結果"].Size = RibbonBarButton.MenuButtonSize.Medium;
+                oder["匯出選社結果"].Image = Properties.Resources.Export_Image;
+                oder["匯出選社結果"].Enable = Permissions.學生選社志願設定權限;
+                oder["匯出選社結果"].Click += delegate
                 {
-                    ResultsInputDateTime insert = new ResultsInputDateTime();
-                    insert.ShowDialog();
+                    Report.匯出選社結果.ExportStudentClub a = new Report.匯出選社結果.ExportStudentClub();
                 };
 
                 oder["選社志願設定"].Size = RibbonBarButton.MenuButtonSize.Medium;
@@ -416,6 +416,15 @@ namespace K12.Club.Volunteer
                     //是否選擇大於0的社團
                     bool SourceCount = (ClubAdmin.Instance.SelectedSource.Count > 0);
                     Results["學期結算"].Enable = SourceCount && Permissions.學期結算權限;
+                };
+
+                Results["成績輸入時間"].Size = RibbonBarButton.MenuButtonSize.Medium;
+                Results["成績輸入時間"].Image = Properties.Resources.time_frame_refresh_128;
+                Results["成績輸入時間"].Enable = Permissions.成績輸入時間權限;
+                Results["成績輸入時間"].Click += delegate
+                {
+                    ResultsInputDateTime insert = new ResultsInputDateTime();
+                    insert.ShowDialog();
                 };
             } 
             #endregion

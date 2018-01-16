@@ -267,6 +267,7 @@
     <Compile Include="ImportExport\已過時功能\x_SpecialResult.Designer.cs">
       <DependentUpon>x_SpecialResult.cs</DependentUpon>
     </Compile>
+    <Compile Include="Report\匯出選社結果\ExportStudentClub.cs" />
     <Compile Include="Report\班級社團成績單\ClassClubTraMag.cs" />
     <Compile Include="Report\班級社團成績單\ClassClubTranscript.cs">
       <SubType>Form</SubType>
@@ -667,6 +668,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\health_and_leisure_add_64.png" />
+    <None Include="Resources\匯出選社結果_範本.xlsx" />
     <None Include="Resources\班級學生選社_範本.doc" />
     <None Include="Resources\班級社團成績單_範本.xls" />
     <None Include="Resources\社團幹部證明單.doc" />

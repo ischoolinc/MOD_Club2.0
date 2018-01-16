@@ -10,6 +10,7 @@ using FISCA.Presentation.Controls;
 using K12.Data;
 using System.Xml;
 using FISCA.UDT;
+using Aspose.Cells;
 
 namespace K12.Club.Volunteer
 {
@@ -63,7 +64,6 @@ namespace K12.Club.Volunteer
             BGW_Save.WorkerReportsProgress = true;
 
             btnRunStart.Enabled = false;
-
 
             #region 因應需要支援跨學期選社，在這邊做檢查，防止使用者沒有設定 選社學年、學期
             AccessHelper _AccessHelper = new AccessHelper();
@@ -909,6 +909,11 @@ namespace K12.Club.Volunteer
         private void dataGridViewX1_SelectionChanged(object sender, EventArgs e)
         {
             labelX2.Text = string.Format("選擇：{0}", "" + dataGridViewX1.SelectedRows.Count);
+        }
+
+        private void exportBtn_Click(object sender, EventArgs e)
+        {
+            Workbook template = new Workbook();
         }
     }
 }
