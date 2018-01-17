@@ -270,7 +270,8 @@ namespace K12.Club.Volunteer
                 oder["匯出選社結果"].Enable = Permissions.學生選社志願設定權限;
                 oder["匯出選社結果"].Click += delegate
                 {
-                    Report.匯出選社結果.ExportStudentClub a = new Report.匯出選社結果.ExportStudentClub();
+                    Report.匯出選社結果.ExportStudentClubForm e = new Report.匯出選社結果.ExportStudentClubForm();
+                    e.ShowDialog();
                 };
 
                 oder["選社志願設定"].Size = RibbonBarButton.MenuButtonSize.Medium;
@@ -441,7 +442,6 @@ namespace K12.Club.Volunteer
             }; 
             #endregion
             #endregion
-
 
             #region 學生功能按鈕
             {

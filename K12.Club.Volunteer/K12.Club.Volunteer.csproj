@@ -268,6 +268,12 @@
       <DependentUpon>x_SpecialResult.cs</DependentUpon>
     </Compile>
     <Compile Include="Report\匯出選社結果\ExportStudentClub.cs" />
+    <Compile Include="Report\匯出選社結果\ExportStudentClubForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Report\匯出選社結果\ExportStudentClubForm.Designer.cs">
+      <DependentUpon>ExportStudentClubForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Report\班級社團成績單\ClassClubTraMag.cs" />
     <Compile Include="Report\班級社團成績單\ClassClubTranscript.cs">
       <SubType>Form</SubType>
@@ -518,6 +524,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report\匯出選社結果\ExportStudentClubForm.resx">
+      <DependentUpon>ExportStudentClubForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Report\班級社團成績單\ClassClubTranscript.resx">
       <DependentUpon>ClassClubTranscript.cs</DependentUpon>

@@ -242,6 +242,7 @@
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.cbCover);
             this.DoubleBuffered = true;
+            this.MaximumSize = new System.Drawing.Size(332, 286);
             this.Name = "V_Config";
             this.Text = "學生選社志願設定";
             this.Load += new System.EventHandler(this.V_Config_Load);

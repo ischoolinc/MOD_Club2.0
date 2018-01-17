@@ -12,136 +12,179 @@ using System.Windows.Forms;
 using FISCA.Presentation;
 using System.Diagnostics;
 using System.Xml.Linq;
+using System.ComponentModel;
 
 namespace K12.Club.Volunteer.Report.匯出選社結果
 {
     class ExportStudentClub
     {
-        // DIC
+        // DIC 社團ID 社團名稱
         Dictionary<string, string> clubDic = new Dictionary<string, string>();
-        public ExportStudentClub()
+
+        public ExportStudentClub(string sy,string s)
         {
-            AccessHelper access = new AccessHelper();
-            List<CLUBRecord> _clubList = access.Select<CLUBRecord>(/*"school_year = "+School.DefaultSchoolYear+" AND semester = "+ School.DefaultSemester*/).ToList();
-            foreach (CLUBRecord club in _clubList)
-            {
-                clubDic.Add(club.UID, club.ClubName);
-            }
-            //建立Excel範本
-            Workbook template = new Workbook();
-            template.Open(new MemoryStream(Properties.Resources.匯出選社結果_範本), FileFormatType.Excel2007Xlsx);
-
-            //每一張
-            Workbook prototype = new Workbook();
-            prototype.Copy(template);
-            Worksheet ptws = prototype.Worksheets[0];
-
-            //範圍
-            Range ptHeader = ptws.Cells.CreateRange(0, 4, false);
-            Range ptEachRow = ptws.Cells.CreateRange(4, 1, false);
-
             //儲存資料
             Workbook wb = new Workbook();
-            wb.Copy(prototype);
-            //取得Sheet
-            Worksheet ws = wb.Worksheets[0];
-
-            //--
-            QueryHelper qh = new QueryHelper();
-            string selectSQL = string.Format(@"
-                SELECT 
-	                 student.id ,class.class_name,class.grade_year,seat_no,name,student_number,student.ref_class_id,
-	                 scjoin.ref_club_id,clubrecord.club_name,clubrecord.school_year,clubrecord.semester,
-                     volunteer.content
-                FROM student 
-                LEFT OUTER JOIN
-                (
-	                SELECT id,class_name,grade_year
-	                FROM class
-	                WHERE status = 1
-                )class on class.id = student.ref_class_id
-                LEFT OUTER JOIN
-                (
-	                SELECT ref_club_id,ref_student_id 
-	                FROM $k12.scjoin.universal
-                )scjoin on CAST(scjoin.ref_student_id AS integer) = student.id
-                LEFT OUTER JOIN
-                (
-	                SELECT uid,club_name,school_year,semester
-	                FROM $k12.clubrecord.universal
-                )clubrecord on clubrecord.uid = CAST(scjoin.ref_club_id AS integer)
-                LEFT OUTER JOIN
-                (
-	                SELECT ref_student_id,content
-	                FROM $k12.volunteer.universal
-                )volunteer on CAST(volunteer.ref_student_id AS integer)= student.id 
-                WHERE 
-                    status = 1 AND school_year = {0} AND semester = {1}
-                ORDER BY grade_year,ref_class_id ,seat_no"
-                , School.DefaultSchoolYear,School.DefaultSemester);
-            // 取得在校學生與社團資料
-            DataTable dt = qh.Select(selectSQL);
-            int index = 1;
-            foreach (DataRow dr in dt.Rows)
+            Exception exc = null;
+            BackgroundWorker bkw = new BackgroundWorker() { WorkerReportsProgress = true };
+            bkw.ProgressChanged += delegate (object sender, ProgressChangedEventArgs e)
             {
-                ws.Cells[index, 0].PutValue("" + dr["class_name"]);
-                ws.Cells[index, 0].Style.Copy(ws.Cells[0, 0].Style);
-
-                ws.Cells[index, 1].PutValue("" + dr["seat_no"]);
-                ws.Cells[index, 1].Style.Copy(ws.Cells[0, 0].Style);
-
-                ws.Cells[index, 2].PutValue("" + dr["name"]);
-                ws.Cells[index, 2].Style.Copy(ws.Cells[0, 0].Style);
-
-                ws.Cells[index, 3].PutValue("" + dr["student_number"]);
-                ws.Cells[index, 3].Style.Copy(ws.Cells[0, 0].Style);
-
-                ws.Cells[index, 4].PutValue("" + dr["club_name"]);
-                ws.Cells[index, 4].Style.Copy(ws.Cells[0, 0].Style);
-
-                for (int i = 0; i < 8;i++)
+                MotherForm.SetStatusBarMessage("匯出選社結果", e.ProgressPercentage);
+            };
+            bkw.DoWork += delegate
+            {
+                try
                 {
-                    ws.Cells[index, 5 + i].Style.Copy(ws.Cells[0, 0].Style);
-                }
-
-                if (dr["content"] != null && "" + dr["content"] != "")
-                {
-                    XDocument content = XDocument.Parse("" + dr["content"]);
-                    List<XElement> clubList = content.Element("xml").Elements("Club").ToList();
-                    int count = 5;
-                    foreach (XElement club in clubList)
+                    bkw.ReportProgress(1);
+                    AccessHelper access = new AccessHelper();
+                    List<CLUBRecord> _clubList = access.Select<CLUBRecord>(/*"school_year = "+School.DefaultSchoolYear+" AND semester = "+ School.DefaultSemester*/).ToList();
+                    foreach (CLUBRecord club in _clubList)
                     {
-                        ws.Cells[index, count].PutValue(clubDic[club.Attribute("Ref_Club_ID").Value]);
-                        
-                        count++;
+                        clubDic.Add(club.UID, club.ClubName);
+                    }
+                    //建立Excel範本
+                    Workbook template = new Workbook();
+                    template.Open(new MemoryStream(Properties.Resources.匯出選社結果_範本), FileFormatType.Excel2007Xlsx);
+
+                    wb.Copy(template);
+                    //取得Sheet
+                    Worksheet ws = wb.Worksheets[0];
+
+                    QueryHelper qh = new QueryHelper();
+
+                    #region SQL
+                    string selectSQL = string.Format(@"
+SELECT 
+	student.id
+    , class.class_name
+    , class.grade_year
+    , seat_no,name
+    , student_number
+    , student.ref_class_id
+    , scjoin.ref_club_id
+    , scjoin.lock
+    , clubrecord.club_name
+    , clubrecord.school_year
+    , clubrecord.semester
+    , volunteer.content
+    , $k12.config.universal.content as wish_limit
+FROM 
+    student 
+    LEFT OUTER JOIN class on class.id = student.ref_class_id
+    LEFT OUTER JOIN $k12.scjoin.universal AS scjoin
+        ON scjoin.ref_student_id::bigint = student.id
+    LEFT OUTER JOIN $k12.clubrecord.universal AS clubrecord 
+        ON clubrecord.uid = scjoin.ref_club_id::bigint
+    LEFT OUTER JOIN $k12.volunteer.universal AS volunteer
+        ON volunteer.ref_student_id::bigint = student.id 
+            AND volunteer.school_year = clubrecord.school_year
+            AND volunteer.semester = clubrecord.semester
+    LEFT OUTER JOIN $k12.config.universal ON config_name = '學生選填志願數'
+WHERE 
+    student.status in (1, 2) 
+    AND clubrecord.school_year = {0} 
+    AND clubrecord.semester = {1}
+ORDER BY 
+    class.grade_year
+    , class.display_order
+    , class.class_name
+    , student.seat_no
+    , student.id"
+                    , sy, s);
+                    #endregion
+
+                    // 取得學生社團資料
+                    DataTable dt = qh.Select(selectSQL);
+
+                    bkw.ReportProgress(10);
+                    int index = 1;
+                    foreach (DataRow dr in dt.Rows)
+                    {
+                        bkw.ReportProgress(10 + 90 * index / dt.Rows.Count);
+                        int wishLimit = (dr["wish_limit"] == null ? 5 : int.Parse("" + dr["wish_limit"]));
+                        if (index == 1)
+                        {
+                            int count = 6;
+                            int countLimit = count + wishLimit;
+                            for (int i = count; i < countLimit; i++)
+                            {
+                                ws.Cells.CopyColumn(ws.Cells, 4, i);
+                                ws.Cells[0, i].PutValue("志願" + (i - 5));
+                            }
+                        }
+                        else
+                            ws.Cells.CopyRow(ws.Cells, 1, index);
+
+                        ws.Cells[index, 0].PutValue("" + dr["class_name"]);
+                        ws.Cells[index, 1].PutValue("" + dr["seat_no"]);
+                        ws.Cells[index, 2].PutValue("" + dr["name"]);
+                        ws.Cells[index, 3].PutValue("" + dr["student_number"]);
+                        ws.Cells[index, 4].PutValue("" + dr["club_name"]);
+                        ws.Cells[index, 5].PutValue(("" + dr["lock"]) == "true" ? "是" : "");
+
+                        // 學生志願序
+                        if (dr["content"] != null && "" + dr["content"] != "")
+                        {
+                            XDocument content = XDocument.Parse("" + dr["content"]);
+                            List<XElement> clubList = content.Element("xml").Elements("Club").ToList();
+                            int count = 6;
+                            int countLimit = count + wishLimit - 1;
+                            foreach (XElement club in clubList)
+                            {
+                                ws.Cells[index, count].PutValue(clubDic[club.Attribute("Ref_Club_ID").Value]);
+                                count++;
+                                if (count > countLimit)
+                                    break;
+                            }
+                        }
+                        index++;
                     }
                 }
-
-                index++;
-            }
-
-            SaveFileDialog SaveFileDialog1 = new SaveFileDialog();
-            SaveFileDialog1.Filter = "Excel (*.xls)|*.xls|所有檔案 (*.*)|*.*";
-            SaveFileDialog1.FileName = "匯出選社結果";
-            try
-            {
-                if (SaveFileDialog1.ShowDialog() == DialogResult.OK)
+                catch (Exception ex)
                 {
-                    wb.Save(SaveFileDialog1.FileName);
-                    Process.Start(SaveFileDialog1.FileName);
-                    MotherForm.SetStatusBarMessage("社團點名單,列印完成!!");
+                    exc = ex;
+                }
+            };
+            bkw.RunWorkerCompleted += delegate
+            {
+                if (exc == null)
+                {
+                    MotherForm.SetStatusBarMessage("匯出選社結果完成");
+
+                    #region Excel 存檔
+                    {
+                        SaveFileDialog SaveFileDialog1 = new SaveFileDialog();
+                        SaveFileDialog1.Filter = "Excel (*.xls)|*.xls|所有檔案 (*.*)|*.*";
+                        SaveFileDialog1.FileName = "匯出選社結果";
+                        try
+                        {
+                            if (SaveFileDialog1.ShowDialog() == DialogResult.OK)
+                            {
+                                wb.Save(SaveFileDialog1.FileName);
+                                Process.Start(SaveFileDialog1.FileName);
+                                MotherForm.SetStatusBarMessage("社團點名單,列印完成!!");
+
+                            }
+                            else
+                            {
+                                FISCA.Presentation.Controls.MsgBox.Show("檔案未儲存");
+                                return;
+                            }
+                        }
+                        catch
+                        {
+                            FISCA.Presentation.Controls.MsgBox.Show("檔案儲存錯誤,請檢查檔案是否開啟中!!");
+                            MotherForm.SetStatusBarMessage("檔案儲存錯誤,請檢查檔案是否開啟中!!");
+                        }
+                    }
+                    #endregion
                 }
                 else
                 {
-                    FISCA.Presentation.Controls.MsgBox.Show("檔案未儲存");
-                    return;
+                    throw new Exception("匯出選社結果 發生錯誤", exc);
                 }
-            }
-            catch
-            {
-                FISCA.Presentation.Controls.MsgBox.Show("檔案儲存錯誤,請檢查檔案是否開啟中!!");
-                MotherForm.SetStatusBarMessage("檔案儲存錯誤,請檢查檔案是否開啟中!!");
-            }
+            };
+            bkw.RunWorkerAsync();
         }
     }
 }
