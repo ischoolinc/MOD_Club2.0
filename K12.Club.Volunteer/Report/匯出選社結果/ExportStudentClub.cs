@@ -162,7 +162,7 @@ ORDER BY
                             {
                                 wb.Save(SaveFileDialog1.FileName);
                                 Process.Start(SaveFileDialog1.FileName);
-                                MotherForm.SetStatusBarMessage("社團點名單,列印完成!!");
+                                MotherForm.SetStatusBarMessage("匯出選社結果,列印完成!!");
 
                             }
                             else

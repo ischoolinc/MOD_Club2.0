@@ -39,7 +39,7 @@ namespace K12.Club.Volunteer
             InitializeComponent();
             DateSetting.Save();
         }
-        Campus.Configuration.ConfigData configData = Campus.Configuration.Config.User["DateSetting"];
+        //Campus.Configuration.ConfigData configData = Campus.Configuration.Config.User["DateSetting"];
         private void ClubPointsListForm_Load(object sender, EventArgs e)
         {
             BGW.DoWork += new DoWorkEventHandler(BGW_DoWork);
@@ -195,8 +195,6 @@ namespace K12.Club.Volunteer
             
             
             }
-
-
 
             SCJoinDataLoad crM = new SCJoinDataLoad();
 

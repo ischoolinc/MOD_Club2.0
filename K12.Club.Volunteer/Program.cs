@@ -207,17 +207,17 @@ namespace K12.Club.Volunteer
                 totle["報表"].Size = RibbonBarButton.MenuButtonSize.Large;
                 totle["報表"].Image = Properties.Resources.Report;
                 // 2018/01/16 羿均 註解較舊功能
-                //totle["報表"]["社團點名單"].Enable = false;
-                //totle["報表"]["社團點名單"].Click += delegate
-                //{
-                //    AssociationsPointList insert = new AssociationsPointList();
-                //};
-                //ClubAdmin.Instance.SelectedSourceChanged += delegate
-                //{
-                //    //是否選擇大於0的社團
-                //    bool SourceCount = (ClubAdmin.Instance.SelectedSource.Count > 0);
-                //    totle["報表"]["社團點名單"].Enable = SourceCount && Permissions.社團點名單權限;
-                //};
+                totle["報表"]["社團點名單"].Enable = false;
+                totle["報表"]["社團點名單"].Click += delegate
+                {
+                    AssociationsPointList insert = new AssociationsPointList();
+                };
+                ClubAdmin.Instance.SelectedSourceChanged += delegate
+                {
+                    //是否選擇大於0的社團
+                    bool SourceCount = (ClubAdmin.Instance.SelectedSource.Count > 0);
+                    totle["報表"]["社團點名單"].Enable = SourceCount && Permissions.社團點名單權限;
+                };
 
                 totle["報表"]["社團點名單(套表列印)"].Enable = false;
                 totle["報表"]["社團點名單(套表列印)"].Click += delegate
@@ -272,6 +272,17 @@ namespace K12.Club.Volunteer
                 {
                     Report.匯出選社結果.ExportStudentClubForm e = new Report.匯出選社結果.ExportStudentClubForm();
                     e.ShowDialog();
+                };
+
+                // 2018/1/15 羿均 此為社團2.0開發工具: 隨機填入學生社團志願
+
+                RibbonBarItem test = ClubAdmin.Instance.RibbonBarItems["測試資料"];
+                test["隨機填入學生志願"].Size = RibbonBarButton.MenuButtonSize.Medium;
+                test["隨機填入學生志願"].Image = Properties.Resources.group_up_64;
+                test["隨機填入學生志願"].Enable = true;
+                test["隨機填入學生志願"].Click += delegate
+                {
+                    AutoVolunteer a = new AutoVolunteer();
                 };
 
                 oder["選社志願設定"].Size = RibbonBarButton.MenuButtonSize.Medium;

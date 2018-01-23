@@ -9,7 +9,7 @@ namespace K12.Club.Volunteer
     //專門用來儲存
     //使用者相關設定檔
     [TableName("K12.Config.Universal")]
-    class ConfigRecord : ActiveRecord
+    public class ConfigRecord : ActiveRecord
     {
         /// <summary>
         /// 設定名稱

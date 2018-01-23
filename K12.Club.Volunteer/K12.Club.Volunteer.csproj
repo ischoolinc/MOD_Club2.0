@@ -179,6 +179,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AutoVolunteer.cs" />
     <Compile Include="ClubAdminClub.cs" />
     <Compile Include="ClubAdminStudent.cs" />
     <Compile Include="ClubEvents.cs" />

@@ -7,7 +7,7 @@ using K12.Data;
 
 namespace K12.Club.Volunteer
 {
-    class SCJoinDataLoad
+    public class SCJoinDataLoad
     {
 
         AccessHelper _AccessHelper = new AccessHelper();
