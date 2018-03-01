@@ -54,7 +54,7 @@
             this.cbCover.BackgroundStyle.Class = "";
             this.cbCover.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.cbCover.CheckBoxStyle = DevComponents.DotNetBar.eCheckBoxStyle.RadioButton;
-            this.cbCover.Location = new System.Drawing.Point(164, 109);
+            this.cbCover.Location = new System.Drawing.Point(164, 125);
             this.cbCover.Name = "cbCover";
             this.cbCover.Size = new System.Drawing.Size(54, 21);
             this.cbCover.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -76,7 +76,7 @@
             this.cbSkip.Checked = true;
             this.cbSkip.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbSkip.CheckValue = "Y";
-            this.cbSkip.Location = new System.Drawing.Point(233, 109);
+            this.cbSkip.Location = new System.Drawing.Point(233, 125);
             this.cbSkip.Name = "cbSkip";
             this.cbSkip.Size = new System.Drawing.Size(54, 21);
             this.cbSkip.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -93,7 +93,7 @@
             // 
             this.lbHelp3.BackgroundStyle.Class = "";
             this.lbHelp3.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.lbHelp3.Location = new System.Drawing.Point(12, 109);
+            this.lbHelp3.Location = new System.Drawing.Point(12, 125);
             this.lbHelp3.Name = "lbHelp3";
             this.lbHelp3.Size = new System.Drawing.Size(141, 21);
             this.lbHelp3.TabIndex = 2;
@@ -108,7 +108,7 @@
             // 
             this.cbMeritsX1.BackgroundStyle.Class = "";
             this.cbMeritsX1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.cbMeritsX1.Location = new System.Drawing.Point(132, 272);
+            this.cbMeritsX1.Location = new System.Drawing.Point(133, 353);
             this.cbMeritsX1.Name = "cbMeritsX1";
             this.cbMeritsX1.Size = new System.Drawing.Size(169, 21);
             this.cbMeritsX1.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -124,7 +124,7 @@
             // 
             this.lbHelp2.BackgroundStyle.Class = "";
             this.lbHelp2.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.lbHelp2.Location = new System.Drawing.Point(12, 272);
+            this.lbHelp2.Location = new System.Drawing.Point(13, 353);
             this.lbHelp2.Name = "lbHelp2";
             this.lbHelp2.Size = new System.Drawing.Size(114, 21);
             this.lbHelp2.TabIndex = 7;
@@ -170,7 +170,7 @@
             this.btnExit.AutoSize = true;
             this.btnExit.BackColor = System.Drawing.Color.Transparent;
             this.btnExit.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnExit.Location = new System.Drawing.Point(229, 240);
+            this.btnExit.Location = new System.Drawing.Point(229, 256);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(75, 25);
             this.btnExit.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -185,7 +185,7 @@
             this.btnSave.AutoSize = true;
             this.btnSave.BackColor = System.Drawing.Color.Transparent;
             this.btnSave.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnSave.Location = new System.Drawing.Point(148, 240);
+            this.btnSave.Location = new System.Drawing.Point(148, 256);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 25);
             this.btnSave.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -204,7 +204,7 @@
             this.labelX1.BackgroundStyle.Class = "";
             this.labelX1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX1.ForeColor = System.Drawing.Color.Gray;
-            this.labelX1.Location = new System.Drawing.Point(13, 136);
+            this.labelX1.Location = new System.Drawing.Point(13, 152);
             this.labelX1.Name = "labelX1";
             this.labelX1.Size = new System.Drawing.Size(241, 91);
             this.labelX1.TabIndex = 9;
@@ -231,24 +231,25 @@
             // 
             // labelX2
             // 
+            this.labelX2.AutoSize = true;
             this.labelX2.BackColor = System.Drawing.Color.Transparent;
             // 
             // 
             // 
             this.labelX2.BackgroundStyle.Class = "";
             this.labelX2.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX2.ForeColor = System.Drawing.Color.Gray;
+            this.labelX2.ForeColor = System.Drawing.Color.Red;
             this.labelX2.Location = new System.Drawing.Point(13, 80);
             this.labelX2.Name = "labelX2";
-            this.labelX2.Size = new System.Drawing.Size(274, 23);
+            this.labelX2.Size = new System.Drawing.Size(247, 39);
             this.labelX2.TabIndex = 11;
-            this.labelX2.Text = "學生選社期間應開放查詢功能";
+            this.labelX2.Text = "請注意!!!學生選社期間必須開放查詢功能\r\n，方可正確判斷已加選/指定狀態";
             // 
             // V_Config
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(316, 273);
+            this.ClientSize = new System.Drawing.Size(316, 289);
             this.Controls.Add(this.labelX2);
             this.Controls.Add(this.viewCbx);
             this.Controls.Add(this.labelX1);
@@ -262,8 +263,8 @@
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.cbCover);
             this.DoubleBuffered = true;
-            this.MaximumSize = new System.Drawing.Size(332, 312);
-            this.MinimumSize = new System.Drawing.Size(332, 312);
+            this.MaximumSize = new System.Drawing.Size(332, 328);
+            this.MinimumSize = new System.Drawing.Size(332, 328);
             this.Name = "V_Config";
             this.Text = "學生選社志願設定";
             this.Load += new System.EventHandler(this.V_Config_Load);

@@ -61,8 +61,8 @@ SELECT
     , seat_no,name
     , student_number
     , student.ref_class_id
-    , scjoin.ref_club_id
-    , scjoin.lock
+    , clubrecord.ref_club_id
+    , clubrecord.lock
     , clubrecord.club_name
     , clubrecord.school_year
     , clubrecord.semester
@@ -71,19 +71,28 @@ SELECT
 FROM 
     student 
     LEFT OUTER JOIN class on class.id = student.ref_class_id
-    LEFT OUTER JOIN $k12.scjoin.universal AS scjoin
-        ON scjoin.ref_student_id::bigint = student.id
-    LEFT OUTER JOIN $k12.clubrecord.universal AS clubrecord 
-        ON clubrecord.uid = scjoin.ref_club_id::bigint
+    LEFT OUTER JOIN (
+        SELECT 
+            scjoin.*
+			, clubrecord.club_name
+			, clubrecord.school_year
+			, clubrecord.semester
+        FROM
+            $k12.clubrecord.universal AS clubrecord 
+			LEFT OUTER JOIN $k12.scjoin.universal AS scjoin
+				ON clubrecord.uid = scjoin.ref_club_id::bigint
+        WHERE
+            clubrecord.school_year = {0}
+            AND clubrecord.semester = {1}
+    ) AS clubrecord 
+        ON clubrecord.ref_student_id::bigint = student.id
     LEFT OUTER JOIN $k12.volunteer.universal AS volunteer
         ON volunteer.ref_student_id::bigint = student.id 
-            AND volunteer.school_year = clubrecord.school_year
-            AND volunteer.semester = clubrecord.semester
+            AND volunteer.school_year = {0}
+            AND volunteer.semester = {1}
     LEFT OUTER JOIN $k12.config.universal ON config_name = '學生選填志願數'
 WHERE 
     student.status in (1, 2) 
-    AND clubrecord.school_year = {0} 
-    AND clubrecord.semester = {1}
 ORDER BY 
     class.grade_year
     , class.display_order
