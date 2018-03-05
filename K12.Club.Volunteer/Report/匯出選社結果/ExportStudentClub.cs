@@ -21,7 +21,7 @@ namespace K12.Club.Volunteer.Report.匯出選社結果
         // DIC 社團ID 社團名稱
         Dictionary<string, string> clubDic = new Dictionary<string, string>();
 
-        public ExportStudentClub(string sy,string s)
+        public ExportStudentClub(string sy, string s)
         {
             //儲存資料
             Workbook wb = new Workbook();
@@ -107,22 +107,29 @@ ORDER BY
 
                     bkw.ReportProgress(10);
                     int index = 1;
+                    int row = 1;
                     foreach (DataRow dr in dt.Rows)
                     {
                         bkw.ReportProgress(10 + 90 * index / dt.Rows.Count);
                         int wishLimit = (dr["wish_limit"] == null ? 5 : int.Parse("" + dr["wish_limit"]));
                         if (index == 1)
                         {
-                            int count = 6;
-                            int countLimit = count + wishLimit;
-                            for (int i = count; i < countLimit; i++)
+                            int countLimit = 6 + wishLimit;
+                            for (int i = 6; i < countLimit; i++)
                             {
                                 ws.Cells.CopyColumn(ws.Cells, 4, i);
                                 ws.Cells[0, i].PutValue("志願" + (i - 5));
                             }
                         }
                         else
+                        {
                             ws.Cells.CopyRow(ws.Cells, 1, index);
+                            int countLimit = 6 + wishLimit;
+                            for (int i = 0; i < countLimit; i++)
+                            {
+                                ws.Cells[index, i].PutValue(null);
+                            }
+                        }
 
                         ws.Cells[index, 0].PutValue("" + dr["class_name"]);
                         ws.Cells[index, 1].PutValue("" + dr["seat_no"]);
@@ -140,6 +147,8 @@ ORDER BY
                             int countLimit = count + wishLimit - 1;
                             foreach (XElement club in clubList)
                             {
+                                if (!clubDic.ContainsKey(club.Attribute("Ref_Club_ID").Value))
+                                    continue;
                                 ws.Cells[index, count].PutValue(clubDic[club.Attribute("Ref_Club_ID").Value]);
                                 count++;
                                 if (count > countLimit)
