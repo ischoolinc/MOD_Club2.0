@@ -320,6 +320,12 @@
     <Compile Include="Ribbon\CopyClubRecord.cs" />
     <Compile Include="Ribbon\志願_其它功能\GetVolunteer.cs" />
     <Compile Include="Ribbon\志願_其它功能\StudentMergeClub.cs" />
+    <Compile Include="Ribbon\志願_選填狀況檢查\VolunteerLog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ribbon\志願_選填狀況檢查\VolunteerLog.designer.cs">
+      <DependentUpon>VolunteerLog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Ribbon\志願_選填狀況檢查\一個社團檢查.cs" />
     <Compile Include="Ribbon\志願_選填狀況檢查\獎懲換算機制.cs" />
     <Compile Include="Ribbon\志願_選填狀況檢查\學生選社亂數檔.cs" />
@@ -555,6 +561,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Ribbon\志願_其它功能\VolunteerForm.resx">
       <DependentUpon>VolunteerForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ribbon\志願_選填狀況檢查\VolunteerLog.resx">
+      <DependentUpon>VolunteerLog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Ribbon\志願_選填狀況檢查\VolunteerStudentForm.resx">
       <DependentUpon>VolunteerStudentForm.cs</DependentUpon>

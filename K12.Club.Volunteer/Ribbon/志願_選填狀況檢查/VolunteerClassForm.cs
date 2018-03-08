@@ -11,6 +11,7 @@ using K12.Data;
 using System.Xml;
 using FISCA.UDT;
 using Aspose.Cells;
+using FISCA.LogAgent;
 
 namespace K12.Club.Volunteer
 {
@@ -43,6 +44,8 @@ namespace K12.Club.Volunteer
         List<SCJoin> DeleteList = new List<SCJoin>();
         List<SCJoin> InsertList1 = new List<SCJoin>();
         List<SCJoin> InsertList2 = new List<SCJoin>();
+
+        StringBuilder sb_Log;
 
         bool Is社團已分配 = false;
 
@@ -235,6 +238,7 @@ namespace K12.Club.Volunteer
         {
             if (!BGW_Save.IsBusy)
             {
+                sb_Log = new StringBuilder();
                 btnRunStart.Enabled = false;
                 btnExit.Enabled = false;
                 btnRunStart.Text = "開始分配(執行中)";
@@ -354,6 +358,13 @@ namespace K12.Club.Volunteer
             BGW_Save.ReportProgress(30, "資料排序作業...");
             RunList.Sort(SortRandom);
 
+            int _index = 1;
+            foreach (學生選社亂數檔 rr in RunList)
+            {
+                rr._Index = _index;
+                _index++;
+            }
+
             #endregion
 
             //2016/9/7 - 略過功能不需要再一次進行人數統計
@@ -366,11 +377,22 @@ namespace K12.Club.Volunteer
 
             #region 開始分配學生社團狀態(相關狀態與學生都應該已處理)
 
+            if (By_V.已有社團記錄時)
+                sb_Log.AppendLine("選社設定：覆蓋");
+            else
+                sb_Log.AppendLine("選社設定：略過");
+
+            sb_Log.AppendLine("每名學生志願數：" + By_V.學生選填志願數.ToString());
+
             //取志願
             BGW_Save.ReportProgress(45, "志願選填作業...");
             for (int x = 1; x <= By_V.學生選填志願數; x++)
             {
                 BGW_Save.ReportProgress(65, string.Format("志願選填作業...{0}", x));
+
+                sb_Log.AppendLine("");
+                sb_Log.AppendLine(string.Format("═══開始進行第「{0}」志願分配═══", x.ToString()));
+                sb_Log.AppendLine("");
                 Judge(RunList, x);
             }
 
@@ -398,6 +420,11 @@ namespace K12.Club.Volunteer
                 tool._A.InsertValues(InsertList1);
             }
             BGW_Save.ReportProgress(100, "選社分配完成!!");
+
+            ApplicationLog.Log("社團志願序模組", "志願分配", sb_Log.ToString());
+
+            VolunteerLog logForm = new VolunteerLog(sb_Log.ToString());
+            logForm.ShowDialog();
         }
 
         //2016/9/7 - 略過功能不需要再一次進行人數統計
@@ -538,11 +565,22 @@ namespace K12.Club.Volunteer
                     一個社團檢查 一社團 = CLUBCheckDic[clubID];
 
                     if (!一社團.人數未滿)
-                        continue;
+                    {
+                        if (StudentDic.ContainsKey(StudentID))
+                        {
+                            一名學生 一學生 = StudentDic[StudentID];
+                            sb_Log.AppendLine(string.Format("序號「{0}」班級「{1}」學生「{2}」開始進行第「{3}」志願分配", ran._Index, 一學生.class_name, 一學生.student_name, NumberIndex.ToString()));
+                            sb_Log.AppendLine(string.Format("分配失敗原因：社團「{0}」人數已滿", 一社團._ClubObj.ClubName));
+                            sb_Log.AppendLine("");
+                            return false;
+                        }
+                    }
 
                     if (StudentDic.ContainsKey(StudentID))
                     {
                         一名學生 一學生 = StudentDic[StudentID];
+                        //序號「{0}」  ran._Index
+                        sb_Log.AppendLine(string.Format("序號「{0}」班級「{1}」學生「{2}」開始進行第「{3}」志願分配", ran._Index, 一學生.class_name, 一學生.student_name, NumberIndex.ToString()));
 
                         //你必須是本社團科別限制之學生
                         //Count大於0,表示有科別限制
@@ -550,6 +588,8 @@ namespace K12.Club.Volunteer
                         {
                             if (!一社團.DeptList.Contains(一學生.dept_name))
                             {
+                                sb_Log.AppendLine(string.Format("分配失敗原因：志願「{0}」受到科別限制「{1}」", 一社團._ClubObj.ClubName, 一學生.dept_name));
+                                sb_Log.AppendLine("");
                                 //本社團選社失敗
                                 continue;
                             }
@@ -567,8 +607,15 @@ namespace K12.Club.Volunteer
                                     一社團._Now_ClubStudentCount++;
                                     一社團._Now_GradeYear1++;
 
+                                    sb_Log.AppendLine(string.Format("已入選社團「{0}」", 一社團._ClubObj.ClubName));
+                                    sb_Log.AppendLine("");
                                     InsertList1.Add(scj);
                                     return true;
+                                }
+                                else
+                                {
+                                    sb_Log.AppendLine(string.Format("分配失敗原因：志願「{0}」年級「{1}」人數已滿", 一社團._ClubObj.ClubName, 一學生.grade_year));
+                                    sb_Log.AppendLine("");
                                 }
                             }
                             else if (一學生.grade_year == "2" || 一學生.grade_year == "8" || 一學生.grade_year == "11")
@@ -581,8 +628,15 @@ namespace K12.Club.Volunteer
                                     一社團._Now_ClubStudentCount++;
                                     一社團._Now_GradeYear2++;
 
+                                    sb_Log.AppendLine(string.Format("已入選社團「{0}」", 一社團._ClubObj.ClubName));
+                                    sb_Log.AppendLine("");
                                     InsertList1.Add(scj);
                                     return true;
+                                }
+                                else
+                                {
+                                    sb_Log.AppendLine(string.Format("分配失敗原因：志願「{0}」年級「{1}」人數已滿", 一社團._ClubObj.ClubName, 一學生.grade_year));
+                                    sb_Log.AppendLine("");
                                 }
                             }
                             else if (一學生.grade_year == "3" || 一學生.grade_year == "9" || 一學生.grade_year == "12")
@@ -595,10 +649,27 @@ namespace K12.Club.Volunteer
                                     一社團._Now_ClubStudentCount++;
                                     一社團._Now_GradeYear3++;
 
+                                    sb_Log.AppendLine(string.Format("已入選社團「{0}」", 一社團._ClubObj.ClubName));
+                                    sb_Log.AppendLine("");
                                     InsertList1.Add(scj);
                                     return true;
                                 }
+                                else
+                                {
+                                    sb_Log.AppendLine(string.Format("分配失敗原因：志願「{0}」年級「{1}」人數已滿", 一社團._ClubObj.ClubName, 一學生.grade_year));
+                                    sb_Log.AppendLine("");
+                                }
                             }
+                            else
+                            {
+                                sb_Log.AppendLine(string.Format("分配社團「{0}」失敗，未符合年級設定", 一社團._ClubObj.ClubName));
+                                sb_Log.AppendLine("");
+                            }
+                        }
+                        else
+                        {
+                            sb_Log.AppendLine(string.Format("分配社團「{0}」失敗，未符合男女限制「{1}」", 一社團._ClubObj.ClubName, 一社團.男女限制));
+                            sb_Log.AppendLine("");
                         }
                     }
                     #endregion
@@ -626,11 +697,29 @@ namespace K12.Club.Volunteer
 
                             一個社團檢查 一社團 = CLUBCheckDic[clubID];
                             if (!一社團.人數未滿)
-                                continue;
+                            {
+                                if (StudentDic.ContainsKey(StudentID))
+                                {
+                                    一名學生 一學生 = StudentDic[StudentID];
+                                    sb_Log.AppendLine(string.Format("序號「{0}」班級「{1}」學生「{2}」開始進行第「{3}」志願分配", ran._Index, 一學生.class_name, 一學生.student_name, NumberIndex.ToString()));
+                                    sb_Log.AppendLine(string.Format("分配失敗原因：社團「{0}」人數已滿", 一社團._ClubObj.ClubName));
+                                    sb_Log.AppendLine("");
+                                    return false;
+                                }
+                            }
 
                             if (StudentDic.ContainsKey(StudentID))
                             {
                                 一名學生 一學生 = StudentDic[StudentID];
+
+                                string clubName = "";
+                                if (CLUBDic.ContainsKey(scj_del.RefClubID))
+                                {
+                                    clubName = CLUBDic[scj_del.RefClubID].ClubName;
+                                }
+                                //序號「{0}」  ran._Index
+                                sb_Log.AppendLine(string.Format("序號「{0}」班級「{1}」學生「{2}」開始進行第「{3}」志願分配", ran._Index, 一學生.class_name, 一學生.student_name, NumberIndex.ToString()));
+                                sb_Log.AppendLine(string.Format("已是社團「{0}」參與學生，因「未被鎖定」將進行重新分配", clubName));
 
                                 //你必須是本社團科別限制之學生
                                 //Count大於0,表示有科別限制
@@ -638,6 +727,8 @@ namespace K12.Club.Volunteer
                                 {
                                     if (!一社團.DeptList.Contains(一學生.dept_name))
                                     {
+                                        sb_Log.AppendLine(string.Format("社團「{0}」分配失敗！原因：志願「{1}」受到科別限制「{2}」", 一社團._ClubObj.ClubName, NumberIndex, 一學生.dept_name));
+                                        sb_Log.AppendLine("");
                                         //本社團選社失敗
                                         continue;
                                     }
@@ -656,7 +747,16 @@ namespace K12.Club.Volunteer
                                             一社團._Now_GradeYear1++;
 
                                             InsertList2.Add(scj);
+
+                                            sb_Log.AppendLine(string.Format("已入選社團「{0}」", 一社團._ClubObj.ClubName));
+                                            sb_Log.AppendLine("");
+
                                             return true;
+                                        }
+                                        else
+                                        {
+                                            sb_Log.AppendLine(string.Format("分配失敗原因：志願「{0}」年級「{1}」人數已滿", 一社團._ClubObj.ClubName, 一學生.grade_year));
+                                            sb_Log.AppendLine("");
                                         }
                                     }
                                     else if (一學生.grade_year == "2" || 一學生.grade_year == "8" || 一學生.grade_year == "11")
@@ -670,7 +770,15 @@ namespace K12.Club.Volunteer
                                             一社團._Now_GradeYear2++;
 
                                             InsertList2.Add(scj);
+
+                                            sb_Log.AppendLine(string.Format("已入選社團「{0}」", 一社團._ClubObj.ClubName));
+                                            sb_Log.AppendLine("");
                                             return true;
+                                        }
+                                        else
+                                        {
+                                            sb_Log.AppendLine(string.Format("分配失敗原因：志願「{0}」年級「{1}」人數已滿", 一社團._ClubObj.ClubName, 一學生.grade_year));
+                                            sb_Log.AppendLine("");
                                         }
                                     }
                                     else if (一學生.grade_year == "3" || 一學生.grade_year == "9" || 一學生.grade_year == "12")
@@ -683,84 +791,133 @@ namespace K12.Club.Volunteer
                                             一社團._Now_ClubStudentCount++;
                                             一社團._Now_GradeYear3++;
 
+                                            sb_Log.AppendLine(string.Format("已入選社團「{0}」", 一社團._ClubObj.ClubName));
+                                            sb_Log.AppendLine("");
+
                                             InsertList2.Add(scj);
                                             return true;
                                         }
+                                        else
+                                        {
+                                            sb_Log.AppendLine(string.Format("分配失敗原因：志願「{0}」年級「{1}」人數已滿", 一社團._ClubObj.ClubName, 一學生.grade_year));
+                                            sb_Log.AppendLine("");
+                                        }
+                                    }
+                                    else
+                                    {
+                                        sb_Log.AppendLine(string.Format("分配社團「{0}」失敗，未符合年級設定", 一社團._ClubObj.ClubName));
+                                        sb_Log.AppendLine("");
                                     }
                                 }
-
+                                else
+                                {
+                                    sb_Log.AppendLine(string.Format("分配社團「{0}」失敗，未符合男女限制「{1}」", 一社團._ClubObj.ClubName, 一社團.男女限制));
+                                    sb_Log.AppendLine("");
+                                }
                             }
                             #endregion
                         }
                         else
                         {
-                            //取得原社團,進行資料登記
-                            #region 鎖定
-                            一個社團檢查 一社團 = CLUBCheckDic[scj_del.RefClubID];
+                            //取得社團記錄
+                            SCJoin scj = SCJLockDic[StudentID];
 
+                            string clubName = "";
+                            if (CLUBDic.ContainsKey(scj.RefClubID))
+                            {
+                                clubName = CLUBDic[scj_del.RefClubID].ClubName;
+                            }
+                            // 2018/03/08 羿均 同步code
+                            //2017/9/1 - 修正Bug
+                            //這是多餘的程式邏輯 - By Dylan
                             if (StudentDic.ContainsKey(StudentID))
                             {
                                 一名學生 一學生 = StudentDic[StudentID];
+                                //序號「{0}」  ran._Index
+                                sb_Log.AppendLine(string.Format("序號「{0}」班級「{1}」學生「{2}」開始進行第「{3}」志願分配", ran._Index, 一學生.class_name, 一學生.student_name, NumberIndex.ToString()));
+                                sb_Log.AppendLine(string.Format("已是社團「{0}」鎖定學生，將不變更社團", clubName));
+                                sb_Log.AppendLine("");
 
-                                if (一學生.grade_year == "1" || 一學生.grade_year == "7" || 一學生.grade_year == "10")
-                                {
-                                    一社團._Now_ClubStudentCount++;
-                                    一社團._Now_GradeYear1++;
-                                    return true;
-
-                                }
-                                else if (一學生.grade_year == "2" || 一學生.grade_year == "8" || 一學生.grade_year == "11")
-                                {
-                                    一社團._Now_ClubStudentCount++;
-                                    一社團._Now_GradeYear2++;
-                                    return true;
-
-                                }
-                                else if (一學生.grade_year == "3" || 一學生.grade_year == "9" || 一學生.grade_year == "12")
-                                {
-                                    一社團._Now_ClubStudentCount++;
-                                    一社團._Now_GradeYear3++;
-                                    return true;
-
-                                }
+                                return true;
                             }
+                            #region 鎖定
+                            //一個社團檢查 一社團 = CLUBCheckDic[scj_del.RefClubID];
+
+                            //if (StudentDic.ContainsKey(StudentID))
+                            //{
+                            //    一名學生 一學生 = StudentDic[StudentID];
+
+                            //    if (一學生.grade_year == "1" || 一學生.grade_year == "7" || 一學生.grade_year == "10")
+                            //    {
+                            //        一社團._Now_ClubStudentCount++;
+                            //        一社團._Now_GradeYear1++;
+                            //        return true;
+
+                            //    }
+                            //    else if (一學生.grade_year == "2" || 一學生.grade_year == "8" || 一學生.grade_year == "11")
+                            //    {
+                            //        一社團._Now_ClubStudentCount++;
+                            //        一社團._Now_GradeYear2++;
+                            //        return true;
+
+                            //    }
+                            //    else if (一學生.grade_year == "3" || 一學生.grade_year == "9" || 一學生.grade_year == "12")
+                            //    {
+                            //        一社團._Now_ClubStudentCount++;
+                            //        一社團._Now_GradeYear3++;
+                            //        return true;
+
+                            //    }
+                            //}
                             #endregion
                         }
                         #endregion
                     }
                     else
                     {
+                        //2017/9/1 - 修正Bug
+                        //這是多餘的程式邏輯 - By Dylan
                         #region 略過
                         //取得社團記錄
                         SCJoin scj = SCJLockDic[StudentID];
-                        //取得社團記錄
-                        一個社團檢查 一社團 = CLUBCheckDic[scj.RefClubID];
+
+                        string clubName = "";
+                        if (CLUBDic.ContainsKey(scj.RefClubID))
+                        {
+                            clubName = CLUBDic[scj.RefClubID].ClubName;
+                        }
 
                         if (StudentDic.ContainsKey(StudentID))
                         {
                             一名學生 一學生 = StudentDic[StudentID];
 
-                            if (一學生.grade_year == "1" || 一學生.grade_year == "7" || 一學生.grade_year == "10")
-                            {
-                                一社團._Now_ClubStudentCount++;
-                                一社團._Now_GradeYear1++;
-                                return true;
+                            //序號「{0}」  ran._Index
+                            sb_Log.AppendLine(string.Format("目前設定：「略過」已入選學生，序號「{0}」學生「{1}」社團「{2}」將不變更", ran._Index, 一學生.student_name, clubName));
+                            sb_Log.AppendLine("");
 
-                            }
-                            else if (一學生.grade_year == "2" || 一學生.grade_year == "8" || 一學生.grade_year == "11")
-                            {
-                                一社團._Now_ClubStudentCount++;
-                                一社團._Now_GradeYear2++;
-                                return true;
+                            return true;
 
-                            }
-                            else if (一學生.grade_year == "3" || 一學生.grade_year == "9" || 一學生.grade_year == "12")
-                            {
-                                一社團._Now_ClubStudentCount++;
-                                一社團._Now_GradeYear3++;
-                                return true;
+                            //if (一學生.grade_year == "1" || 一學生.grade_year == "7" || 一學生.grade_year == "10")
+                            //{
+                            //    一社團._Now_ClubStudentCount++;
+                            //    一社團._Now_GradeYear1++;
+                            //    return true;
 
-                            }
+                            //}
+                            //else if (一學生.grade_year == "2" || 一學生.grade_year == "8" || 一學生.grade_year == "11")
+                            //{
+                            //    一社團._Now_ClubStudentCount++;
+                            //    一社團._Now_GradeYear2++;
+                            //    return true;
+
+                            //}
+                            //else if (一學生.grade_year == "3" || 一學生.grade_year == "9" || 一學生.grade_year == "12")
+                            //{
+                            //    一社團._Now_ClubStudentCount++;
+                            //    一社團._Now_GradeYear3++;
+                            //    return true;
+
+                            //}
                         }
                         #endregion
                     }

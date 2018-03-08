@@ -276,14 +276,14 @@ namespace K12.Club.Volunteer
 
                 // 2018/1/15 羿均 此為社團2.0開發工具: 隨機填入學生社團志願
 
-                RibbonBarItem test = ClubAdmin.Instance.RibbonBarItems["測試資料"];
-                test["隨機填入學生志願"].Size = RibbonBarButton.MenuButtonSize.Medium;
-                test["隨機填入學生志願"].Image = Properties.Resources.group_up_64;
-                test["隨機填入學生志願"].Enable = true;
-                test["隨機填入學生志願"].Click += delegate
-                {
-                    AutoVolunteer a = new AutoVolunteer();
-                };
+                //RibbonBarItem test = ClubAdmin.Instance.RibbonBarItems["測試資料"];
+                //test["隨機填入學生志願"].Size = RibbonBarButton.MenuButtonSize.Medium;
+                //test["隨機填入學生志願"].Image = Properties.Resources.group_up_64;
+                //test["隨機填入學生志願"].Enable = true;
+                //test["隨機填入學生志願"].Click += delegate
+                //{
+                //    AutoVolunteer a = new AutoVolunteer();
+                //};
 
                 oder["選社志願設定"].Size = RibbonBarButton.MenuButtonSize.Medium;
                 oder["選社志願設定"].Image = Properties.Resources.presentation_a_config_64;
