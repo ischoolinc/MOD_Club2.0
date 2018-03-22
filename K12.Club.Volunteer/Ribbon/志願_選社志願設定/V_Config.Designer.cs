@@ -241,9 +241,9 @@
             this.labelX2.ForeColor = System.Drawing.Color.Red;
             this.labelX2.Location = new System.Drawing.Point(13, 80);
             this.labelX2.Name = "labelX2";
-            this.labelX2.Size = new System.Drawing.Size(247, 39);
+            this.labelX2.Size = new System.Drawing.Size(223, 39);
             this.labelX2.TabIndex = 11;
-            this.labelX2.Text = "請注意!!!學生選社期間必須開放查詢功能\r\n，方可正確判斷已加選/指定狀態";
+            this.labelX2.Text = "學生選社期間WEB會顯示選社結果。\r\n例如:加選/指定狀態";
             // 
             // V_Config
             // 

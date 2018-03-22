@@ -102,14 +102,27 @@ namespace K12.Club.Volunteer
                     list_2.Add(scj.UID);
                 }
             }
-            string uq = string.Join("','", list_2);
-
-            List<ResultScoreRecord> ResultList = _AccessHelper.Select<ResultScoreRecord>("ref_scjoin_id in ('" + uq + "')");
+            //string uq = string.Join("','", list_2);
+            string studentIDs = string.Join("','", tool._StudentDic.Keys);
+            List<string> clubNameList = new List<string>();
+            string schoolYear = "", semester = "";
+            foreach (string clubID in tool._ClubDic.Keys)
+            {
+                string clubName = tool._ClubDic[clubID].ClubName;
+                schoolYear = "" + tool._ClubDic[clubID].SchoolYear;
+                semester = "" + tool._ClubDic[clubID].Semester;
+                clubNameList.Add("'" + clubName + "'");
+            }
+            string clubNames = string.Join(",",clubNameList);
+            // 201/03/22 羿均 更新: 修改讀取學期結算成績的KEY值為 studentID、clubName、schoolYear、semester
+            string condition = string.Format("ref_student_id IN ('{0}') AND school_year = {1} AND semester = {2} AND club_name IN ({3}) ", studentIDs, schoolYear,semester, clubNames);
+            List<ResultScoreRecord> ResultList = _AccessHelper.Select<ResultScoreRecord>(condition);
+            //List<ResultScoreRecord> ResultList = _AccessHelper.Select<ResultScoreRecord>("ref_scjoin_id in ('" + uq + "')");
             foreach (ResultScoreRecord rsr in ResultList)
             {
-                if (!ResultScoreDic.ContainsKey(rsr.RefSCJoinID))
+                if (!ResultScoreDic.ContainsKey(rsr.RefStudentID))
                 {
-                    ResultScoreDic.Add(rsr.RefSCJoinID, rsr);
+                    ResultScoreDic.Add(rsr.RefStudentID, rsr);
                 }
             }
 
@@ -123,7 +136,8 @@ namespace K12.Club.Volunteer
             {
                 foreach (SCJoin scj in scjList)
                 {
-                    if (ResultScoreDic.ContainsKey(scj.UID))
+                    
+                    if (ResultScoreDic.ContainsKey(scj.RefStudentID))
                     {
                         #region 如果有原資料
                         if (tool._StudentDic.ContainsKey(scj.RefStudentID))
@@ -133,7 +147,7 @@ namespace K12.Club.Volunteer
                             //學生
                             StudentRecord sr = tool._StudentDic[scj.RefStudentID];
                             //原有社團成績記錄
-                            ResultScoreRecord update_rsr = ResultScoreDic[scj.UID];
+                            ResultScoreRecord update_rsr = ResultScoreDic[scj.RefStudentID];
 
                             update_rsr.SchoolYear = cr.SchoolYear;
                             update_rsr.Semester = cr.Semester;
