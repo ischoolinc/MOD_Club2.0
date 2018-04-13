@@ -242,6 +242,18 @@ namespace K12.Club.Volunteer
             {
                 #region 開始建置畫面
 
+                // 取得幹部對照表
+                //string sql = string.Format(@"
+                //SELECT
+                //    *
+                //FROM
+                //    $behavior.thecadre 
+                //WHERE
+                //    name_type = '社團幹部'
+                //                ");
+                //QueryHelper qh = new QueryHelper();
+                //DataTable dt = qh.Select(sql);
+
                 DataListener.SuspendListen(); //終止變更判斷
 
                 dataGridViewX1.Rows.Clear();

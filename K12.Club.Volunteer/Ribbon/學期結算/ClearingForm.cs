@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using FISCA.Presentation.Controls;
 using K12.Data;
 using FISCA.UDT;
+using FISCA.Data;
 
 namespace K12.Club.Volunteer
 {
@@ -91,6 +92,111 @@ namespace K12.Club.Volunteer
             }
 
             #endregion
+
+            #region 結算回學務幹部
+            List<string> dataList = new List<string>();
+            foreach (社團幹部obj cadre in CadreDic.Values)
+            {
+                string clubID = cadre._Club.UID; 
+                string clubName = cadre._Club.ClubName; 
+                int _schoolYear = cadre._Club.SchoolYear;
+                int _semester = cadre._Club.Semester;
+                
+                foreach (string _cadre in cadre._Cadre1.Keys) // StudentID，CadreName
+                {
+                    string studentID = _cadre; 
+                    string cadreName = cadre._Cadre1[_cadre];
+
+                    string data = string.Format(@"
+SELECT
+		'{0}'::TEXT AS ref_student_id
+		, '{1}'::TEXT AS schoolyear
+		, '{2}'::TEXT AS semester
+        , '{3}'::TEXT AS cadre_name
+		, '社團幹部'::TEXT AS referencetype
+		, '{4}'::TEXT AS text -- 放社團名稱
+                    ", studentID , _schoolYear , _semester, cadreName , clubName);
+
+                    dataList.Add(data);
+                }
+            }
+            string dataRow = string.Join("UNION ALL",dataList);
+            #region SQL
+            // 判斷條件: 學生ID、學年度、學期、社團名稱
+            string sql = string.Format(@"
+WITH data_row AS(
+	{0}
+) , run_update AS(
+	UPDATE
+		$behavior.thecadre 
+	SET 
+		cadrename = data_row.cadre_name
+		, text = data_row.text
+	FROM
+		data_row
+	WHERE
+		$behavior.thecadre.referencetype = '社團幹部'
+		AND data_row.ref_student_id = $behavior.thecadre.studentid
+		AND data_row.schoolyear = $behavior.thecadre.schoolyear
+		AND data_row.semester = $behavior.thecadre.semester
+		AND data_row.text = $behavior.thecadre.text
+	RETURNING $behavior.thecadre.*
+) , run_insert AS(
+	INSERT INTO $behavior.thecadre(
+			studentid
+			, schoolyear
+			, semester
+			, referencetype
+			, cadrename
+			, text
+	)
+	SELECT
+		data_row.ref_student_id
+		, data_row.schoolyear
+		, data_row.semester
+		, data_row.referencetype
+		, data_row.cadre_name
+		, data_row.text
+	FROM
+		data_row
+		LEFT OUTER JOIN $behavior.thecadre AS cadre
+			ON cadre.studentid = data_row.ref_student_id
+			AND cadre.schoolyear = data_row.schoolyear
+			AND cadre.semester = data_row.semester
+			AND cadre.referencetype = '社團幹部'
+			AND cadre.text = data_row.text
+	WHERE
+		cadre.uid IS  NULL 
+	RETURNING $behavior.thecadre.*
+) , delete_data AS(
+	SELECT
+		cadre.uid
+	FROM
+		$behavior.thecadre AS cadre
+		LEFT OUTER JOIN data_row
+			ON data_row.ref_student_id = cadre.studentid
+			AND data_row.schoolyear = cadre.schoolyear
+			AND data_row.semester = cadre.semester
+			AND data_row.cadre_name = cadre.cadrename
+			AND data_row.referencetype = cadre.referencetype
+			AND data_row.text = cadre.text
+	WHERE
+		data_row.ref_student_id IS NULL
+		AND cadre.referencetype = '社團幹部'
+		AND cadre.text IS NOT NULL
+) 
+DELETE 
+FROM
+	$behavior.thecadre
+WHERE
+	uid IN (SELECT * FROM delete_data)
+                ", dataRow);
+            #endregion
+            UpdateHelper up = new UpdateHelper();
+            up.Execute(sql);
+
+            #endregion
+
 
             Dictionary<string, ResultScoreRecord> ResultScoreDic = new Dictionary<string, ResultScoreRecord>();
 
