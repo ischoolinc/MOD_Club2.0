@@ -125,7 +125,7 @@ SELECT
             // 判斷條件: 學生ID、學年度、學期、社團名稱
             string sql = string.Format(@"
 WITH data_row AS(
-	{0}
+    {0}    
 ) , run_update AS(
 	UPDATE
 		$behavior.thecadre 
@@ -164,26 +164,22 @@ WITH data_row AS(
 			AND cadre.schoolyear = data_row.schoolyear
 			AND cadre.semester = data_row.semester
 			AND cadre.referencetype = '社團幹部'
-			AND cadre.text = data_row.text
+			AND cadre.text = data_row.text 
 	WHERE
 		cadre.uid IS  NULL 
 	RETURNING $behavior.thecadre.*
-) , delete_data AS(
+) ,delete_data AS(
 	SELECT
-		cadre.uid
+		cadre.uid 
 	FROM
-		$behavior.thecadre AS cadre
-		LEFT OUTER JOIN data_row
-			ON data_row.ref_student_id = cadre.studentid
-			AND data_row.schoolyear = cadre.schoolyear
-			AND data_row.semester = cadre.semester
-			AND data_row.cadre_name = cadre.cadrename
-			AND data_row.referencetype = cadre.referencetype
-			AND data_row.text = cadre.text
-	WHERE
-		data_row.ref_student_id IS NULL
-		AND cadre.referencetype = '社團幹部'
-		AND cadre.text IS NOT NULL
+		data_row
+		LEFT OUTER JOIN $behavior.thecadre AS cadre
+			ON cadre.studentid <> data_row.ref_student_id
+			AND cadre.schoolyear = data_row.schoolyear
+			AND cadre.semester = data_row.semester
+			AND cadre.referencetype = data_row.referencetype
+			AND cadre.text = data_row.text
+			AND cadre.cadrename = data_row.cadre_name
 ) 
 DELETE 
 FROM
