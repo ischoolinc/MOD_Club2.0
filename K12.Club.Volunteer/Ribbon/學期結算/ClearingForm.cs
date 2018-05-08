@@ -191,20 +191,24 @@ WITH data_row AS(
 	RETURNING $behavior.thecadre.*
 ) ,delete_data AS(
 	SELECT
-		target_club.uid
+		uid
 	FROM(
-			SELECT 
-				cadre.*
-			FROM
-				data_row
+		SELECT 
+			cadre.uid
+			, cadre.studentid
+			, row_number() OVER ( PARTITION BY cadre.studentid, cadre.text ) as row_index
+		FROM
+			data_row
 			LEFT OUTER JOIN $behavior.thecadre AS cadre
 				ON cadre.schoolyear = data_row.schoolyear
 				AND cadre.semester = data_row.semester
 				AND cadre.text = data_row.text
 				AND cadre.referencetype = data_row.referencetype
-		) AS target_club
+				AND cadre.studentid = data_row.ref_student_id
+	) AS target_club
 	WHERE
 		target_club.studentid NOT IN (SELECT ref_student_id FROM data_row)
+		OR row_index >= 2
 ) 
 	DELETE 
 	FROM
