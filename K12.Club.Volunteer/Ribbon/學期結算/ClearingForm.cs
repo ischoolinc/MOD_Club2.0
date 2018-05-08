@@ -95,51 +95,72 @@ namespace K12.Club.Volunteer
 
             #region 結算回學務幹部
             List<string> dataList = new List<string>();
+            
+            
             foreach (社團幹部obj cadre in CadreDic.Values)
             {
-                string clubID = cadre._Club.UID; 
-                string clubName = cadre._Club.ClubName; 
+                string clubID = cadre._Club.UID;
+                string clubName = cadre._Club.ClubName;
                 int _schoolYear = cadre._Club.SchoolYear;
                 int _semester = cadre._Club.Semester;
-                
-                foreach (string _cadre in cadre._Cadre1.Keys) // StudentID，CadreName
-                {
-                    string studentID = _cadre; 
-                    string cadreName = cadre._Cadre1[_cadre];
 
+                if (cadre._Cadre1.Count == 0) //如果沒有社團幹部資料
+                {
                     string data = string.Format(@"
 SELECT
-		'{0}'::TEXT AS ref_student_id
-		, '{1}'::TEXT AS schoolyear
-		, '{2}'::TEXT AS semester
-        , '{3}'::TEXT AS cadre_name
-		, '社團幹部'::TEXT AS referencetype
-		, '{4}'::TEXT AS text -- 放社團名稱
-                    ", studentID , _schoolYear , _semester, cadreName , clubName);
+	'{0}'::TEXT AS ref_student_id
+	, '{1}'::TEXT AS schoolyear
+	, '{2}'::TEXT AS semester
+    , '{3}'::TEXT AS cadrename
+	, '社團幹部'::TEXT AS referencetype
+	, '{4}'::TEXT AS text -- 放社團名稱
+                ", "NULL", _schoolYear, _semester, "NULL", clubName);
 
                     dataList.Add(data);
                 }
+                if (cadre._Cadre1.Count != 0)
+                {
+                    foreach (string _cadre in cadre._Cadre1.Keys) // StudentID，CadreName
+                    {
+                        string studentID = _cadre;
+                        string cadreName = cadre._Cadre1[_cadre];
+
+                        string data = string.Format(@"
+SELECT
+	'{0}'::TEXT AS ref_student_id
+	, '{1}'::TEXT AS schoolyear
+	, '{2}'::TEXT AS semester
+    , '{3}'::TEXT AS cadrename
+	, '社團幹部'::TEXT AS referencetype
+	, '{4}'::TEXT AS text -- 放社團名稱
+                ", studentID, _schoolYear, _semester, cadreName, clubName);
+
+                        dataList.Add(data);
+                    }
+                } 
             }
-            string dataRow = string.Join("UNION ALL",dataList);
+            
+            string dataRow = string.Join(" UNION ALL",dataList);
+
             #region SQL
             // 判斷條件: 學生ID、學年度、學期、社團名稱
-            string sql = string.Format(@"
+            string sql = string.Format(@"               
 WITH data_row AS(
-    {0}    
-) , run_update AS(
+    {0}
+) ,run_update AS(
 	UPDATE
 		$behavior.thecadre 
 	SET 
-		cadrename = data_row.cadre_name
-		, text = data_row.text
+		cadrename = data_row.cadrename
 	FROM
 		data_row
 	WHERE
-		$behavior.thecadre.referencetype = '社團幹部'
-		AND data_row.ref_student_id = $behavior.thecadre.studentid
-		AND data_row.schoolyear = $behavior.thecadre.schoolyear
-		AND data_row.semester = $behavior.thecadre.semester
-		AND data_row.text = $behavior.thecadre.text
+		data_row.schoolyear = $behavior.thecadre .schoolyear
+		AND data_row.semester = $behavior.thecadre .semester
+		AND data_row.text = $behavior.thecadre .text
+		AND data_row.referencetype = $behavior.thecadre .referencetype
+		AND data_row.ref_student_id = $behavior.thecadre .studentid
+
 	RETURNING $behavior.thecadre.*
 ) , run_insert AS(
 	INSERT INTO $behavior.thecadre(
@@ -155,37 +176,41 @@ WITH data_row AS(
 		, data_row.schoolyear
 		, data_row.semester
 		, data_row.referencetype
-		, data_row.cadre_name
+		, data_row.cadrename
 		, data_row.text
 	FROM
 		data_row
 		LEFT OUTER JOIN $behavior.thecadre AS cadre
-			ON cadre.studentid = data_row.ref_student_id
-			AND cadre.schoolyear = data_row.schoolyear
+			ON cadre.schoolyear = data_row.schoolyear
 			AND cadre.semester = data_row.semester
-			AND cadre.referencetype = '社團幹部'
-			AND cadre.text = data_row.text 
+			AND cadre.text = data_row.text
+			AND cadre.referencetype = data_row.referencetype
+			AND cadre.studentid = data_row.ref_student_id
 	WHERE
-		cadre.uid IS  NULL 
+		cadre.uid IS NULL
 	RETURNING $behavior.thecadre.*
 ) ,delete_data AS(
 	SELECT
-		cadre.uid 
-	FROM
-		data_row
-		LEFT OUTER JOIN $behavior.thecadre AS cadre
-			ON cadre.studentid <> data_row.ref_student_id
-			AND cadre.schoolyear = data_row.schoolyear
-			AND cadre.semester = data_row.semester
-			AND cadre.referencetype = data_row.referencetype
-			AND cadre.text = data_row.text
-			AND cadre.cadrename = data_row.cadre_name
+		target_club.uid
+	FROM(
+			SELECT 
+				cadre.*
+			FROM
+				data_row
+			LEFT OUTER JOIN $behavior.thecadre AS cadre
+				ON cadre.schoolyear = data_row.schoolyear
+				AND cadre.semester = data_row.semester
+				AND cadre.text = data_row.text
+				AND cadre.referencetype = data_row.referencetype
+		) AS target_club
+	WHERE
+		target_club.studentid NOT IN (SELECT ref_student_id FROM data_row)
 ) 
-DELETE 
-FROM
-	$behavior.thecadre
-WHERE
-	uid IN (SELECT * FROM delete_data)
+	DELETE 
+	FROM
+		$behavior.thecadre
+	WHERE
+		uid IN (SELECT * FROM delete_data)
                 ", dataRow);
             #endregion
             UpdateHelper up = new UpdateHelper();

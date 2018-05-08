@@ -12,6 +12,8 @@ namespace K12.Club.Volunteer
         //社團幹部 - 社長/副社長
         public Dictionary<string, string> _Cadre1 { get; set; }
 
+        public Dictionary<string, string> _Cadre2 { get; set; }
+
         public CLUBRecord _Club { get; set; }
 
 
@@ -36,7 +38,6 @@ namespace K12.Club.Volunteer
                     _Cadre1.Add(_Club.VicePresident, "副社長");
                 }
             }
-
         }
     }
 }
