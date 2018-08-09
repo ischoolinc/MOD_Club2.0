@@ -282,11 +282,43 @@ namespace K12.Club.Volunteer.Properties {
         }
         
         /// <summary>
+        ///   查詢類似 &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;
+        ///&lt;?xml-stylesheet type=&quot;text/xsl&quot; href=&quot;format.xsl&quot; ?&gt;
+        ///&lt;ValidateRule&gt;
+        ///  &lt;DuplicateDetection&gt;
+        ///    &lt;Detector Name=&quot;PrimaryKey&quot;&gt;
+        ///      &lt;Field Name=&quot;學年度&quot;/&gt;
+        ///      &lt;Field Name=&quot;學期&quot;/&gt;
+        ///      &lt;Field Name=&quot;社團名稱&quot;/&gt;
+        ///      &lt;Field Name=&quot;學號&quot;/&gt;
+        ///    &lt;/Detector&gt;
+        ///  &lt;/DuplicateDetection&gt;
+        ///  &lt;FieldList&gt;
+        ///    &lt;Field Required=&quot;True&quot; Name=&quot;學年度&quot; Description=&quot;學年度/學期/社團名稱/學號為鍵值必填&quot;&gt;
+        ///      &lt;Validate AutoCorrect=&quot;False&quot; Description=&quot;「學年度」不允許空白。&quot; ErrorType=&quot;Error&quot; Validator=&quot;不可空白&quot; When=&quot;&quot; [字串的其餘部分已遭截斷]&quot;; 的當地語系化字串。
+        /// </summary>
+        internal static string SCJoinValidate {
+            get {
+                return ResourceManager.GetString("SCJoinValidate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查詢類型 System.Drawing.Bitmap 的當地語系化資源。
         /// </summary>
         internal static System.Drawing.Bitmap time_frame_refresh_128 {
             get {
                 object obj = ResourceManager.GetObject("time_frame_refresh_128", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類型 System.Drawing.Bitmap 的當地語系化資源。
+        /// </summary>
+        internal static System.Drawing.Bitmap wizard1_BackgroundImage {
+            get {
+                object obj = ResourceManager.GetObject("wizard1_BackgroundImage", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

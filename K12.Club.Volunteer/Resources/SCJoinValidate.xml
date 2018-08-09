@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<?xml-stylesheet type="text/xsl" href="format.xsl" ?>
+<ValidateRule>
+  <DuplicateDetection>
+    <Detector Name="PrimaryKey">
+      <Field Name="學年度"/>
+      <Field Name="學期"/>
+      <Field Name="社團名稱"/>
+      <Field Name="學號"/>
+    </Detector>
+  </DuplicateDetection>
+  <FieldList>
+    <Field Required="True" Name="學年度" Description="學年度/學期/社團名稱/學號為鍵值必填">
+      <Validate AutoCorrect="False" Description="「學年度」不允許空白。" ErrorType="Error" Validator="不可空白" When=""/>
+      <Validate AutoCorrect="False" Description="「學年度」只允許「阿拉伯數字」。" ErrorType="Error" Validator="IntParse" When=""/>
+    </Field>
+    <Field Required="True" Name="學期" Description="學年度/學期/社團名稱/學號為鍵值必填">
+      <Validate AutoCorrect="False" Description="「學期」不允許空白。" ErrorType="Error" Validator="不可空白" When=""/>
+      <Validate AutoCorrect="False" Description="「學期」只允許「1、2」。" ErrorType="Error" Validator="學期列舉" When=""/>
+    </Field>
+    <Field Required="True" Name="社團名稱" EmptyAlsoValidate="False" Description="學年度/學期/社團名稱/學號為鍵值必填">
+    	<Validate AutoCorrect="False" Description="「社團名稱」不允許空白。" ErrorType="Error" Validator="不可空白" When=""/>
+    </Field>
+    <Field Required="False" Name="姓名" EmptyAlsoValidate="False" Description="學生姓名">
+    </Field>
+    <Field Required="True" Name="學號" EmptyAlsoValidate="True" Description="學年度/學期/社團名稱/學號為鍵值必填">
+      <Validate AutoCorrect="False" Description="「學號」不允許空白。" ErrorType="Error" Validator="不可空白" When=""/>
+      <Validate AutoCorrect="False" Description="「學號」必須存在系統。" ErrorType="Error" Validator="StudnetNumberExisted" When=""/>
+    </Field>
+    <Field Required="False" Name="班級" EmptyAlsoValidate="False" Description="班級名稱">
+    </Field>
+    <Field Required="False" Name="座號" EmptyAlsoValidate="True" Description="學生座號">
+      <Validate AutoCorrect="False" Description="「座號」只允許「阿拉伯數字」" ErrorType="Error" Validator="IntParse" When="" />
+    </Field>
+  </FieldList>
+  <ValidatorList>
+    <FieldValidator Name="StudnetNumberExisted" Type="CHECKSTUDENTNUMBERINISCHOOL"/>
+    <FieldValidator Name="IntParse" Type="INTPARSE"/>
+    <FieldValidator Name="不可空白" Type="STRINGLENGTH"/>
+    <FieldValidator Name="學期列舉" Type="Enumeration">
+      <Item Value="1"/>
+      <Item Value="2"/>
+    </FieldValidator>
+  </ValidatorList>
+
+  <RowValidate>
+  </RowValidate>
+  <ConditionList/>
+</ValidateRule>

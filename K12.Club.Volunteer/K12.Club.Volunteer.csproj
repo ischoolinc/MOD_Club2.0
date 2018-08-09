@@ -74,6 +74,11 @@
       <HintPath>Library\Campus.Report.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Campus.Validator, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Library\Campus.Validator.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Campus.Windows, Version=1.0.4.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Library\Campus.Windows.dll</HintPath>
@@ -318,6 +323,15 @@
       <DependentUpon>ClubPointsListForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Ribbon\CopyClubRecord.cs" />
+    <Compile Include="Ribbon\Export\frmExportSCJoin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ribbon\Export\frmExportSCJoin.Designer.cs">
+      <DependentUpon>frmExportSCJoin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Ribbon\Import\ImportSCJoinData.cs" />
+    <Compile Include="Ribbon\Import\ValidationRule\CheckInt.cs" />
+    <Compile Include="Ribbon\Import\ValidationRule\CheckStudentNumberInIschool.cs" />
     <Compile Include="Ribbon\志願_其它功能\GetVolunteer.cs" />
     <Compile Include="Ribbon\志願_其它功能\StudentMergeClub.cs" />
     <Compile Include="Ribbon\志願_選填狀況檢查\VolunteerLog.cs">
@@ -556,6 +570,9 @@
     <EmbeddedResource Include="Ribbon\CheckStudentIsNotInClub.resx">
       <DependentUpon>CheckStudentIsNotInClub.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Ribbon\Export\frmExportSCJoin.resx">
+      <DependentUpon>frmExportSCJoin.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Ribbon\志願_選填狀況檢查\VolunteerClassForm.resx">
       <DependentUpon>VolunteerClassForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -631,6 +648,8 @@
     <Content Include="Library\Campus.IRewrite.Interface.pdb" />
     <Content Include="Library\Campus.Report.dll" />
     <Content Include="Library\Campus.Report.pdb" />
+    <Content Include="Library\Campus.Validator.dll" />
+    <Content Include="Library\Campus.Validator.pdb" />
     <Content Include="Library\Campus.Windows.dll" />
     <Content Include="Library\Campus.Windows.pdb" />
     <Content Include="Library\Campus.Windows.xml" />
@@ -678,6 +697,8 @@
     <Content Include="Library\SmartSchool.ErrorReporting.pdb" />
     <Content Include="Library\SmartSchool.ErrorReporting.xml" />
     <Content Include="Report\班級社團成績單\不及格的定義.txt" />
+    <None Include="Resources\wizard1.BackgroundImage.png" />
+    <None Include="Resources\SCJoinValidate.xml" />
     <Content Include="這個社團是社團2.0.txt" />
     <None Include="Resources\presentation_a_config_64.png" />
     <None Include="Resources\admissions_ok_64.png" />

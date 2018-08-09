@@ -321,5 +321,23 @@ namespace K12.Club.Volunteer
                 return FISCA.Permission.UserAcl.Current[匯入社團志願序].Executable;
             }
         }
+
+        public static string 匯出社團參與學生 { get { return "C8B92AA8-8690-4833-A02D-5BFBEFF6E841"; } }
+        public static bool 匯出社團參與學生權限
+        {
+            get
+            {
+                return FISCA.Permission.UserAcl.Current[匯出社團參與學生].Executable;
+            }
+        }
+
+        public static string 匯入社團參與學生 { get { return "A62ECC5A-19C3-48C7-A00F-07134BC78F75"; } }
+        public static bool 匯入社團參與學生權限
+        {
+            get
+            {
+                return FISCA.Permission.UserAcl.Current[匯入社團參與學生].Executable;
+            }
+        }
     }
 }

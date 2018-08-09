@@ -195,6 +195,12 @@ namespace K12.Club.Volunteer
                     wizard.ShowDialog();
                 };
 
+                totle["匯出"]["匯出社團參與學生"].Enable = Permissions.匯出社團參與學生權限;
+                totle["匯出"]["匯出社團參與學生"].Click += delegate
+                {
+                    (new Ribbon.Export.frmExportSCJoin()).ShowDialog();
+                };
+
                 totle["匯入"].Size = RibbonBarButton.MenuButtonSize.Large;
                 totle["匯入"].Image = Properties.Resources.Import_Image;
 
@@ -202,6 +208,12 @@ namespace K12.Club.Volunteer
                 totle["匯入"]["匯入社團基本資料"].Click += delegate
                 {
                     new ImportCLUBData().Execute();
+                };
+
+                totle["匯入"]["匯入社團參與學生"].Enable = Permissions.匯入社團參與學生權限;
+                totle["匯入"]["匯入社團參與學生"].Click += delegate 
+                {
+                    new Ribbon.Import.ImportSCJoinData().Execute();
                 };
 
                 totle["報表"].Size = RibbonBarButton.MenuButtonSize.Large;
@@ -556,6 +568,8 @@ namespace K12.Club.Volunteer
             detail1.Add(new RibbonFeature(Permissions.匯出社團幹部清單, "匯出社團幹部清單"));
             detail1.Add(new RibbonFeature(Permissions.匯出社團成績_資料介接, "匯出社團學期成績(資料介接)"));
             detail1.Add(new RibbonFeature(Permissions.匯入社團基本資料, "匯入社團基本資料"));
+            detail1.Add(new RibbonFeature(Permissions.匯出社團參與學生, "匯出社團參與學生"));
+            detail1.Add(new RibbonFeature(Permissions.匯入社團參與學生, "匯入社團參與學生"));
 
 
             detail1 = RoleAclSource.Instance["社團"]["報表"];

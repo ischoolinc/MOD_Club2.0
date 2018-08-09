@@ -208,4 +208,10 @@
   <data name="匯出選社結果_範本" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\匯出選社結果_範本.xlsx;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="wizard1_BackgroundImage" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\wizard1.BackgroundImage.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SCJoinValidate" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\scjoinvalidate.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
 </root>
