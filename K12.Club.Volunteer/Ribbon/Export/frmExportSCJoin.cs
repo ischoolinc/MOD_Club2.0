@@ -81,6 +81,8 @@ FROM
         ON class.id = student.ref_class_id
 WHERE
     scjoin.ref_club_id IN('{0}')
+    AND student.id IS NOT NULL
+    AND student.status IN (1,2)
             ", clubIDs);
 
             QueryHelper qh = new QueryHelper();
