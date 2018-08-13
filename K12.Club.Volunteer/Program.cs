@@ -12,6 +12,8 @@ using K12.Data;
 using K12.Data.Configuration;
 using Campus.DocumentValidator;
 using Campus.IRewrite.Interface;
+using Campus.Import;
+using System.Net;
 
 namespace K12.Club.Volunteer
 {
@@ -70,6 +72,9 @@ namespace K12.Club.Volunteer
             //驗證規則
             FactoryProvider.FieldFactory.Add(new CLUBFieldValidatorFactory());
             FactoryProvider.RowFactory.Add(new CLUBRowValidatorFactory());
+
+            // .NET 版本預設為Ss13(已過時) ，會被擋住， 透過更正連線解決，
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls;
 
             #region 毛毛蟲
 
@@ -213,7 +218,8 @@ namespace K12.Club.Volunteer
                 totle["匯入"]["匯入社團參與學生"].Enable = Permissions.匯入社團參與學生權限;
                 totle["匯入"]["匯入社團參與學生"].Click += delegate 
                 {
-                    new Ribbon.Import.ImportSCJoinData().Execute();
+                    new ImportSCJoinData().Execute();
+                    ClubEvents.RaiseAssnChanged();
                 };
 
                 totle["報表"].Size = RibbonBarButton.MenuButtonSize.Large;

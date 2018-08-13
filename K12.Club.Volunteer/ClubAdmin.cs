@@ -686,9 +686,6 @@ namespace K12.Club.Volunteer
                 }
             }
 
-
-
-
             isbusy = false;
 
         }

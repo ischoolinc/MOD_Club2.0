@@ -9,13 +9,16 @@ using System.Data;
 using Campus.Validator;
 using FISCA.UDT;
 using FISCA.Presentation.Controls;
+using FISCA.Presentation;
+using System.Windows.Forms;
+using System.ComponentModel;
 
-namespace K12.Club.Volunteer.Ribbon.Import
+namespace K12.Club.Volunteer
 {
-    class ImportSCJoinData : ImportWizard
+    class ImportSCJoinData : ImportWizard 
     {
         private ImportOption _Option;
-
+        private BackgroundWorker BGW = new BackgroundWorker();
         private QueryHelper _qh = new QueryHelper();
         private AccessHelper _access = new AccessHelper();
 
@@ -103,6 +106,7 @@ WHERE
                 }
             }
             #endregion
+
         }
 
         /// <summary>
@@ -170,8 +174,9 @@ FROM
 
                 // 資料存入資料庫
                 saveData(listInsertSCJoin, listUpdateSCJoin);
+
+                //ClubEvents.RaiseAssnChanged();
             }
-            
             return "";
         }
 
@@ -203,7 +208,6 @@ FROM
                     scj.RefClubID = this._dicClubIDByKey[clubKey];
                     scj.RefStudentID = this._dicStudentIDByStudentNumber[studentNumber];
                     listUpdateSCJoin.Add(scj);
-
                 }
                 else // 新增
                 {
