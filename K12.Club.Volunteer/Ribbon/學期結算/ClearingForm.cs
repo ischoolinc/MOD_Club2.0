@@ -108,17 +108,17 @@ namespace K12.Club.Volunteer
                 {
                     string data = string.Format(@"
 SELECT
-	'{0}'::TEXT AS ref_student_id
+	{0}::TEXT AS ref_student_id
 	, '{1}'::TEXT AS schoolyear
 	, '{2}'::TEXT AS semester
-    , '{3}'::TEXT AS cadrename
+    , {3}::TEXT AS cadrename
 	, '社團幹部'::TEXT AS referencetype
 	, '{4}'::TEXT AS text -- 放社團名稱
-                ", "NULL", _schoolYear, _semester, "NULL", clubName);
+                ", "null", _schoolYear, _semester, "null", clubName);
 
                     dataList.Add(data);
                 }
-                if (cadre._Cadre1.Count != 0)
+                if (cadre._Cadre1.Count > 0)
                 {
                     foreach (string _cadre in cadre._Cadre1.Keys) // StudentID，CadreName
                     {
@@ -160,7 +160,7 @@ WITH data_row AS(
 		AND data_row.text = $behavior.thecadre .text
 		AND data_row.referencetype = $behavior.thecadre .referencetype
 		AND data_row.ref_student_id = $behavior.thecadre .studentid
-
+        AND data_row.ref_student_id IS NOT NULL
 	RETURNING $behavior.thecadre.*
 ) , run_insert AS(
 	INSERT INTO $behavior.thecadre(
@@ -188,6 +188,7 @@ WITH data_row AS(
 			AND cadre.studentid = data_row.ref_student_id
 	WHERE
 		cadre.uid IS NULL
+        AND data_row.ref_student_id IS NOT NULL
 	RETURNING $behavior.thecadre.*
 ) ,delete_data AS(
 	SELECT
