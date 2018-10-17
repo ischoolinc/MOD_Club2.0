@@ -386,8 +386,8 @@ namespace K12.Club.Volunteer
         {
             SaveFileDialog saveFileDialog1 = new SaveFileDialog();
             saveFileDialog1.Title = "另存新檔";
-            saveFileDialog1.FileName = "" + _Title + ".xls";
-            saveFileDialog1.Filter = "Excel (*.xls)|*.xls|所有檔案 (*.*)|*.*";
+            saveFileDialog1.FileName = "" + _Title + ".xlsx";
+            saveFileDialog1.Filter = "Excel (*.xlsx)|*.xlsx|所有檔案 (*.*)|*.*";
             if (saveFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 List<string> idlist = new List<string>();
@@ -624,8 +624,8 @@ namespace K12.Club.Volunteer
                 {
                     SaveFileDialog sd = new SaveFileDialog();
                     sd.Title = "另存新檔";
-                    sd.FileName = Path.GetFileNameWithoutExtension(path) + ".xls";
-                    sd.Filter = "Excel檔案 (*.xls)|*.xls|所有檔案 (*.*)|*.*";
+                    sd.FileName = Path.GetFileNameWithoutExtension(path) + ".xlsx";
+                    sd.Filter = "Excel檔案 (*.xlsx)|*.xlsx|所有檔案 (*.*)|*.*";
                     if (sd.ShowDialog() == DialogResult.OK)
                     {
                         try
@@ -640,7 +640,8 @@ namespace K12.Club.Volunteer
                         }
                     }
                 }
-                report.Save(path, FileFormatType.Excel2003);
+                //report.Save(path, FileFormatType.Excel2003);
+                report.Save(path, SaveFormat.Xlsx);
                 #endregion
                 SmartSchool.Customization.PlugIn.Global.SetStatusBarMessage(_Title + "完成。");
 

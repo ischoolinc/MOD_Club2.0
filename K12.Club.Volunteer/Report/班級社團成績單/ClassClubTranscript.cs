@@ -89,8 +89,11 @@ namespace K12.Club.Volunteer
 
             #region 建立範本
 
-            Workbook template = new Workbook();
-            template.Open(new MemoryStream(Properties.Resources.班級社團成績單_範本), FileFormatType.Excel2003);
+            //Workbook template = new Workbook();
+            //template.Open(new MemoryStream(Properties.Resources.班級社團成績單_範本), FileFormatType.Excel2003); 舊aspose寫法
+
+            Workbook template = new Workbook(new MemoryStream(Properties.Resources.班級社團成績單_範本));
+
             if (PrintLost) //不及格確認單
             {
                 PriontName = "班級社團成績不及格(確認單)";
@@ -132,7 +135,10 @@ namespace K12.Club.Volunteer
             int ColumnNameIndex = 0;
             foreach (string each in ColumnNameList)
             {
-                ptws.Cells[2, ColumnNameIndex].Style.IsTextWrapped = true;
+                Style style = new Style();
+                style.IsTextWrapped = true;
+                ptws.Cells[2, ColumnNameIndex].SetStyle(style);
+                //ptws.Cells[2, ColumnNameIndex].Style.IsTextWrapped = true; 舊aspose寫法
                 ptws.Cells[2, ColumnNameIndex].PutValue(each);
                 if (ColumnNameIndex >= 5)
                 {
@@ -288,7 +294,9 @@ namespace K12.Club.Volunteer
 
                 CountPage++; //每班增加1頁
 
-                ws.HPageBreaks.Add(dataIndex, ColumnNameList.Count);
+                //ws.HPageBreaks.Add(dataIndex, ColumnNameList.Count); 舊aspose寫法
+
+                ws.HorizontalPageBreaks.Add(dataIndex, ColumnNameList.Count);
             }
 
             #endregion
@@ -317,7 +325,7 @@ namespace K12.Club.Volunteer
                 if (e.Error == null)
                 {
                     SaveFileDialog SaveFileDialog1 = new SaveFileDialog();
-                    SaveFileDialog1.Filter = "Excel (*.xls)|*.xls|所有檔案 (*.*)|*.*";
+                    SaveFileDialog1.Filter = "Excel (*.xlsx)|*.xlsx|所有檔案 (*.*)|*.*";
                     SaveFileDialog1.FileName = PriontName;
 
                     //資料

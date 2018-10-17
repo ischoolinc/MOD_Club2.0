@@ -177,12 +177,16 @@ namespace K12.Club.Volunteer
                 Campus.Report.ReportConfiguration ConfigurationInCadre_1 = new Campus.Report.ReportConfiguration(ClassPrint_Config_1);
                 ConfigurationInCadre_1.Template = new Campus.Report.ReportTemplate(Properties.Resources.社團點名單_套表列印, Campus.Report.TemplateType.Word);
                 //ConfigurationInCadre_1.Template = new Campus.Report.ReportTemplate(Properties.Resources.社團點名表_合併欄位總表, Campus.Report.TemplateType.Word);
-                Template = ConfigurationInCadre_1.Template.ToDocument();
+                // Template = ConfigurationInCadre_1.Template.ToDocument(); #羿均備註 ToDocument會return 舊版Aspose Document
+                Stream stream = ConfigurationInCadre_1.Template.GetStream(); // 羿均備註 新增GetStream()此函式回傳樣板路徑
+                Template = new Document(stream);
             }
             else
             {
                 //如果已有範本,則取得樣板
-                Template = ConfigurationInCadre.Template.ToDocument();
+                //Template = ConfigurationInCadre.Template.ToDocument(); #羿均備註 ToDocument會return 舊版Aspose Document
+                Stream stream = ConfigurationInCadre.Template.GetStream(); // 羿均備註 新增GetStream()此函式回傳樣板路徑
+                Template = new Document(stream);
             }
 
             string[] fieldNames = Template.MailMerge.GetFieldNames();
@@ -192,8 +196,6 @@ namespace K12.Club.Volunteer
                 if (item.Contains("姓名")) {
                     學生多少個++;
                 }
-            
-            
             }
 
             SCJoinDataLoad crM = new SCJoinDataLoad();
@@ -395,7 +397,7 @@ namespace K12.Club.Volunteer
                     {
                         SaveFileDialog SaveFileDialog1 = new SaveFileDialog();
 
-                        SaveFileDialog1.Filter = "Word (*.doc)|*.doc|所有檔案 (*.*)|*.*";
+                        SaveFileDialog1.Filter = "Word (*.docx)|*.docx|所有檔案 (*.*)|*.*";
                         SaveFileDialog1.FileName = "社團點名單(套表列印)";
 
                         if (SaveFileDialog1.ShowDialog() == DialogResult.OK)
@@ -509,8 +511,8 @@ namespace K12.Club.Volunteer
         {
             SaveFileDialog sfd = new SaveFileDialog();
             sfd.Title = "另存新檔";
-            sfd.FileName = "社團點名表_合併欄位總表.doc";
-            sfd.Filter = "Word檔案 (*.doc)|*.doc|所有檔案 (*.*)|*.*";
+            sfd.FileName = "社團點名表_合併欄位總表.docx";
+            sfd.Filter = "Word檔案 (*.docx)|*.docx|所有檔案 (*.*)|*.*";
             if (sfd.ShowDialog() == DialogResult.OK)
             {
                 try

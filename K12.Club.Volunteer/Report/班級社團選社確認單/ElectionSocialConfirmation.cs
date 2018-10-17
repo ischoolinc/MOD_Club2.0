@@ -13,6 +13,7 @@ using FISCA.Presentation.Controls;
 using System.Windows.Forms;
 using FISCA.Presentation;
 using System.Diagnostics;
+using Aspose.Words.Tables;
 
 namespace K12.Club.Volunteer
 {

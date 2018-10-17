@@ -40,8 +40,8 @@ namespace K12.Club.Volunteer
             SDL = new SCJoinDataLoad();
 
             //建立Excel範本
-            Workbook template = new Workbook();
-            template.Open(new MemoryStream(Properties.Resources.社團點名單_範本), FileFormatType.Excel2003);
+            Workbook template = new Workbook(new MemoryStream(Properties.Resources.社團點名單_範本));
+            //template.Open(new MemoryStream(Properties.Resources.社團點名單_範本), FileFormatType.Excel2003); 舊aspose寫法
 
             //每一張
             Workbook prototype = new Workbook();
