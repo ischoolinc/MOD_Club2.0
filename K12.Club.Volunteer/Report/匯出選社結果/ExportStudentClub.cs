@@ -110,7 +110,7 @@ ORDER BY
                     foreach (DataRow dr in dt.Rows)
                     {
                         bkw.ReportProgress(10 + 90 * index / dt.Rows.Count);
-                        int wishLimit = (dr["wish_limit"] == null ? 5 : int.Parse("" + dr["wish_limit"]));
+                        int wishLimit = ("" + dr["wish_limit"] == "" ? 5 : int.Parse("" + dr["wish_limit"]));
                         if (index == 1)
                         {
                             int countLimit = 6 + wishLimit;
