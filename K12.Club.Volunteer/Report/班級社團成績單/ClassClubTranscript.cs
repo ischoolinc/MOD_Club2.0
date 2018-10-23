@@ -211,7 +211,8 @@ namespace K12.Club.Volunteer
                 }
 
                 //頁數
-                ws.Cells.Merge(rowIndex, ColumnNameList.Count - 4, 1, 4);
+                ws.Cells.Merge(rowIndex, 7, 1, 4);
+                //ws.Cells.Merge(rowIndex, ColumnNameList.Count - 4, 1, 4);
                 ws.Cells[rowIndex, ColumnNameList.Count - 4].PutValue("日期：" + DateTime.Now.ToString("yyyy/MM/dd HH:mm") + "　頁數:" + CountPage.ToString());
 
                 rowIndex += 2;
