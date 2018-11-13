@@ -43,8 +43,8 @@ namespace K12.Club.Volunteer.Report.匯出選社結果
                         clubDic.Add(club.UID, club.ClubName);
                     }
                     //建立Excel範本
-                    Workbook template = new Workbook(new MemoryStream(Properties.Resources.匯出選社結果_範本));
-                    //template.Open(new MemoryStream(Properties.Resources.匯出選社結果_範本), FileFormatType.Excel2007Xlsx); 舊aspose寫法
+                    Workbook template = new Workbook();
+                    template.Open(new MemoryStream(Properties.Resources.匯出選社結果_範本), FileFormatType.Excel2007Xlsx);
 
                     wb.Copy(template);
                     //取得Sheet
@@ -107,10 +107,11 @@ ORDER BY
 
                     bkw.ReportProgress(10);
                     int index = 1;
+                    int row = 1;
                     foreach (DataRow dr in dt.Rows)
                     {
                         bkw.ReportProgress(10 + 90 * index / dt.Rows.Count);
-                        int wishLimit = ("" + dr["wish_limit"] == "" ? 5 : int.Parse("" + dr["wish_limit"]));
+                        int wishLimit = (dr["wish_limit"] == null ? 5 : int.Parse("" + dr["wish_limit"]));
                         if (index == 1)
                         {
                             int countLimit = 6 + wishLimit;
@@ -171,7 +172,7 @@ ORDER BY
                     #region Excel 存檔
                     {
                         SaveFileDialog SaveFileDialog1 = new SaveFileDialog();
-                        SaveFileDialog1.Filter = "Excel (*.xlsx)|*.xlsx|所有檔案 (*.*)|*.*";
+                        SaveFileDialog1.Filter = "Excel (*.xls)|*.xls|所有檔案 (*.*)|*.*";
                         SaveFileDialog1.FileName = "匯出選社結果";
                         try
                         {

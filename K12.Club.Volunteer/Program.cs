@@ -28,39 +28,39 @@ namespace K12.Club.Volunteer
             //FISCA.RTOut.WriteLine("註冊Gadget - 社團(老師)：" + WebPackage.RegisterGadget("Teacher", "6080a7c0-60e7-443c-bad7-ecccb3a86bcf", "社團(老師)").Item2);
 
             #region 處理UDT Table沒有的問題
+
+            ConfigData cd = K12.Data.School.Configuration["通用社團UDT載入設定"];
+            bool checkClubUDT = false;
+
+            string name = "社團UDT是否已載入_20130328";
+            //如果尚無設定值,預設為
+            if (string.IsNullOrEmpty(cd[name]))
             {
-                ConfigData cd = K12.Data.School.Configuration["通用社團UDT載入設定"];
-                bool checkClubUDT = false;
-
-                string name = "社團UDT是否已載入_20130328";
-                //如果尚無設定值,預設為
-                if (string.IsNullOrEmpty(cd[name]))
-                {
-                    cd[name] = "false";
-                }
-
-                //檢查是否為布林
-                bool.TryParse(cd[name], out checkClubUDT);
-
-                if (!checkClubUDT)
-                {
-                    AccessHelper _accessHelper = new AccessHelper();
-                    _accessHelper.Select<CLUBRecord>("UID = '00000'");
-                    _accessHelper.Select<SCJoin>("UID = '00000'");
-                    _accessHelper.Select<WeightProportion>("UID = '00000'");
-                    _accessHelper.Select<CadresRecord>("UID = '00000'");
-                    _accessHelper.Select<DTScore>("UID = '00000'");
-                    _accessHelper.Select<DTClub>("UID = '00000'");
-                    _accessHelper.Select<ResultScoreRecord>("UID = '00000'");
-
-                    //new
-                    _accessHelper.Select<VolunteerRecord>("UID = '00000'");
-                    _accessHelper.Select<ConfigRecord>("UID = '00000'");
-
-                    cd[name] = "true";
-                    cd.Save();
-                }
+                cd[name] = "false";
             }
+
+            //檢查是否為布林
+            bool.TryParse(cd[name], out checkClubUDT);
+
+            if (!checkClubUDT)
+            {
+                AccessHelper _accessHelper = new AccessHelper();
+                _accessHelper.Select<CLUBRecord>("UID = '00000'");
+                _accessHelper.Select<SCJoin>("UID = '00000'");
+                _accessHelper.Select<WeightProportion>("UID = '00000'");
+                _accessHelper.Select<CadresRecord>("UID = '00000'");
+                _accessHelper.Select<DTScore>("UID = '00000'");
+                _accessHelper.Select<DTClub>("UID = '00000'");
+                _accessHelper.Select<ResultScoreRecord>("UID = '00000'");
+
+                //new
+                _accessHelper.Select<VolunteerRecord>("UID = '00000'");
+                _accessHelper.Select<ConfigRecord>("UID = '00000'");
+
+                cd[name] = "true";
+                cd.Save();
+            }
+
             #endregion
 
             //增加一個社團Tab
@@ -74,7 +74,7 @@ namespace K12.Club.Volunteer
             FactoryProvider.RowFactory.Add(new CLUBRowValidatorFactory());
 
             // .NET 版本預設為Ss13(已過時) ，會被擋住， 透過更正連線解決，
-            //ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls;
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls;
 
             #region 毛毛蟲
 
@@ -124,7 +124,6 @@ namespace K12.Club.Volunteer
             #endregion
 
             #region 功能按鈕
-
             #region 編輯
             {
                 RibbonBarItem edit = ClubAdmin.Instance.RibbonBarItems["編輯"];
@@ -168,148 +167,107 @@ namespace K12.Club.Volunteer
                 };
             } 
             #endregion
-
             #region 資料統計
             {
                 RibbonBarItem totle = ClubAdmin.Instance.RibbonBarItems["資料統計"];
                 totle["匯出"].Size = RibbonBarButton.MenuButtonSize.Large;
                 totle["匯出"].Image = Properties.Resources.Export_Image;
 
-                #region 匯出社團基本資料
+                totle["匯出"]["匯出社團基本資料"].Enable = Permissions.匯出社團基本資料權限;
+                totle["匯出"]["匯出社團基本資料"].Click += delegate
                 {
-                    totle["匯出"]["匯出社團基本資料"].Enable = Permissions.匯出社團基本資料權限;
-                    totle["匯出"]["匯出社團基本資料"].Click += delegate
-                    {
-                        SmartSchool.API.PlugIn.Export.Exporter exporter = new K12.Club.Volunteer.CLUB.ExportCLUBData();
-                        K12.Club.Volunteer.CLUB.ExportStudentV2 wizard = new K12.Club.Volunteer.CLUB.ExportStudentV2(exporter.Text, exporter.Image);
-                        exporter.InitializeExport(wizard);
-                        wizard.ShowDialog();
-                    };
-                }
-                #endregion
+                    SmartSchool.API.PlugIn.Export.Exporter exporter = new K12.Club.Volunteer.CLUB.ExportCLUBData();
+                    K12.Club.Volunteer.CLUB.ExportStudentV2 wizard = new K12.Club.Volunteer.CLUB.ExportStudentV2(exporter.Text, exporter.Image);
+                    exporter.InitializeExport(wizard);
+                    wizard.ShowDialog();
+                };
 
-                #region 匯出聯課活動成績(資料介接)
+                totle["匯出"]["匯出聯課活動成績(資料介接)"].Enable = Permissions.匯出社團成績_資料介接權限;
+                totle["匯出"]["匯出聯課活動成績(資料介接)"].Click += delegate
                 {
-                    totle["匯出"]["匯出聯課活動成績(資料介接)"].Enable = Permissions.匯出社團成績_資料介接權限;
-                    totle["匯出"]["匯出聯課活動成績(資料介接)"].Click += delegate
-                    {
-                        SmartSchool.API.PlugIn.Export.Exporter exporter = new K12.Club.Volunteer.CLUB.SpecialResult();
-                        K12.Club.Volunteer.CLUB.ExportStudentV2 wizard = new K12.Club.Volunteer.CLUB.ExportStudentV2(exporter.Text, exporter.Image);
-                        exporter.InitializeExport(wizard);
-                        wizard.ShowDialog();
-                    };
-                }
-                #endregion
+                    SmartSchool.API.PlugIn.Export.Exporter exporter = new K12.Club.Volunteer.CLUB.SpecialResult();
+                    K12.Club.Volunteer.CLUB.ExportStudentV2 wizard = new K12.Club.Volunteer.CLUB.ExportStudentV2(exporter.Text, exporter.Image);
+                    exporter.InitializeExport(wizard);
+                    wizard.ShowDialog();
+                };
 
-                #region 匯出社團幹部清單
+                totle["匯出"]["匯出社團幹部清單"].Enable = Permissions.匯出社團幹部清單權限;
+                totle["匯出"]["匯出社團幹部清單"].Click += delegate
                 {
-                    totle["匯出"]["匯出社團幹部清單"].Enable = Permissions.匯出社團幹部清單權限;
-                    totle["匯出"]["匯出社團幹部清單"].Click += delegate
-                    {
-                        SmartSchool.API.PlugIn.Export.Exporter exporter = new K12.Club.Volunteer.CLUB.ClubCadResult();
-                        K12.Club.Volunteer.CLUB.ExportStudentV2 wizard = new K12.Club.Volunteer.CLUB.ExportStudentV2(exporter.Text, exporter.Image);
-                        exporter.InitializeExport(wizard);
-                        wizard.ShowDialog();
-                    };
-                }
-                #endregion
+                    SmartSchool.API.PlugIn.Export.Exporter exporter = new K12.Club.Volunteer.CLUB.ClubCadResult();
+                    K12.Club.Volunteer.CLUB.ExportStudentV2 wizard = new K12.Club.Volunteer.CLUB.ExportStudentV2(exporter.Text, exporter.Image);
+                    exporter.InitializeExport(wizard);
+                    wizard.ShowDialog();
+                };
 
-                #region 匯出社團參與學生
+                totle["匯出"]["匯出社團參與學生"].Enable = Permissions.匯出社團參與學生權限;
+                totle["匯出"]["匯出社團參與學生"].Click += delegate
                 {
-                    totle["匯出"]["匯出社團參與學生"].Enable = Permissions.匯出社團參與學生權限;
-                    totle["匯出"]["匯出社團參與學生"].Click += delegate
-                    {
-                        (new Ribbon.Export.frmExportSCJoin()).ShowDialog();
-                    };
-                }
-                #endregion
+                    (new Ribbon.Export.frmExportSCJoin()).ShowDialog();
+                };
 
                 totle["匯入"].Size = RibbonBarButton.MenuButtonSize.Large;
                 totle["匯入"].Image = Properties.Resources.Import_Image;
 
-                #region 匯入社團基本資料
+                totle["匯入"]["匯入社團基本資料"].Enable = Permissions.匯入社團基本資料權限;
+                totle["匯入"]["匯入社團基本資料"].Click += delegate
                 {
-                    totle["匯入"]["匯入社團基本資料"].Enable = Permissions.匯入社團基本資料權限;
-                    totle["匯入"]["匯入社團基本資料"].Click += delegate
-                    {
-                        new ImportCLUBData().Execute();
-                    };
-                }
-                #endregion
+                    new ImportCLUBData().Execute();
+                };
 
-                #region 匯入社團參與學生
+                totle["匯入"]["匯入社團參與學生"].Enable = Permissions.匯入社團參與學生權限;
+                totle["匯入"]["匯入社團參與學生"].Click += delegate 
                 {
-                    totle["匯入"]["匯入社團參與學生"].Enable = Permissions.匯入社團參與學生權限;
-                    totle["匯入"]["匯入社團參與學生"].Click += delegate
-                    {
-                        new ImportSCJoinData().Execute();
-                        ClubEvents.RaiseAssnChanged();
-                    };
-                }
-                #endregion
+                    new ImportSCJoinData().Execute();
+                    ClubEvents.RaiseAssnChanged();
+                };
 
                 totle["報表"].Size = RibbonBarButton.MenuButtonSize.Large;
                 totle["報表"].Image = Properties.Resources.Report;
                 // 2018/01/16 羿均 註解較舊功能
-                #region 社團點名單
+                totle["報表"]["社團點名單"].Enable = false;
+                totle["報表"]["社團點名單"].Click += delegate
                 {
-                    //totle["報表"]["社團點名單"].Enable = false;
-                    //totle["報表"]["社團點名單"].Click += delegate
-                    //{
-                    //    AssociationsPointList insert = new AssociationsPointList();
-                    //};
-                    //ClubAdmin.Instance.SelectedSourceChanged += delegate
-                    //{
-                    //    //是否選擇大於0的社團
-                    //    bool SourceCount = (ClubAdmin.Instance.SelectedSource.Count > 0);
-                    //    totle["報表"]["社團點名單"].Enable = SourceCount && Permissions.社團點名單權限;
-                    //};
-                }
-                #endregion
+                    AssociationsPointList insert = new AssociationsPointList();
+                };
+                ClubAdmin.Instance.SelectedSourceChanged += delegate
+                {
+                    //是否選擇大於0的社團
+                    bool SourceCount = (ClubAdmin.Instance.SelectedSource.Count > 0);
+                    totle["報表"]["社團點名單"].Enable = SourceCount && Permissions.社團點名單權限;
+                };
 
-                #region 社團點名單(套表列印)
+                totle["報表"]["社團點名單(套表列印)"].Enable = false;
+                totle["報表"]["社團點名單(套表列印)"].Click += delegate
                 {
-                    totle["報表"]["社團點名單(套表列印)"].Enable = false;
-                    totle["報表"]["社團點名單(套表列印)"].Click += delegate
-                    {
-                        ClubPointsListForm insert = new ClubPointsListForm();
-                        insert.ShowDialog();
-                    };
-                    ClubAdmin.Instance.SelectedSourceChanged += delegate
-                    {
-                        //是否選擇大於0的社團
-                        bool SourceCount = (ClubAdmin.Instance.SelectedSource.Count > 0);
-                        totle["報表"]["社團點名單(套表列印)"].Enable = SourceCount && Permissions.社團點名單_套表列印權限;
-                    };
-                }
-                #endregion
+                    ClubPointsListForm insert = new ClubPointsListForm();
+                    insert.ShowDialog();
+                };
+                ClubAdmin.Instance.SelectedSourceChanged += delegate
+                {
+                    //是否選擇大於0的社團
+                    bool SourceCount = (ClubAdmin.Instance.SelectedSource.Count > 0);
+                    totle["報表"]["社團點名單(套表列印)"].Enable = SourceCount && Permissions.社團點名單_套表列印權限;
+                };
 
-                #region 社團成績單
+                totle["報表"]["社團成績單"].Enable = false;
+                totle["報表"]["社團成績單"].Click += delegate
                 {
-                    totle["報表"]["社團成績單"].Enable = false;
-                    totle["報表"]["社團成績單"].Click += delegate
-                    {
-                        ClubTranscript insert = new ClubTranscript();
-                    };
-                    ClubAdmin.Instance.SelectedSourceChanged += delegate
-                    {
-                        //是否選擇大於0的社團
-                        bool SourceCount = (ClubAdmin.Instance.SelectedSource.Count > 0);
-                        totle["報表"]["社團成績單"].Enable = SourceCount && Permissions.社團成績單權限;
-                    };
-                }
-                #endregion
+                    ClubTranscript insert = new ClubTranscript();
+                };
+                ClubAdmin.Instance.SelectedSourceChanged += delegate
+                {
+                    //是否選擇大於0的社團
+                    bool SourceCount = (ClubAdmin.Instance.SelectedSource.Count > 0);
+                    totle["報表"]["社團成績單"].Enable = SourceCount && Permissions.社團成績單權限;
+                };
 
-                #region 社團概況表
+                totle["報表"]["社團概況表"].Enable = Permissions.社團概況表權限;
+                totle["報表"]["社團概況表"].Click += delegate
                 {
-                    totle["報表"]["社團概況表"].Enable = Permissions.社團概況表權限;
-                    totle["報表"]["社團概況表"].Click += delegate
-                    {
-                        CLUBFactsTable insert = new CLUBFactsTable();
-                        insert.ShowDialog();
-                    };
-                }
-                #endregion
+                    CLUBFactsTable insert = new CLUBFactsTable();
+                    insert.ShowDialog();
+                };
             }
             #endregion
             #region 學生選社
@@ -333,6 +291,17 @@ namespace K12.Club.Volunteer
                     Report.匯出選社結果.ExportStudentClubForm e = new Report.匯出選社結果.ExportStudentClubForm();
                     e.ShowDialog();
                 };
+
+                // 2018/1/15 羿均 此為社團2.0開發工具: 隨機填入學生社團志願
+
+                //RibbonBarItem test = ClubAdmin.Instance.RibbonBarItems["測試資料"];
+                //test["隨機填入學生志願"].Size = RibbonBarButton.MenuButtonSize.Medium;
+                //test["隨機填入學生志願"].Image = Properties.Resources.group_up_64;
+                //test["隨機填入學生志願"].Enable = true;
+                //test["隨機填入學生志願"].Click += delegate
+                //{
+                //    AutoVolunteer a = new AutoVolunteer();
+                //};
 
                 oder["選社志願設定"].Size = RibbonBarButton.MenuButtonSize.Medium;
                 oder["選社志願設定"].Image = Properties.Resources.presentation_a_config_64;
@@ -368,7 +337,6 @@ namespace K12.Club.Volunteer
                 };
             }
             #endregion
-
             #region 檢查
             {
                 RibbonBarItem check = ClubAdmin.Instance.RibbonBarItems["檢查"];
@@ -430,7 +398,6 @@ namespace K12.Club.Volunteer
                 };
             }
             #endregion
-
             #region 成績
             {
                 RibbonBarItem Results = ClubAdmin.Instance.RibbonBarItems["成績"];
@@ -501,13 +468,11 @@ namespace K12.Club.Volunteer
             ClubAdmin.Instance.ListPaneContexMenu["刪除社團"].Click += delegate
             {
                 DeleteClub();
-            };
+            }; 
             #endregion
             #endregion
 
             #region 學生功能按鈕
-
-            #region 匯出社團學期成績
             {
                 RibbonBarItem Print = FISCA.Presentation.MotherForm.RibbonBarItems["學生", "資料統計"];
                 Print["匯出"]["社團相關匯出"]["匯出社團學期成績"].Enable = Permissions.匯出社團學期成績權限;
@@ -519,9 +484,6 @@ namespace K12.Club.Volunteer
                     wizard.ShowDialog();
                 };
             }
-            #endregion
-
-            #region 匯出社團志願序
             {
                 RibbonBarItem Print = FISCA.Presentation.MotherForm.RibbonBarItems["學生", "資料統計"];
 
@@ -534,9 +496,6 @@ namespace K12.Club.Volunteer
                     wizard.ShowDialog();
                 };
             }
-            #endregion
-
-            #region 匯入社團志願序
             {
                 RibbonBarItem Print = FISCA.Presentation.MotherForm.RibbonBarItems["學生", "資料統計"];
                 Print["匯入"]["社團相關匯入"]["匯入社團志願序"].Enable = Permissions.匯入社團志願序權限;
@@ -544,10 +503,7 @@ namespace K12.Club.Volunteer
                 {
                     new ImportVolunteerMPG().Execute();
                 };
-            } 
-            #endregion
-
-            #region 社團幹部證明單
+            }
             {
                 RibbonBarItem Print = FISCA.Presentation.MotherForm.RibbonBarItems["學生", "資料統計"];
                 Print["報表"]["社團相關報表"]["社團幹部證明單"].Enable = Permissions.社團幹部證明單權限;
@@ -556,9 +512,7 @@ namespace K12.Club.Volunteer
                     CadreProveReport cpr = new CadreProveReport();
                     cpr.ShowDialog();
                 };
-            } 
-            #endregion
-
+            }
             #endregion
 
             #region 班級功能按鈕
@@ -657,6 +611,11 @@ namespace K12.Club.Volunteer
             {
                 FISCA.Presentation.MotherForm.SetStatusBarMessage("選擇「" + ClubAdmin.Instance.SelectedSource.Count + "」個社團");
             };
+        }
+
+        void Program_Click(object sender, EventArgs e)
+        {
+
         }
 
         static private void DeleteClub()

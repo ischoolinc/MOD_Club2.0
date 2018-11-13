@@ -151,8 +151,8 @@ WHERE
 
             SaveFileDialog saveFileDialog = new SaveFileDialog();
             saveFileDialog.Title = "匯出社團參與學生";
-            saveFileDialog.FileName = "匯出社團參與學生.xlsx";
-            saveFileDialog.Filter = "Excel (*.xlsx)|*.xlsx|所有檔案 (*.*)|*.*";
+            saveFileDialog.FileName = "匯出社團參與學生.xls";
+            saveFileDialog.Filter = "Excel (*.xls)|*.xls|所有檔案 (*.*)|*.*";
 
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {

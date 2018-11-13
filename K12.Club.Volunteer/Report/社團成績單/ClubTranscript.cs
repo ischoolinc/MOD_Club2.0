@@ -44,11 +44,8 @@ namespace K12.Club.Volunteer
             //取得範本
             #region 建立範本
 
-            //Workbook template = new Workbook();
-            //template.Open(new MemoryStream(Properties.Resources.社團成績單_範本), FileFormatType.Xlsx); 舊版Aspose寫法
-
-            Workbook template = new Workbook(new MemoryStream(Properties.Resources.社團成績單_範本));
-
+            Workbook template = new Workbook();
+            template.Open(new MemoryStream(Properties.Resources.社團成績單_範本), FileFormatType.Excel2003);
             //Style sy = template.Worksheets[0].Cells[3, 0].Style;
             //每一張
             Workbook prototype = new Workbook();
@@ -75,10 +72,7 @@ namespace K12.Club.Volunteer
             int ColumnNameIndex = 0;
             foreach (string each in ColumnNameList)
             {
-                Style style = new Style();
-                style.IsTextWrapped = true;
-                ptws.Cells[2, ColumnNameIndex].SetStyle(style);
-                //ptws.Cells[2, ColumnNameIndex].Style.IsTextWrapped = true; Aspose舊寫法
+                ptws.Cells[2, ColumnNameIndex].Style.IsTextWrapped = true;
                 ptws.Cells[2, ColumnNameIndex].PutValue(each);
                 if (ColumnNameIndex >= 5)
                 {
@@ -205,8 +199,7 @@ namespace K12.Club.Volunteer
                 //SetCellBro(ws, dataIndex, 0, 1, ColumnNameList.Count);
                 ws.Cells[dataIndex, 0].PutValue(DateName);
                 //ws.Cells[dataIndex, 0].Style = sy;
-                //ws.HPageBreaks.Add(dataIndex + 1, ColumnNameList.Count); aspose舊寫法
-                ws.HorizontalPageBreaks.Add(dataIndex + 1, ColumnNameList.Count);
+                ws.HPageBreaks.Add(dataIndex + 1, ColumnNameList.Count);
                 dataIndex++;
             }
 
@@ -259,7 +252,7 @@ namespace K12.Club.Volunteer
                 if (e.Error == null)
                 {
                     SaveFileDialog SaveFileDialog1 = new SaveFileDialog();
-                    SaveFileDialog1.Filter = "Excel (*.xlsx)|*.xlsx|所有檔案 (*.*)|*.*";
+                    SaveFileDialog1.Filter = "Excel (*.xls)|*.xls|所有檔案 (*.*)|*.*";
                     SaveFileDialog1.FileName = "社團成績單";
 
                     //資料

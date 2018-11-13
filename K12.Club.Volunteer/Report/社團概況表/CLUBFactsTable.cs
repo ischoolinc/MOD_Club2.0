@@ -15,7 +15,6 @@ using System.IO;
 using System.Diagnostics;
 using System.Xml;
 using FISCA.DSAUtil;
-using Aspose.Words.Tables;
 
 namespace K12.Club.Volunteer
 {
@@ -214,7 +213,7 @@ namespace K12.Club.Volunteer
                 {
                     SaveFileDialog SaveFileDialog1 = new SaveFileDialog();
 
-                    SaveFileDialog1.Filter = "Word (*.docx)|*.docx|所有檔案 (*.*)|*.*";
+                    SaveFileDialog1.Filter = "Word (*.doc)|*.doc|所有檔案 (*.*)|*.*";
                     SaveFileDialog1.FileName = "社團概況表";
 
                     if (SaveFileDialog1.ShowDialog() == DialogResult.OK)

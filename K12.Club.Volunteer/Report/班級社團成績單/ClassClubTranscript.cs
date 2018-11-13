@@ -89,11 +89,8 @@ namespace K12.Club.Volunteer
 
             #region 建立範本
 
-            //Workbook template = new Workbook();
-            //template.Open(new MemoryStream(Properties.Resources.班級社團成績單_範本), FileFormatType.Excel2003); 舊aspose寫法
-
-            Workbook template = new Workbook(new MemoryStream(Properties.Resources.班級社團成績單_範本));
-
+            Workbook template = new Workbook();
+            template.Open(new MemoryStream(Properties.Resources.班級社團成績單_範本), FileFormatType.Excel2003);
             if (PrintLost) //不及格確認單
             {
                 PriontName = "班級社團成績不及格(確認單)";
@@ -133,13 +130,9 @@ namespace K12.Club.Volunteer
             }
 
             int ColumnNameIndex = 0;
-            
             foreach (string each in ColumnNameList)
             {
-                //Style style = ptws.Cells[2, ColumnNameIndex].GetStyle();
-                //style.IsTextWrapped = true;
-                //ptws.Cells[2, ColumnNameIndex].SetStyle(style);
-                //ptws.Cells[2, ColumnNameIndex].Style.IsTextWrapped = true; 舊aspose寫法
+                ptws.Cells[2, ColumnNameIndex].Style.IsTextWrapped = true;
                 ptws.Cells[2, ColumnNameIndex].PutValue(each);
                 if (ColumnNameIndex >= 5)
                 {
@@ -151,8 +144,8 @@ namespace K12.Club.Volunteer
 
             #endregion
 
-            //Range ptHeader = ptws.Cells.CreateRange(0, 3, false); 舊Aspose 寫法
-            //Range ptEachRow = ptws.Cells.CreateRange(3, 1, false); 舊Aspose 寫法
+            Range ptHeader = ptws.Cells.CreateRange(0, 3, false);
+            Range ptEachRow = ptws.Cells.CreateRange(3, 1, false);
 
             //建立Excel檔案
             Workbook wb = new Workbook();
@@ -161,7 +154,7 @@ namespace K12.Club.Volunteer
             //取得第一張
             Worksheet ws = wb.Worksheets[0];
 
-            int rowIndex = 0;
+            int dataIndex = 0;
             int CountPage = 1;
 
             int DetalIndex = 5;
@@ -174,20 +167,20 @@ namespace K12.Club.Volunteer
             {
                 if (mag.TraDic[classID].Count == 0)
                     continue;
-                //ws.Cells.CreateRange(dataIndex, 3, false).Copy(ptHeader);
+                ws.Cells.CreateRange(dataIndex, 3, false).Copy(ptHeader);
 
                 ClassRecord cr = mag.ClassDic[classID];
 
-                ws.Cells.Merge(rowIndex, 0, 1, ColumnNameList.Count);
+                ws.Cells.Merge(dataIndex, 0, 1, ColumnNameList.Count);
                 string TitleName = string.Format("{0}學年度　第{1}學期　{2}", _SchoolYear.ToString(), _Semester.ToString(), PriontName);
-                ws.Cells[rowIndex, 0].PutValue(TitleName);
-                rowIndex++;
+                ws.Cells[dataIndex, 0].PutValue(TitleName);
+                dataIndex++;
 
                 //班級
-                ws.Cells.Merge(rowIndex, 0, 1, 3);
-                ws.Cells[rowIndex, 0].PutValue(string.Format("班級：{0}", cr.Name));
+                ws.Cells.Merge(dataIndex, 0, 1, 3);
+                ws.Cells[dataIndex, 0].PutValue(string.Format("班級：{0}", cr.Name));
 
-                ws.Cells.Merge(rowIndex, 4, 1, 3);
+                ws.Cells.Merge(dataIndex, 4, 1, 3);
                 //教師
                 if (!string.IsNullOrEmpty(cr.RefTeacherID))
                 {
@@ -199,40 +192,38 @@ namespace K12.Club.Volunteer
                         if (!string.IsNullOrEmpty(tr.Nickname))
                         {
                             string TeacherString = "班導師：" + tr.Name + "(" + tr.Nickname + ")";
-                            ws.Cells[rowIndex, 4].PutValue(TeacherString);
+                            ws.Cells[dataIndex, 4].PutValue(TeacherString);
                         }
                         else
                         {
                             string TeacherString = "班導師：" + mag.TeacherDic[cr.RefTeacherID].Name;
-                            ws.Cells[rowIndex, 4].PutValue(TeacherString);
+                            ws.Cells[dataIndex, 4].PutValue(TeacherString);
                         }
                     }
                     #endregion
                 }
 
                 //頁數
-                ws.Cells.Merge(rowIndex, 7, 1, 4);
-                //ws.Cells.Merge(rowIndex, ColumnNameList.Count - 4, 1, 4);
-                ws.Cells[rowIndex, ColumnNameList.Count - 4].PutValue("日期：" + DateTime.Now.ToString("yyyy/MM/dd HH:mm") + "　頁數:" + CountPage.ToString());
+                ws.Cells.Merge(dataIndex, ColumnNameList.Count - 4, 1, 4);
+                ws.Cells[dataIndex, ColumnNameList.Count - 4].PutValue("日期：" + DateTime.Now.ToString("yyyy/MM/dd HH:mm") + "　頁數:" + CountPage.ToString());
 
-                rowIndex += 2;
+                dataIndex += 2;
 
                 mag.TraDic[classID].Sort(SortTraDic);
 
                 foreach (ClassClubTraObj each in mag.TraDic[classID])
                 {
-                    //ws.Cells.CreateRange(dataIndex, 1, false).Copy(ptEachRow);
-                    ws.Cells.CopyRows(prototype.Worksheets[0].Cells,3, rowIndex,3);
+                    ws.Cells.CreateRange(dataIndex, 1, false).Copy(ptEachRow);
 
-                    ws.Cells[rowIndex, 0].PutValue(each.studentRecord.SeatNo.HasValue ? each.studentRecord.SeatNo.Value.ToString() : "");
-                    ws.Cells[rowIndex, 1].PutValue(each.studentRecord.Name);
-                    ws.Cells[rowIndex, 2].PutValue(each.studentRecord.StudentNumber);
-                    ws.Cells[rowIndex, 3].PutValue(each.studentRecord.Gender);
+                    ws.Cells[dataIndex, 0].PutValue(each.studentRecord.SeatNo.HasValue ? each.studentRecord.SeatNo.Value.ToString() : "");
+                    ws.Cells[dataIndex, 1].PutValue(each.studentRecord.Name);
+                    ws.Cells[dataIndex, 2].PutValue(each.studentRecord.StudentNumber);
+                    ws.Cells[dataIndex, 3].PutValue(each.studentRecord.Gender);
 
                     //社團
                     if (each.club != null)
                     {
-                        ws.Cells[rowIndex, 4].PutValue(each.club.ClubName);
+                        ws.Cells[dataIndex, 4].PutValue(each.club.ClubName);
                     }
 
                     if (each.SCJoin != null)
@@ -249,7 +240,7 @@ namespace K12.Club.Volunteer
                                 string name = each1.GetAttribute("Name");
                                 if (評.ColumnDic.ContainsKey(name))
                                 {
-                                    ws.Cells[rowIndex, DetalIndex + 評.ColumnDic[name]].PutValue(each1.GetAttribute("Score"));
+                                    ws.Cells[dataIndex, DetalIndex + 評.ColumnDic[name]].PutValue(each1.GetAttribute("Score"));
                                 }
                             }
 
@@ -258,7 +249,7 @@ namespace K12.Club.Volunteer
 
                     for (int x = 3; x < ColumnNameList.Count; x++)
                     {
-                        tool.SetCellBro(ws, rowIndex, x, 1, 1);
+                        tool.SetCellBro(ws, dataIndex, x, 1, 1);
                     }
 
                     //學期成績
@@ -270,7 +261,7 @@ namespace K12.Club.Volunteer
                         {
                             ws.Cells.SetColumnWidth(ColumnNameList.Count - 2, 8);
                             string Score = each.RSR.ResultScore.HasValue ? each.RSR.ResultScore.Value.ToString() : "";
-                            ws.Cells[rowIndex, ColumnNameList.Count - 2].PutValue(Score);
+                            ws.Cells[dataIndex, ColumnNameList.Count - 2].PutValue(Score);
                         }
                         else
                         {
@@ -284,7 +275,7 @@ namespace K12.Club.Volunteer
 
                             ws.Cells.SetColumnWidth(ColumnNameList.Count - 1, 8);
                             string Score = each.RSR.ResultScore.HasValue ? each.RSR.ResultScore.Value.ToString() : "";
-                            ws.Cells[rowIndex, ColumnNameList.Count - 1].PutValue(Score);
+                            ws.Cells[dataIndex, ColumnNameList.Count - 1].PutValue(Score);
                         }
                         else
                         {
@@ -292,14 +283,12 @@ namespace K12.Club.Volunteer
                         }
                     }
 
-                    rowIndex++;
+                    dataIndex++;
                 }
 
                 CountPage++; //每班增加1頁
 
-                //ws.HPageBreaks.Add(dataIndex, ColumnNameList.Count); 舊aspose寫法
-
-                ws.HorizontalPageBreaks.Add(rowIndex, ColumnNameList.Count);
+                ws.HPageBreaks.Add(dataIndex, ColumnNameList.Count);
             }
 
             #endregion
@@ -328,7 +317,7 @@ namespace K12.Club.Volunteer
                 if (e.Error == null)
                 {
                     SaveFileDialog SaveFileDialog1 = new SaveFileDialog();
-                    SaveFileDialog1.Filter = "Excel (*.xlsx)|*.xlsx|所有檔案 (*.*)|*.*";
+                    SaveFileDialog1.Filter = "Excel (*.xls)|*.xls|所有檔案 (*.*)|*.*";
                     SaveFileDialog1.FileName = PriontName;
 
                     //資料

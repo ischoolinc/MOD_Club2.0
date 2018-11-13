@@ -45,8 +45,7 @@ namespace K12.Club.Volunteer
         {
             try
             {
-                //_workbook.Save(path, FileFormatType.Excel2003); 舊aspose寫法
-                _workbook.Save(path,SaveFormat.Xlsx);
+                _workbook.Save(path, FileFormatType.Excel2003);
 
             }
             catch (Exception ex)

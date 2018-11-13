@@ -90,7 +90,9 @@ FROM
             {
                 string sql = @"
 SELECT
-    *
+    id
+    , name
+    , student_number
 FROM
     student
 WHERE
