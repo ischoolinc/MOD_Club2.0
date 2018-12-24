@@ -136,6 +136,11 @@
       <HintPath>Library\FISCA.UDT.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Framework, Version=1.0.0.10, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Library\Framework.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="IntelliSchool.DSA.ClientFramework, Version=1.2.2.1, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Library\IntelliSchool.DSA.ClientFramework.dll</HintPath>
@@ -144,6 +149,16 @@
     <Reference Include="IRewriteAPI_CLUB, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Library\IRewriteAPI_CLUB.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="JHSchool, Version=1.0.4.11, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Library\JHSchool.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="JHSchool.Association, Version=1.0.8.1, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Library\JHSchool.Association.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="K12.Data, Version=2.0.0.5, Culture=neutral, processorArchitecture=MSIL">
@@ -331,6 +346,12 @@
     </Compile>
     <Compile Include="Ribbon\Export\frmExportSCJoin.Designer.cs">
       <DependentUpon>frmExportSCJoin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Ribbon\ImportToCourse\frmImportToCourse.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ribbon\ImportToCourse\frmImportToCourse.Designer.cs">
+      <DependentUpon>frmImportToCourse.cs</DependentUpon>
     </Compile>
     <Compile Include="Ribbon\Import\ImportSCJoinData.cs" />
     <Compile Include="Ribbon\Import\ValidationRule\CheckInt.cs" />
@@ -576,6 +597,9 @@
     <EmbeddedResource Include="Ribbon\Export\frmExportSCJoin.resx">
       <DependentUpon>frmExportSCJoin.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Ribbon\ImportToCourse\frmImportToCourse.resx">
+      <DependentUpon>frmImportToCourse.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Ribbon\志願_選填狀況檢查\VolunteerClassForm.resx">
       <DependentUpon>VolunteerClassForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -684,8 +708,12 @@
     <Content Include="Library\FISCA.UDT.pdb" />
     <Content Include="Library\FISCA.UDT.xml" />
     <Content Include="Library\FISCA.xml" />
+    <Content Include="Library\Framework.dll" />
     <Content Include="Library\IntelliSchool.DSA.ClientFramework.dll" />
     <Content Include="Library\IntelliSchool.DSA.ClientFramework.xml" />
+    <Content Include="Library\JHSchool.Association.dll" />
+    <Content Include="Library\JHSchool.Association.pdb" />
+    <Content Include="Library\JHSchool.dll" />
     <Content Include="Library\K12.Data.dll" />
     <Content Include="Library\K12.Data.pdb" />
     <Content Include="Library\K12.Data.xml" />
@@ -702,6 +730,8 @@
     <Content Include="Report\班級社團成績單\不及格的定義.txt" />
     <None Include="Resources\wizard1.BackgroundImage.png" />
     <None Include="Resources\SCJoinValidate.xml" />
+    <Content Include="Resources\library_up_64.png" />
+    <Content Include="tools\JHSchool.dll" />
     <Content Include="這個社團是社團2.0.txt" />
     <None Include="Resources\presentation_a_config_64.png" />
     <None Include="Resources\admissions_ok_64.png" />

@@ -194,7 +194,7 @@ namespace K12.Club.Volunteer.Properties {
         ///  &lt;FieldList&gt;
         ///    &lt;Field Required=&quot;True&quot; Name=&quot;學年度&quot; Description=&quot;學年度/學期/社團名稱為鍵值必填&quot;&gt;
         ///      &lt;Validate AutoCorrect=&quot;False&quot; Description=&quot;「學年度」不允許空白。&quot; ErrorType=&quot;Error&quot; Validator=&quot;不可空白&quot; When=&quot;&quot;/&gt;
-        ///      &lt;Validate AutoCorr [字串的其餘部分已遭截斷]&quot;; 的當地語系化字串。
+        ///      &lt;Validate AutoCorrect=&quot;False&quot; D [字串的其餘部分已遭截斷]&quot;; 的當地語系化字串。
         /// </summary>
         internal static string ImportCLUBDataValRule {
             get {
@@ -213,7 +213,7 @@ namespace K12.Club.Volunteer.Properties {
         ///    &lt;Field Required=&quot;True&quot; Name=&quot;學號&quot; Description=&quot;學生的學號&quot;&gt;
         ///      &lt;Validate AutoCorrect=&quot;False&quot; Description=&quot;「學號」不允許空白。&quot; ErrorType=&quot;Error&quot; Validator=&quot;不可空白&quot; When=&quot;&quot;/&gt;
         ///      &lt;Validate AutoCorrect=&quot;False&quot; Description=&quot;「學號」長度必須小於12個文字。&quot; ErrorType=&quot;Error&quot; Validator=&quot;文字12&quot; When=&quot;&quot;/&gt;
-        ///      &lt;Validate AutoCorrect=&quot;False&quot; Description=&quot;「學號」不存在於系統中。&quot; ErrorType=&quot;E [字串的其餘部分已遭截斷]&quot;; 的當地語系化字串。
+        ///      &lt;Validate AutoCorrect=&quot;False&quot; Description=&quot;「學號」不存在於系統中。&quot; ErrorType=&quot;Error&quot; Vali [字串的其餘部分已遭截斷]&quot;; 的當地語系化字串。
         /// </summary>
         internal static string ImportVolunteerRecordValRule {
             get {
@@ -227,6 +227,16 @@ namespace K12.Club.Volunteer.Properties {
         internal static System.Drawing.Bitmap layers_64 {
             get {
                 object obj = ResourceManager.GetObject("layers_64", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類型 System.Drawing.Bitmap 的當地語系化資源。
+        /// </summary>
+        internal static System.Drawing.Bitmap library_up_64 {
+            get {
+                object obj = ResourceManager.GetObject("library_up_64", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -295,7 +305,8 @@ namespace K12.Club.Volunteer.Properties {
         ///  &lt;/DuplicateDetection&gt;
         ///  &lt;FieldList&gt;
         ///    &lt;Field Required=&quot;True&quot; Name=&quot;學年度&quot; Description=&quot;學年度/學期/社團名稱/學號為鍵值必填&quot;&gt;
-        ///      &lt;Validate AutoCorrect=&quot;False&quot; Description=&quot;「學年度」不允許空白。&quot; ErrorType=&quot;Error&quot; Validator=&quot;不可空白&quot; When=&quot;&quot; [字串的其餘部分已遭截斷]&quot;; 的當地語系化字串。
+        ///      &lt;Validate AutoCorrect=&quot;False&quot; Description=&quot;「學年度」不允許空白。&quot; ErrorType=&quot;Error&quot; Validator=&quot;不可空白&quot; When=&quot;&quot;/&gt;
+        ///      &lt;Val [字串的其餘部分已遭截斷]&quot;; 的當地語系化字串。
         /// </summary>
         internal static string SCJoinValidate {
             get {

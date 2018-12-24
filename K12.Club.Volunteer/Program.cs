@@ -74,7 +74,7 @@ namespace K12.Club.Volunteer
             FactoryProvider.RowFactory.Add(new CLUBRowValidatorFactory());
 
             // .NET 版本預設為Ss13(已過時) ，會被擋住， 透過更正連線解決，
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls;
+            //ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls;
 
             #region 毛毛蟲
 
@@ -293,7 +293,6 @@ namespace K12.Club.Volunteer
                 };
 
                 // 2018/1/15 羿均 此為社團2.0開發工具: 隨機填入學生社團志願
-
                 //RibbonBarItem test = ClubAdmin.Instance.RibbonBarItems["測試資料"];
                 //test["隨機填入學生志願"].Size = RibbonBarButton.MenuButtonSize.Medium;
                 //test["隨機填入學生志願"].Image = Properties.Resources.group_up_64;
@@ -456,7 +455,21 @@ namespace K12.Club.Volunteer
                     ResultsInputDateTime insert = new ResultsInputDateTime();
                     insert.ShowDialog();
                 };
-            } 
+            }
+            #endregion
+            #region 課程
+            {
+                RibbonBarItem course = ClubAdmin.Instance.RibbonBarItems["課程"];
+                course["轉入課程"].Size = RibbonBarButton.MenuButtonSize.Medium;
+                course["轉入課程"].Image = Properties.Resources.library_up_64;
+                course["轉入課程"].Enable = true;
+                course["轉入課程"].Click += delegate
+                {
+                    frmImportToCourse form = new frmImportToCourse();
+                    form.ShowDialog();
+                };
+
+            }
             #endregion
 
             #region 右鍵選單
@@ -611,11 +624,6 @@ namespace K12.Club.Volunteer
             {
                 FISCA.Presentation.MotherForm.SetStatusBarMessage("選擇「" + ClubAdmin.Instance.SelectedSource.Count + "」個社團");
             };
-        }
-
-        void Program_Click(object sender, EventArgs e)
-        {
-
         }
 
         static private void DeleteClub()
