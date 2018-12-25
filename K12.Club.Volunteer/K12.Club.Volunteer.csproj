@@ -731,7 +731,6 @@
     <None Include="Resources\wizard1.BackgroundImage.png" />
     <None Include="Resources\SCJoinValidate.xml" />
     <Content Include="Resources\library_up_64.png" />
-    <Content Include="tools\JHSchool.dll" />
     <Content Include="這個社團是社團2.0.txt" />
     <None Include="Resources\presentation_a_config_64.png" />
     <None Include="Resources\admissions_ok_64.png" />

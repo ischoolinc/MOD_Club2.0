@@ -462,7 +462,7 @@ namespace K12.Club.Volunteer
                 RibbonBarItem course = ClubAdmin.Instance.RibbonBarItems["課程"];
                 course["轉入課程"].Size = RibbonBarButton.MenuButtonSize.Medium;
                 course["轉入課程"].Image = Properties.Resources.library_up_64;
-                course["轉入課程"].Enable = true;
+                course["轉入課程"].Enable = Permissions.轉入課程權限;
                 course["轉入課程"].Click += delegate
                 {
                     frmImportToCourse form = new frmImportToCourse();
@@ -578,6 +578,7 @@ namespace K12.Club.Volunteer
             detail1.Add(new RibbonFeature(Permissions.開放選社時間, "開放選社時間"));
             detail1.Add(new RibbonFeature(Permissions.成績輸入時間, "成績輸入時間"));
             detail1.Add(new RibbonFeature(Permissions.重覆選社檢查, "重覆選社檢查"));
+            detail1.Add(new RibbonFeature(Permissions.轉入課程, "轉入課程"));
             //志願序獨有
             detail1.Add(new RibbonFeature(Permissions.學生選社志願設定, "學生選社志願設定"));
             detail1.Add(new RibbonFeature(Permissions.學生社團分配, "學生社團分配"));
@@ -589,7 +590,6 @@ namespace K12.Club.Volunteer
             detail1.Add(new RibbonFeature(Permissions.匯入社團基本資料, "匯入社團基本資料"));
             detail1.Add(new RibbonFeature(Permissions.匯出社團參與學生, "匯出社團參與學生"));
             detail1.Add(new RibbonFeature(Permissions.匯入社團參與學生, "匯入社團參與學生"));
-
 
             detail1 = RoleAclSource.Instance["社團"]["報表"];
             detail1.Add(new RibbonFeature(Permissions.社團點名單, "社團點名單"));

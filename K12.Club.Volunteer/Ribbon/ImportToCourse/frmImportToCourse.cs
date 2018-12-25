@@ -25,8 +25,13 @@ namespace K12.Club.Volunteer
         private class ClubRecord
         {
             public string ClubName { get; set; }
-            public string RefTeacherName { get; set; }
-            public string RefTeacherID { get; set; }
+            public string ClubLocation { get; set; }
+            public string TeacherName1 { get; set; }
+            public string TeacherID1 { get; set; }
+            public string TeacherName2 { get; set; }
+            public string TeacherID2 { get; set; }
+            public string TeacherName3 { get; set; }
+            public string TeacherID3 { get; set; }
             public string RefExamTemplateID { get; set; }
             public string IsImport { get; set; }
             public List<string> listStudentID { get; set; }
@@ -42,10 +47,8 @@ namespace K12.Club.Volunteer
         {
             // Init exam_template
             InitExamTemplate();
-
             // Init tag
             InitTag();
-
             // Init SchoolYear
             int schoolYear = int.Parse(K12.Data.School.DefaultSchoolYear == "" ? null : K12.Data.School.DefaultSchoolYear);
             cbxSchoolYear.Items.Add(schoolYear - 1);
@@ -172,11 +175,19 @@ WITH club_data AS(
        ,  club.club_name
         , club.location
         , club.ref_teacher_id
-        , teacher.teacher_name
+        , club.ref_teacher_id_2
+        , club.ref_teacher_id_3
+        , teacher1.teacher_name AS teacher_name1
+        , teacher2.teacher_name AS teacher_name2
+        , teacher3.teacher_name AS teacher_name3
     FROM
         $k12.clubrecord.universal AS club
-        LEFT OUTER JOIN teacher
-            ON teacher.id = club.ref_teacher_id::BIGINT
+        LEFT OUTER JOIN teacher AS teacher1
+            ON teacher1.id = club.ref_teacher_id::BIGINT
+        LEFT OUTER JOIN teacher AS teacher2
+            ON teacher2.id = club.ref_teacher_id_2::BIGINT
+        LEFT OUTER JOIN teacher AS teacher3
+            ON teacher3.id = club.ref_teacher_id_3::BIGINT
     WHERE
         club.school_year = {0}
         AND club.semester = {1}
@@ -235,8 +246,13 @@ ORDER BY
                     {
                         ClubRecord data = new ClubRecord();
                         data.ClubName = "" + row["club_name"];
-                        data.RefTeacherID = "" + row["ref_teacher_id"];
-                        data.RefTeacherName = "" + row["teacher_name"];
+                        data.ClubLocation = "" + row["location"];
+                        data.TeacherID1 = "" + row["ref_teacher_id"];
+                        data.TeacherName1 = "" + row["teacher_name1"];
+                        data.TeacherID2 = "" + row["ref_teacher_id_2"];
+                        data.TeacherName2 = "" + row["teacher_name2"];
+                        data.TeacherID3 = "" + row["ref_teacher_id_3"];
+                        data.TeacherName3 = "" + row["teacher_name3"];
                         data.RefExamTemplateID = this._examTemplateID;
                         data.IsImport = "" + row["is_import"];
                         data.listStudentID = new List<string>();
@@ -260,7 +276,9 @@ ORDER BY
                     int col = 0;
                     dgvrow.Cells[col++].Value = clubName;
                     dgvrow.Cells[col++].Value = this._dicClubRecordByName[clubName].listStudentID.Count;
-                    dgvrow.Cells[col++].Value = this._dicClubRecordByName[clubName].RefTeacherName;
+                    dgvrow.Cells[col++].Value = this._dicClubRecordByName[clubName].TeacherName1;
+                    dgvrow.Cells[col++].Value = this._dicClubRecordByName[clubName].TeacherName2;
+                    dgvrow.Cells[col++].Value = this._dicClubRecordByName[clubName].TeacherName3;
                     dgvrow.Cells[col++].Value = this._examTemplateName;
                     dgvrow.Cells[col++].Value = this._dicClubRecordByName[clubName].IsImport;
 
@@ -289,38 +307,54 @@ ORDER BY
 
         private void btnImport_Click(object sender, EventArgs e)
         {
-            DataTable dtCourse = new DataTable(); ;
-
-            #region 建立課程，並取回課程資料
+            if (dataGridViewX1.SelectedRows.Count > 0)
             {
-                List<string> listCourseData = new List<string>();
-                #region 資料整理
-                foreach (string clubName in this._dicClubRecordByName.Keys)
+                List<string> listSelectedClubName = new List<string>();
+                foreach (DataGridViewRow dgvrow in dataGridViewX1.SelectedRows)
                 {
-                    // 取得尚未轉入課程的資料
-                    if (this._dicClubRecordByName[clubName].IsImport == "否")
+                    string selectedClub = string.Format("「{0}」", "" + dgvrow.Cells[0].Value);
+                    listSelectedClubName.Add(selectedClub);
+                }
+                DialogResult result = MsgBox.Show(string.Format("確定是否將{0}社團資料轉入課程?",string.Join(",", listSelectedClubName)), "提醒", MessageBoxButtons.YesNo);
+                if (result == DialogResult.Yes)
+                {
+                    DataTable dtCourse = new DataTable();
+
+                    #region 建立課程，並取回課程資料
                     {
-                        string data = string.Format(@"
+                        List<string> listCourseData = new List<string>();
+                        #region 資料整理
+                        foreach (DataGridViewRow dgvrow in dataGridViewX1.SelectedRows)
+                        {
+                            if (dgvrow.Index > -1)
+                            {
+                                string clubName = "" + dgvrow.Cells[0].Value;
+
+                                if (this._dicClubRecordByName[clubName].IsImport == "否")
+                                {
+                                    string data = string.Format(@"
 SELECT
     '{0}'::TEXT AS course_name
     , {1}::BIGINT AS ref_teacher_id
     , {2}::BIGINT AS ref_exam_template_id 
     , {3}::SMALLINT AS school_year
     , {4}::SMALLINT AS semester
-                        ", clubName
-                        , this._dicClubRecordByName[clubName].RefTeacherID == "" ? "null" : this._dicClubRecordByName[clubName].RefTeacherID
-                        , this._dicClubRecordByName[clubName].RefExamTemplateID
-                        , cbxSchoolYear.SelectedItem.ToString()
-                        , cbxSemester.SelectedItem.ToString()
-                    );
-                        listCourseData.Add(data);
-                    }
-                } 
-                #endregion
-                if (listCourseData.Count > 0)
-                {
-                    #region SQL
-                    string sql = string.Format(@"
+                                ", clubName
+                                    , this._dicClubRecordByName[clubName].TeacherID1 == "" ? "null" : this._dicClubRecordByName[clubName].TeacherID1
+                                    , this._dicClubRecordByName[clubName].RefExamTemplateID
+                                    , cbxSchoolYear.SelectedItem.ToString()
+                                    , cbxSemester.SelectedItem.ToString()
+    );
+                                    listCourseData.Add(data);
+                                }
+                            }
+
+                        }
+                        #endregion
+                        if (listCourseData.Count > 0)
+                        {
+                            #region SQL
+                            string sql = string.Format(@"
 WITH data_row AS(
     {0}
 ) , insert_data AS(
@@ -346,44 +380,98 @@ SELECT
 FROM
     insert_data
             ", string.Join("UNION ALL", listCourseData));
+                            #endregion
+                            dtCourse = this._qh.Select(sql);
+                        }
+                        else
+                        {
+                            MsgBox.Show("沒有資料可以轉入課程!");
+                            return;
+                        }
+                    }
                     #endregion
-                    dtCourse = this._qh.Select(sql);
-                }
-                else
-                {
-                    MsgBox.Show("沒有資料可以轉入課程!");
-                    return;
-                }
-            }
-           
-            #endregion
 
-            #region 轉入修課學生
-            {
-                List<string> listSCAttend = new List<string>();
-
-                #region 資料整理
-                foreach (DataRow row in dtCourse.Rows)
-                {
-                    string courseName = "" + row["course_name"];
-                    string courseID = "" + row["id"];
-
-                    foreach (string studentID in this._dicClubRecordByName[courseName].listStudentID)
+                    #region 轉入課程修課學生、轉入課程老師、新建課程貼上聯課活動標籤、轉入高雄社團上課地點
                     {
-                        string data = string.Format(@"
+                        List<string> listSCAttend = new List<string>();
+                        List<string> listCourseTeacher = new List<string>();
+                        List<string> listDataRow = new List<string>();
+                        List<string> listClubLocation = new List<string>();
+
+                        #region 資料整理
+                        foreach (DataRow row in dtCourse.Rows)
+                        {
+                            string courseName = "" + row["course_name"];
+                            string courseID = "" + row["id"];
+                            // 修課學生資料
+                            foreach (string studentID in this._dicClubRecordByName[courseName].listStudentID)
+                            {
+                                string scData = string.Format(@"
 SELECT
     {0}::BIGINT AS ref_student_id
     , {1}::BIGINT AS ref_course_id
-                    ", studentID, courseID);
+                                ", studentID, courseID);
+                                listSCAttend.Add(scData);
+                            }
+                            // 課程老師資料
+                            for (int i = 1; i <= 3; i++)
+                            {
+                                string teacherID = "";
+                                switch (i)
+                                {
+                                    case 1:
+                                        teacherID = this._dicClubRecordByName[courseName].TeacherID1;
+                                        break;
+                                    case 2:
+                                        teacherID = this._dicClubRecordByName[courseName].TeacherID2;
+                                        break;
+                                    case 3:
+                                        teacherID = this._dicClubRecordByName[courseName].TeacherID3;
+                                        break;
+                                }
 
-                        listSCAttend.Add(data);
-                    }
-                } 
-                #endregion
-                if (listSCAttend.Count > 0)
-                {
-                    #region SQL
-                    string sql = string.Format(@"
+                                if (!string.IsNullOrEmpty(teacherID))
+                                {
+                                    string ctData = string.Format(@"
+SELECT
+    {0}::BIGINT AS ref_teacher_id
+    , {1}::BIGINT AS ref_course_id
+    , {2}::SMALLINT AS sequence
+                                ", teacherID, courseID, i);
+                                    listCourseTeacher.Add(ctData);
+                                }
+                            }
+                            // 聯課活動標籤
+                            {
+                                string tagData = string.Format(@"
+SELECT
+    {0}::BIGINT AS ref_course_id
+    , {1}::BIGINT AS ref_tag_id
+                        ", "" + row["id"]
+                               , this._courseTagID);
+
+                                listDataRow.Add(tagData);
+                            }
+                            // 上課地點
+                            {
+                                string location = this._dicClubRecordByName[courseName].ClubLocation;
+                                string locationData = string.Format(@"
+SELECT
+    '{0}'::TEXT AS associationid
+    , '{1}'::TEXT AS schoolyear
+    , '{2}'::TEXT AS semester
+    , '{3}'::TEXT AS address
+                            ", courseID, cbxSchoolYear.SelectedItem.ToString(), cbxSemester.SelectedItem.ToString(), location);
+
+                                listClubLocation.Add(locationData);
+                            }
+                        }
+                        #endregion
+                        // 轉入課程修課學生
+                        if (listSCAttend.Count > 0)
+                        {
+                            #region SQL
+                            string sql = string.Format(@"
 WITH data_row AS(
     {0}
 ) 
@@ -397,33 +485,37 @@ SELECT
 FROM
     data_row
                 ", string.Join("UNION ALL", listSCAttend));
-                    #endregion
-
-                    this._up.Execute(sql);
-                }
-            }
-            #endregion
-
-            #region 新建課程貼上聯課活動標籤
-            {
-                if (dtCourse.Rows.Count > 0)
-                {
-                    List<string> listDataRow = new List<string>();
-
-                    foreach (DataRow row in dtCourse.Rows)
-                    {
-                        string data = string.Format(@"
+                            #endregion
+                            this._up.Execute(sql);
+                        }
+                        // 轉入課程老師
+                        if (listCourseTeacher.Count > 0)
+                        {
+                            #region SQL
+                            string sql = string.Format(@"
+WITH data_row AS(
+    {0}
+)
+INSERT INTO tc_instruct(
+    ref_teacher_id
+    , ref_course_id
+    , sequence
+)
 SELECT
-    {0}::BIGINT AS ref_course_id
-    , {1}::BIGINT AS ref_tag_id
-                        ","" + row["id"]
-                        , this._courseTagID);
-
-                        listDataRow.Add(data);
-                    }
-
-                    #region SQL
-                    string sql = string.Format(@"
+    ref_teacher_id
+    , ref_course_id
+    , sequence
+FROM
+    data_row
+                        ", string.Join("UNION ALL", listCourseTeacher));
+                            #endregion
+                            this._up.Execute(sql);
+                        }
+                        // 新建課程貼上聯課活動標籤
+                        if (listDataRow.Count > 0)
+                        {
+                            #region SQL
+                            string sql = string.Format(@"
 WITH data_row AS(
     {0}
 )
@@ -437,20 +529,63 @@ SELECT
 FROM
     data_row
                     ", string.Join("UNION ALL", listDataRow));
+                            #endregion
+                            this._up.Execute(sql);
+                        }
+                        // 轉入高雄社團上課地點
+                        if (listClubLocation.Count > 0)
+                        {
+                            #region SQL
+                            string sql = string.Format(@"
+WITH data_row AS(
+    {0}
+) , update_data AS(
+    UPDATE $jhschool.association.udt.address SET
+        associationid = data_row.associationid
+        , schoolyear = data_row.schoolyear
+        , semester = data_row.semester
+        , address = data_row.address
+    FROM    
+        data_row
+    WHERE
+        data_row.associationid = $jhschool.association.udt.address.associationid
+) 
+INSERT INTO $jhschool.association.udt.address(
+    associationid
+    , schoolyear
+    , semester
+    , address
+)
+SELECT
+    data_row.associationid
+    , data_row.schoolyear
+    , data_row.semester
+    , data_row.address
+FROM
+    data_row
+    LEFT OUTER JOIN $jhschool.association.udt.address AS club
+        ON club.associationid = data_row.associationid
+WHERE
+    club.uid IS NULL
+                            ", string.Join("UNION ALL", listClubLocation));
+                            #endregion
+                            this._up.Execute(sql);
+                        }
+                    }
                     #endregion
 
-                    this._up.Execute(sql);
+                    MsgBox.Show(string.Format("資料比數[{0}]:轉入成功", dataGridViewX1.SelectedRows.Count));
+                    // 高雄社團頁籤資料Reload
+                    AssnAdmin.Instance.BGW1.RunWorkerAsync();
+                    // 課程頁籤資料Reload
+                    JHSchool.Course.Instance.SyncAllBackground();
+                    ReloadDataGridView();
                 }
             }
-            #endregion
-
-            MsgBox.Show("資料轉入成功");
-            // 高雄社團頁籤資料Reload
-            AssnAdmin.Instance.BGW1.RunWorkerAsync();
-            // 課程頁籤資料Reload
-            JHSchool.Course.Instance.SyncAllBackground();
-            //K12.Presentation.NLDPanels.Course.RefillListPane();
-            ReloadDataGridView();
+            else
+            {
+                MsgBox.Show("請選擇要轉入課程的社團資料!");
+            }
         }
 
         private void btnLeave_Click(object sender, EventArgs e)

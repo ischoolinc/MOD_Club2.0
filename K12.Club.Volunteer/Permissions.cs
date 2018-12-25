@@ -17,7 +17,6 @@ namespace K12.Club.Volunteer
         }
 
         public static string 複製社團 { get { return "K12.Club.Universal.CopyClub.cs"; } }
-
         public static bool 複製社團權限
         {
             get
@@ -72,7 +71,6 @@ namespace K12.Club.Volunteer
         }
 
         public static string 未選社團學生 { get { return "K12.Club.Universal.CheckStudentIsNotInClub.cs"; } }
-
         public static bool 未選社團學生權限
         {
             get
@@ -82,9 +80,6 @@ namespace K12.Club.Volunteer
         }
         
         public static string 調整社團學生 { get { return "K12.Club.Universal.SplitClasses.cs"; } }
-
-
-
         public static bool 調整社團學生權限
         {
             get
@@ -94,7 +89,6 @@ namespace K12.Club.Volunteer
         }
 
         public static string 檢查批次社團鎖社 { get { return "K12.Club.Universal.MutipleLock.cs"; } }
-
         public static bool 檢查批次社團鎖社權限
         {
             get
@@ -104,7 +98,6 @@ namespace K12.Club.Volunteer
         }
 
         public static string 評量項目 { get { return "K12.Club.Universal.GradingProjectConfig.cs"; } }
-
         public static bool 評量項目權限
         {
             get
@@ -131,9 +124,7 @@ namespace K12.Club.Volunteer
             }
         }
 
-
         public static string 開放選社時間 { get { return "K12.Club.Universal.OpenClubJoinDateTime.cs"; } }
-
         public static bool 開放選社時間權限
         {
             get
@@ -337,6 +328,15 @@ namespace K12.Club.Volunteer
             get
             {
                 return FISCA.Permission.UserAcl.Current[匯入社團參與學生].Executable;
+            }
+        }
+
+        public static string 轉入課程 { get { return "C0A1AA4D-83C8-4F5D-84B5-24CC24FCA6C7"; } }
+        public static bool 轉入課程權限
+        {
+            get
+            {
+                return FISCA.Permission.UserAcl.Current[轉入課程].Executable;
             }
         }
     }
