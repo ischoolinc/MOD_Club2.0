@@ -115,7 +115,17 @@ namespace K12.Club.Volunteer
 
             //取得老師資料
             TeacherList.Clear();
-            DataTable dt = _QueryHelper.Select("select teacher.id,teacher.teacher_name,teacher.nickname from teacher ORDER by teacher_name");
+            DataTable dt = _QueryHelper.Select(@"
+SELECT 
+    id
+    , teacher_name
+    , nickname 
+FROM 
+    teacher 
+WHERE 
+    status = 1 
+ORDER BY 
+    teacher_name");
             foreach (DataRow row in dt.Rows)
             {
                 TeacherObj obj = new TeacherObj();
@@ -400,7 +410,7 @@ namespace K12.Club.Volunteer
             //社團名稱+學年度+學期不可重覆
             StringBuilder sb = new StringBuilder();
             sb.Append("select club_name from " + Tn._CLUBRecordUDT.ToLower() + " ");
-            sb.Append("where club_name = '" + txtClubName.Text + "' ");
+            sb.Append("where club_name = '" + txtClubName.Text.Replace("'", "''") + "' ");// 處理社團名稱特殊字「'」單引號問題
             sb.Append("and school_year = '" + intSchoolYear.Value.ToString() + "' ");
             sb.Append("and semester = '" + intSemester.Value.ToString() + "'");
 

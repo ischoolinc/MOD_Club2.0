@@ -339,7 +339,7 @@ SELECT
     , {2}::BIGINT AS ref_exam_template_id 
     , {3}::SMALLINT AS school_year
     , {4}::SMALLINT AS semester
-                                ", clubName
+                                ", clubName.Replace("'","''")
                                     , this._dicClubRecordByName[clubName].TeacherID1 == "" ? "null" : this._dicClubRecordByName[clubName].TeacherID1
                                     , this._dicClubRecordByName[clubName].RefExamTemplateID
                                     , cbxSchoolYear.SelectedItem.ToString()

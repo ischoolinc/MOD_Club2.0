@@ -186,7 +186,17 @@ namespace K12.Club.Volunteer
             TeacherList.Clear();
             TeacherDic.Clear();
             TeacherNameDic.Clear();
-            dt = _QueryHelper.Select("select teacher.id,teacher.teacher_name,teacher.nickname from teacher ORDER by teacher_name");
+            dt = _QueryHelper.Select(@"
+SELECT 
+    id
+    , teacher_name
+    , nickname 
+FROM 
+    teacher 
+WHERE
+    status = 1
+ORDER by 
+    teacher_name");
             foreach (DataRow row in dt.Rows)
             {
                 TeacherObj obj = new TeacherObj();
