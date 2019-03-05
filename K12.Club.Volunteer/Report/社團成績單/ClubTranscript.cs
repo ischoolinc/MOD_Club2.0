@@ -45,7 +45,7 @@ namespace K12.Club.Volunteer
             #region 建立範本
 
             Workbook template = new Workbook();
-            template.Open(new MemoryStream(Properties.Resources.社團成績單_範本), FileFormatType.Excel2003);
+            template.Open(new MemoryStream(Properties.Resources.社團成績單_範本), FileFormatType.Xlsx);
             //Style sy = template.Worksheets[0].Cells[3, 0].Style;
             //每一張
             Workbook prototype = new Workbook();
@@ -70,9 +70,13 @@ namespace K12.Club.Volunteer
             ColumnNameList.Add("社團幹部");
 
             int ColumnNameIndex = 0;
+            //Jean 更新Aspose
+            Style style= prototype.CreateStyle();
+            style.IsTextWrapped = true;
+
             foreach (string each in ColumnNameList)
             {
-                ptws.Cells[2, ColumnNameIndex].Style.IsTextWrapped = true;
+                ptws.Cells[2, ColumnNameIndex].SetStyle(style);
                 ptws.Cells[2, ColumnNameIndex].PutValue(each);
                 if (ColumnNameIndex >= 5)
                 {
@@ -252,7 +256,7 @@ namespace K12.Club.Volunteer
                 if (e.Error == null)
                 {
                     SaveFileDialog SaveFileDialog1 = new SaveFileDialog();
-                    SaveFileDialog1.Filter = "Excel (*.xls)|*.xls|所有檔案 (*.*)|*.*";
+                    SaveFileDialog1.Filter = "Excel (*.xlsx)|*.xlsx|所有檔案 (*.*)|*.*";
                     SaveFileDialog1.FileName = "社團成績單";
 
                     //資料

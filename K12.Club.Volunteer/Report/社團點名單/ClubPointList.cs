@@ -41,7 +41,7 @@ namespace K12.Club.Volunteer
 
             //建立Excel範本
             Workbook template = new Workbook();
-            template.Open(new MemoryStream(Properties.Resources.社團點名單_範本), FileFormatType.Excel2003);
+            template.Open(new MemoryStream(Properties.Resources.社團點名單_範本), FileFormatType.Xlsx);
 
             //每一張
             Workbook prototype = new Workbook();
@@ -141,7 +141,7 @@ namespace K12.Club.Volunteer
                 if (e.Error == null)
                 {
                     SaveFileDialog SaveFileDialog1 = new SaveFileDialog();
-                    SaveFileDialog1.Filter = "Excel (*.xls)|*.xls|所有檔案 (*.*)|*.*";
+                    SaveFileDialog1.Filter = "Excel (*.xlsx)|*.xlsx|所有檔案 (*.*)|*.*";
                     SaveFileDialog1.FileName = "社團點名單";
 
                     //資料
