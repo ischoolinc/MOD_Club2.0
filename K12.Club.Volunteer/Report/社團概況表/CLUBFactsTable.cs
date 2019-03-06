@@ -15,6 +15,7 @@ using System.IO;
 using System.Diagnostics;
 using System.Xml;
 using FISCA.DSAUtil;
+using Aspose.Words.Tables;
 
 namespace K12.Club.Volunteer
 {

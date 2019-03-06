@@ -45,7 +45,7 @@ namespace K12.Club.Volunteer
             #region 建立範本
 
             Workbook template = new Workbook();
-            template.Open(new MemoryStream(Properties.Resources.社團成績單_範本), FileFormatType.Xlsx);
+            template.Open(new MemoryStream(Properties.Resources.社團成績單_範本), FileFormatType.Excel97To2003);
             //Style sy = template.Worksheets[0].Cells[3, 0].Style;
             //每一張
             Workbook prototype = new Workbook();

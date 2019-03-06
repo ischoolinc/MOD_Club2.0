@@ -47,10 +47,9 @@
       <HintPath>Library\Aspose.Cells_201402.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Aspose.Words, Version=4.4.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+    <Reference Include="Aspose.Words_201402, Version=14.1.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>Library\Aspose.Words.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>Library\Aspose.Words_201402.dll</HintPath>
     </Reference>
     <Reference Include="Campus.Configuration, Version=1.0.0.5, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -72,7 +71,7 @@
       <HintPath>Library\Campus.IRewrite.Interface.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Campus.Report, Version=1.0.0.11, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Campus.Report, Version=1.0.0.13, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Library\Campus.Report.dll</HintPath>
       <Private>False</Private>
@@ -660,9 +659,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Library\Aspose.Cells_201402.dll" />
-    <Content Include="Library\Aspose.Cells_201402.xml" />
+    <Content Include="Library\Aspose.Cells_201402.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Library\Aspose.Words.dll" />
     <Content Include="Library\Aspose.Words.xml" />
+    <Content Include="Library\Aspose.Words_201402.dll" />
+    <Content Include="Library\Aspose.Words_201402.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Library\Campus.Configuration.dll" />
     <Content Include="Library\Campus.Configuration.pdb" />
     <Content Include="Library\Campus.DocumentValidator.dll" />

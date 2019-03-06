@@ -177,12 +177,13 @@ namespace K12.Club.Volunteer
                 Campus.Report.ReportConfiguration ConfigurationInCadre_1 = new Campus.Report.ReportConfiguration(ClassPrint_Config_1);
                 ConfigurationInCadre_1.Template = new Campus.Report.ReportTemplate(Properties.Resources.社團點名單_套表列印, Campus.Report.TemplateType.Word);
                 //ConfigurationInCadre_1.Template = new Campus.Report.ReportTemplate(Properties.Resources.社團點名表_合併欄位總表, Campus.Report.TemplateType.Word);
-                Template = ConfigurationInCadre_1.Template.ToDocument();
+                //Jean
+                Template = new Document(ConfigurationInCadre_1.Template.GetStream());
             }
             else
             {
                 //如果已有範本,則取得樣板
-                Template = ConfigurationInCadre.Template.ToDocument();
+                Template = new Document(ConfigurationInCadre.Template.GetStream());
             }
 
             string[] fieldNames = Template.MailMerge.GetFieldNames();
@@ -192,8 +193,6 @@ namespace K12.Club.Volunteer
                 if (item.Contains("姓名")) {
                     學生多少個++;
                 }
-            
-            
             }
 
             SCJoinDataLoad crM = new SCJoinDataLoad();

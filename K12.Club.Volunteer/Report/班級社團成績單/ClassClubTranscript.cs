@@ -90,7 +90,7 @@ namespace K12.Club.Volunteer
             #region 建立範本
 
             Workbook template = new Workbook();
-            template.Open(new MemoryStream(Properties.Resources.班級社團成績單_範本), FileFormatType.Xlsx);
+            template.Open(new MemoryStream(Properties.Resources.班級社團成績單_範本), FileFormatType.Excel97To2003);
             if (PrintLost) //不及格確認單
             {
                 PriontName = "班級社團成績不及格(確認單)";
