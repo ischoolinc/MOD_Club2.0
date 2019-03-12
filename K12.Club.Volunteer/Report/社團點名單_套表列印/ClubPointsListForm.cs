@@ -394,7 +394,7 @@ namespace K12.Club.Volunteer
                     {
                         SaveFileDialog SaveFileDialog1 = new SaveFileDialog();
 
-                        SaveFileDialog1.Filter = "Word (*.doc)|*.doc|所有檔案 (*.*)|*.*";
+                        SaveFileDialog1.Filter = "Word (*.docx)|*.docx|所有檔案 (*.*)|*.*";
                         SaveFileDialog1.FileName = "社團點名單(套表列印)";
 
                         if (SaveFileDialog1.ShowDialog() == DialogResult.OK)

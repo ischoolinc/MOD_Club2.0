@@ -663,7 +663,9 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Library\Aspose.Words.dll" />
-    <Content Include="Library\Aspose.Words.xml" />
+    <Content Include="Library\Aspose.Words.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Library\Aspose.Words_201402.dll" />
     <Content Include="Library\Aspose.Words_201402.xml">
       <SubType>Designer</SubType>
