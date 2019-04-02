@@ -13,6 +13,8 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Xml;
+using Aspose.Words.Tables;
+using Aspose.Words.Reporting;
 
 namespace Across.Report
 {
@@ -61,12 +63,13 @@ namespace Across.Report
                 //如果範本為空,則建立一個預設範本
                 Campus.Report.ReportConfiguration ConfigurationInCadre_1 = new Campus.Report.ReportConfiguration(CadreConfig);
                 ConfigurationInCadre_1.Template = new Campus.Report.ReportTemplate(Properties.Resources.社團參與證明單_英文_範本, Campus.Report.TemplateType.Word);
-                Template = ConfigurationInCadre_1.Template.ToDocument();
+              
+                Template = new Document(ConfigurationInCadre_1.Template.GetStream());
             }
             else
             {
                 //如果已有範本,則取得樣板
-                Template = ConfigurationInCadre.Template.ToDocument();
+                Template = new Document(ConfigurationInCadre.Template.GetStream());
             }
 
             #endregion
@@ -184,7 +187,8 @@ namespace Across.Report
             }
 
             Document PageOne = (Document)Template.Clone(true);
-            PageOne.MailMerge.MergeField += new Aspose.Words.Reporting.MergeFieldEventHandler(MailMerge_MergeField);
+            //PageOne.MailMerge.MergeField += new Aspose.Words.Reporting.MergeFieldEventHandler(MailMerge_MergeField);
+            PageOne.MailMerge.FieldMergingCallback = new MailMerge_MergeField();
             PageOne.MailMerge.Execute(table);
             e.Result = PageOne;
         }
@@ -279,7 +283,7 @@ namespace Across.Report
                     {
                         SaveFileDialog SaveFileDialog1 = new SaveFileDialog();
 
-                        SaveFileDialog1.Filter = "Word (*.doc)|*.doc|所有檔案 (*.*)|*.*";
+                        SaveFileDialog1.Filter = "Word (*.docx)|*.docx|所有檔案 (*.*)|*.*";
                         SaveFileDialog1.FileName = "社團參與證明單(英文)";
 
                         if (SaveFileDialog1.ShowDialog() == DialogResult.OK)
@@ -309,8 +313,13 @@ namespace Across.Report
 
 
         }
+      
+        #region Aspose 更新
 
-        void MailMerge_MergeField(object sender, Aspose.Words.Reporting.MergeFieldEventArgs e)
+
+        class MailMerge_MergeField :Aspose.Words.Reporting.IFieldMergingCallback
+        {
+        void IFieldMergingCallback.FieldMerging(FieldMergingArgs e)
         {
             if (e.FieldName == "新生照片1" || e.FieldName == "新生照片2")
             {
@@ -388,66 +397,72 @@ namespace Across.Report
             }
         }
 
-        private void btnExit_Click(object sender, EventArgs e)
+        void IFieldMergingCallback.ImageFieldMerging(ImageFieldMergingArgs args)
         {
-            this.Close();
+            }
+            }
+    #endregion
+
+    private void btnExit_Click(object sender, EventArgs e)
+    {
+        this.Close();
+    }
+
+    private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+    {
+        //取得設定檔
+        Campus.Report.ReportConfiguration ConfigurationInCadre = new Campus.Report.ReportConfiguration(CadreConfig);
+        //畫面內容(範本內容,預設樣式
+        Campus.Report.TemplateSettingForm TemplateForm;
+        if (ConfigurationInCadre.Template != null)
+        {
+            TemplateForm = new Campus.Report.TemplateSettingForm(ConfigurationInCadre.Template, new Campus.Report.ReportTemplate(Properties.Resources.社團參與證明單_英文_範本, Campus.Report.TemplateType.Word));
+        }
+        else
+        {
+            ConfigurationInCadre.Template = new Campus.Report.ReportTemplate(Properties.Resources.社團參與證明單_英文_範本, Campus.Report.TemplateType.Word);
+            TemplateForm = new Campus.Report.TemplateSettingForm(ConfigurationInCadre.Template, new Campus.Report.ReportTemplate(Properties.Resources.社團參與證明單_英文_範本, Campus.Report.TemplateType.Word));
         }
 
-        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        //預設名稱
+        TemplateForm.DefaultFileName = "社團參與證明單_英文(範本)";
+        //如果回傳為OK
+        if (TemplateForm.ShowDialog() == DialogResult.OK)
         {
-            //取得設定檔
-            Campus.Report.ReportConfiguration ConfigurationInCadre = new Campus.Report.ReportConfiguration(CadreConfig);
-            //畫面內容(範本內容,預設樣式
-            Campus.Report.TemplateSettingForm TemplateForm;
-            if (ConfigurationInCadre.Template != null)
-            {
-                TemplateForm = new Campus.Report.TemplateSettingForm(ConfigurationInCadre.Template, new Campus.Report.ReportTemplate(Properties.Resources.社團參與證明單_英文_範本, Campus.Report.TemplateType.Word));
-            }
-            else
-            {
-                ConfigurationInCadre.Template = new Campus.Report.ReportTemplate(Properties.Resources.社團參與證明單_英文_範本, Campus.Report.TemplateType.Word);
-                TemplateForm = new Campus.Report.TemplateSettingForm(ConfigurationInCadre.Template, new Campus.Report.ReportTemplate(Properties.Resources.社團參與證明單_英文_範本, Campus.Report.TemplateType.Word));
-            }
-
-            //預設名稱
-            TemplateForm.DefaultFileName = "社團參與證明單_英文(範本)";
-            //如果回傳為OK
-            if (TemplateForm.ShowDialog() == DialogResult.OK)
-            {
-                //設定後樣試,回傳
-                ConfigurationInCadre.Template = TemplateForm.Template;
-                //儲存
-                ConfigurationInCadre.Save();
-            }
-        }
-
-        private void lbTempAll_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            SaveFileDialog sfd = new SaveFileDialog();
-            sfd.Title = "另存新檔";
-            sfd.FileName = "社團參與證明單_英文_合併欄位總表.doc";
-            sfd.Filter = "Word檔案 (*.doc)|*.doc|所有檔案 (*.*)|*.*";
-            if (sfd.ShowDialog() == DialogResult.OK)
-            {
-                try
-                {
-                    FileStream fs = new FileStream(sfd.FileName, FileMode.Create);
-                    fs.Write(Properties.Resources.社團參與證明單_英文_合併欄位總表, 0, Properties.Resources.社團參與證明單_英文_合併欄位總表.Length);
-                    fs.Close();
-                    System.Diagnostics.Process.Start(sfd.FileName);
-                }
-                catch
-                {
-                    FISCA.Presentation.Controls.MsgBox.Show("指定路徑無法存取。", "另存檔案失敗", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-            }
-        }
-
-        private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            EnglishTableForm sot = new EnglishTableForm();
-            sot.ShowDialog();
+            //設定後樣試,回傳
+            ConfigurationInCadre.Template = TemplateForm.Template;
+            //儲存
+            ConfigurationInCadre.Save();
         }
     }
+
+    private void lbTempAll_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+    {
+        SaveFileDialog sfd = new SaveFileDialog();
+        sfd.Title = "另存新檔";
+        sfd.FileName = "社團參與證明單_英文_合併欄位總表.doc";
+        sfd.Filter = "Word檔案 (*.docx)|*.docx|所有檔案 (*.*)|*.*";
+        if (sfd.ShowDialog() == DialogResult.OK)
+        {
+            try
+            {
+                FileStream fs = new FileStream(sfd.FileName, FileMode.Create);
+                fs.Write(Properties.Resources.社團參與證明單_英文_合併欄位總表, 0, Properties.Resources.社團參與證明單_英文_合併欄位總表.Length);
+                fs.Close();
+                System.Diagnostics.Process.Start(sfd.FileName);
+            }
+            catch
+            {
+                FISCA.Presentation.Controls.MsgBox.Show("指定路徑無法存取。", "另存檔案失敗", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+        }
+    }
+
+    private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+    {
+        EnglishTableForm sot = new EnglishTableForm();
+        sot.ShowDialog();
+    }
+}
 }
