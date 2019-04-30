@@ -19,7 +19,9 @@ namespace K12.Club.Volunteer.Report.匯出選社結果
     class ExportStudentClub
     {
         // DIC 社團ID 社團名稱
-        Dictionary<string, string> clubDic = new Dictionary<string, string>();
+        Dictionary<string, string> dicClubNameByID = new Dictionary<string, string>();
+        private AccessHelper access = new AccessHelper();
+        private QueryHelper qh = new QueryHelper();
 
         public ExportStudentClub(string sy, string s)
         {
@@ -36,11 +38,11 @@ namespace K12.Club.Volunteer.Report.匯出選社結果
                 try
                 {
                     bkw.ReportProgress(1);
-                    AccessHelper access = new AccessHelper();
-                    List<CLUBRecord> _clubList = access.Select<CLUBRecord>(/*"school_year = "+School.DefaultSchoolYear+" AND semester = "+ School.DefaultSemester*/).ToList();
+                    
+                    List<CLUBRecord> _clubList = this.access.Select<CLUBRecord>();
                     foreach (CLUBRecord club in _clubList)
                     {
-                        clubDic.Add(club.UID, club.ClubName);
+                        dicClubNameByID.Add(club.UID, club.ClubName);
                     }
                     //建立Excel範本
                     Workbook template = new Workbook();
@@ -49,8 +51,6 @@ namespace K12.Club.Volunteer.Report.匯出選社結果
                     wb.Copy(template);
                     //取得Sheet
                     Worksheet ws = wb.Worksheets[0];
-
-                    QueryHelper qh = new QueryHelper();
 
                     #region SQL
                     string selectSQL = string.Format(@"
@@ -103,11 +103,10 @@ ORDER BY
                     #endregion
 
                     // 取得學生社團資料
-                    DataTable dt = qh.Select(selectSQL);
+                    DataTable dt = this.qh.Select(selectSQL);
 
                     bkw.ReportProgress(10);
                     int index = 1;
-                    int row = 1;
                     foreach (DataRow dr in dt.Rows)
                     {
                         bkw.ReportProgress(10 + 90 * index / dt.Rows.Count);
@@ -147,9 +146,9 @@ ORDER BY
                             int countLimit = count + wishLimit - 1;
                             foreach (XElement club in clubList)
                             {
-                                if (!clubDic.ContainsKey(club.Attribute("Ref_Club_ID").Value))
+                                if (!dicClubNameByID.ContainsKey(club.Attribute("Ref_Club_ID").Value))
                                     continue;
-                                ws.Cells[index, count].PutValue(clubDic[club.Attribute("Ref_Club_ID").Value]);
+                                ws.Cells[index, count].PutValue(dicClubNameByID[club.Attribute("Ref_Club_ID").Value]);
                                 count++;
                                 if (count > countLimit)
                                     break;
