@@ -172,7 +172,7 @@ ORDER BY
                     #region Excel 存檔
                     {
                         SaveFileDialog SaveFileDialog1 = new SaveFileDialog();
-                        SaveFileDialog1.Filter = "Excel (*.xls)|*.xls|所有檔案 (*.*)|*.*";
+                        SaveFileDialog1.Filter = "Excel (*.xlsx)|*.xlsx|所有檔案 (*.*)|*.*";
                         SaveFileDialog1.FileName = "匯出選社結果";
                         try
                         {

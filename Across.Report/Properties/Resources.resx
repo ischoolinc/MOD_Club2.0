@@ -122,9 +122,9 @@
     <value>..\Resources\copy_refresh_64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="社團參與證明單_英文_合併欄位總表" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\社團參與證明單_英文_合併欄位總表.doc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\resources\社團參與證明單_英文_合併欄位總表.docx;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="社團參與證明單_英文_範本" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\社團參與證明單_英文_範本.doc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\resources\社團參與證明單_英文_範本.docx;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>
