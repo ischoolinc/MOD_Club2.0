@@ -170,7 +170,8 @@ namespace K12.Club.Volunteer
             {
                 if (mag.TraDic[classID].Count == 0)
                     continue;
-                ws.Cells.CreateRange(dataIndex, 3, false).Copy(ptHeader);
+                ws.Cells.CreateRange(dataIndex, 3, false).CopyStyle(ptHeader);
+                ws.Cells.CreateRange(dataIndex, 3, false).CopyValue(ptHeader);
 
                 ClassRecord cr = mag.ClassDic[classID];
 
@@ -207,8 +208,8 @@ namespace K12.Club.Volunteer
                 }
 
                 //頁數
-                ws.Cells.Merge(dataIndex, ColumnNameList.Count - 4, 1, 4);
-                ws.Cells[dataIndex, ColumnNameList.Count - 4].PutValue("日期：" + DateTime.Now.ToString("yyyy/MM/dd HH:mm") + "　頁數:" + CountPage.ToString());
+                ws.Cells.Merge(dataIndex, ColumnNameList.Count - 3, 1, 3);
+                ws.Cells[dataIndex, ColumnNameList.Count - 3].PutValue("日期：" + DateTime.Now.ToString("yyyy/MM/dd HH:mm") + "　頁數:" + CountPage.ToString());
 
                 dataIndex += 2;
 
@@ -216,7 +217,8 @@ namespace K12.Club.Volunteer
 
                 foreach (ClassClubTraObj each in mag.TraDic[classID])
                 {
-                    ws.Cells.CreateRange(dataIndex, 1, false).Copy(ptEachRow);
+                    ws.Cells.CreateRange(dataIndex, 1, false).CopyStyle(ptEachRow);
+                    ws.Cells.CreateRange(dataIndex, 1, false).CopyValue(ptEachRow);
 
                     ws.Cells[dataIndex, 0].PutValue(each.studentRecord.SeatNo.HasValue ? each.studentRecord.SeatNo.Value.ToString() : "");
                     ws.Cells[dataIndex, 1].PutValue(each.studentRecord.Name);

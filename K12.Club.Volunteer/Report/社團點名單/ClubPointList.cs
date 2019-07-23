@@ -72,7 +72,9 @@ namespace K12.Club.Volunteer
                 //社團標頭
                 string TitleName1 = string.Format("{0}學年度／第{1}學期　社團點名單", cr.SchoolYear.ToString(), cr.Semester.ToString());
                 string TitleName2 = cr.ClubName + "　(類型：" + cr.ClubCategory + ")";
-                ws.Cells.CreateRange(dataIndex, 4, false).Copy(ptHeader);
+                ws.Cells.CreateRange(dataIndex, 4, false).CopyStyle(ptHeader);
+                ws.Cells.CreateRange(dataIndex, 4, false).CopyValue(ptHeader);
+
                 ws.Cells[dataIndex, 0].PutValue(TitleName1);
                 dataIndex += 1;
                 ws.Cells[dataIndex, 0].PutValue(TitleName2);
@@ -92,7 +94,8 @@ namespace K12.Club.Volunteer
 
                 foreach (StudentRecord stud in SDL.ClubByStudentList[club])
                 {
-                    ws.Cells.CreateRange(dataIndex, 1, false).Copy(ptEachRow);
+                    ws.Cells.CreateRange(dataIndex, 1, false).CopyStyle(ptEachRow);
+                    ws.Cells.CreateRange(dataIndex, 1, false).CopyValue(ptEachRow);
 
                     string classname = string.IsNullOrEmpty(stud.RefClassID) ? "" : stud.Class.Name;
                     ws.Cells[dataIndex, 0].PutValue(classname);

@@ -110,7 +110,8 @@ namespace K12.Club.Volunteer
             foreach (string clubID in GetPoint.TraDic.Keys)
             {
                 //每一個社團
-                ws.Cells.CreateRange(dataIndex, 3, false).Copy(ptHeader);
+                ws.Cells.CreateRange(dataIndex, 3, false).CopyStyle(ptHeader);
+                ws.Cells.CreateRange(dataIndex, 3, false).CopyValue(ptHeader);
                 CLUBRecord cr = GetPoint.CLUBDic[clubID];
 
                 //第一行 - 建立標頭內容
@@ -135,8 +136,8 @@ namespace K12.Club.Volunteer
 
                 foreach (ClubTraObj each in GetPoint.TraDic[clubID])
                 {
-                    ws.Cells.CreateRange(dataIndex, 1, false).Copy(ptEachRow);
-
+                    ws.Cells.CreateRange(dataIndex, 1, false).CopyStyle(ptEachRow);
+                    ws.Cells.CreateRange(dataIndex, 1, false).CopyValue(ptEachRow);
                     //基本資料
                     tool.SetCellBro(ws, dataIndex, 0, 1, 1);
                     ws.Cells[dataIndex, 0].PutValue(each.student.Class != null ? each.student.Class.Name : "");
@@ -177,7 +178,7 @@ namespace K12.Club.Volunteer
                         ws.Cells.SetColumnWidth(ColumnNameList.Count - 2, 8);
                         tool.SetCellBro(ws, dataIndex, ColumnNameList.Count - 2, 1, 1);
                         string Score = each.RSR.ResultScore.HasValue ? each.RSR.ResultScore.Value.ToString() : "";
-                        ws.Cells[dataIndex, ColumnNameList.Count - 1].PutValue(Score);
+                        ws.Cells[dataIndex, ColumnNameList.Count - 2].PutValue(Score);
                         //ws.Cells[dataIndex, ColumnNameList.Count - 1].Style = sy;
                     }
 
