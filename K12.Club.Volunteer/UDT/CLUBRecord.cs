@@ -11,14 +11,6 @@ namespace K12.Club.Volunteer
     public class CLUBRecord : ActiveRecord
     {
         /// <summary>
-        /// 淺層複製CLUBRecord
-        /// </summary>
-        public CLUBRecord CopyExtension()
-        {
-            return (CLUBRecord)this.MemberwiseClone();
-        }
-
-        /// <summary>
         /// 社團名稱
         /// </summary>
         [Field(Field = "club_name", Indexed = true)]
@@ -153,5 +145,19 @@ namespace K12.Club.Volunteer
         /// </summary>
         [Field(Field = "level", Indexed = false)]
         public string Level { get; set; }
+
+        /// <summary>
+        /// 淺層複製CLUBRecord
+        /// </summary>
+        public CLUBRecord CopyExtension()
+        {
+            return (CLUBRecord)this.MemberwiseClone();
+        }
+
+        public int NewCount { get; set; }
+        public int NewGrade1Limit { get; set; }
+        public int NewGrade2Limit { get; set; }
+        public int NewGrade3Limit { get; set; }
+
     }
 }

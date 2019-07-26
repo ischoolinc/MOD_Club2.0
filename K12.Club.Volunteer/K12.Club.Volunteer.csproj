@@ -243,6 +243,12 @@
     <Compile Include="ClubExtendControls\StudentResultItem.Designer.cs">
       <DependentUpon>StudentResultItem.cs</DependentUpon>
     </Compile>
+    <Compile Include="ClubExtendControls\UnselectedClubInspection.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ClubExtendControls\UnselectedClubInspection.Designer.cs">
+      <DependentUpon>UnselectedClubInspection.cs</DependentUpon>
+    </Compile>
     <Compile Include="DetailContentBase.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -551,6 +557,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ClubExtendControls\StudentResultItem.resx">
       <DependentUpon>StudentResultItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ClubExtendControls\UnselectedClubInspection.resx">
+      <DependentUpon>UnselectedClubInspection.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ExtracurricularActivitiesView.resx">
       <DependentUpon>ExtracurricularActivitiesView.cs</DependentUpon>

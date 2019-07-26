@@ -33,17 +33,27 @@ namespace K12.Club.Volunteer
 
         List<CLUBRecord> CLUBRecordList = new List<CLUBRecord>();
 
-        List<SCJoin> SCJoinList = new List<SCJoin>();
-
         /// <summary>
         /// 已選社團學生
+        /// 學生ID & 修課紀錄
         /// </summary>
-        Dictionary<string, SCJoin> StudentScjoinDic = new Dictionary<string, SCJoin>();
+        Dictionary<string, SCJoin> StudentScjoinDic;
+
+        /// <summary>
+        /// 社團 & 社團修課學生
+        /// </summary>
+        Dictionary<string, List<SCJoin>> ScjDic;
 
         /// <summary>
         /// 未選社團學生
         /// </summary>
-        List<StudRecord> IsStudentList = new List<StudRecord>();
+        List<StudRecord> IsStudentList;
+        Dictionary<string, StudRecord> IsStudentDic;
+
+        /// <summary>
+        /// 社團 vs 社團學生
+        /// </summary>
+        Dictionary<string, List<string>> ClubAddDic = new Dictionary<string, List<string>>();
 
         //人為設定選社學年
         string seting_school_year = "";
@@ -62,8 +72,6 @@ namespace K12.Club.Volunteer
             BGWSave.RunWorkerCompleted += new RunWorkerCompletedEventHandler(BGWSave_RunWorkerCompleted);
 
             K12.Presentation.NLDPanels.Student.TempSourceChanged += new EventHandler(Student_TempSourceChanged);
-
-            
 
             //labelX1.Text = string.Format("{0}學年度　第{1}學期　未選社清單：", School.DefaultSchoolYear, School.DefaultSemester);
 
@@ -141,19 +149,32 @@ namespace K12.Club.Volunteer
                 if (!ClubRefIDList.Contains(record.UID))
                 {
                     ClubRefIDList.Add(record.UID);
+                    ClubAddDic.Add(record.UID, new List<string>());
                 }
             }
 
             //取得學校所有學生記錄
             //學生記錄來自於社團ID
+            StudentScjoinDic = new Dictionary<string, SCJoin>();
+            ScjDic = new Dictionary<string, List<SCJoin>>();
+
             string ClubIdString = string.Join("','", ClubRefIDList);
             List<SCJoin> Scjoin = _AccessHelper.Select<SCJoin>(string.Format("ref_club_id in ('{0}')", ClubIdString));
             foreach (SCJoin join in Scjoin)
             {
+                //學生修社紀錄
                 if (!StudentScjoinDic.ContainsKey(join.RefStudentID))
                 {
                     StudentScjoinDic.Add(join.RefStudentID, join);
                 }
+
+                //社團修課人數
+
+                if (!ScjDic.ContainsKey(join.RefClubID))
+                {
+                    ScjDic.Add(join.RefClubID, new List<SCJoin>());
+                }
+                ScjDic[join.RefClubID].Add(join);
             }
 
             //取得學校內所有一般生記錄
@@ -161,14 +182,22 @@ namespace K12.Club.Volunteer
             //(沒有班級之學生,不列入記錄
             DataTable studentDT = _QueryHelper.Select("select student.id,class.class_name,student.seat_no,student.student_number,student.name,class.grade_year from student join class on student.ref_class_id=class.id where student.status=1 or student.status=2  ORDER BY class.grade_year,class.class_name,student.seat_no");
 
-            IsStudentList.Clear();
+            IsStudentList = new List<StudRecord>();
+            IsStudentDic = new Dictionary<string, StudRecord>();
             foreach (DataRow row in studentDT.Rows)
             {
-                StudRecord re = new StudRecord(row);
+                StudRecord stud = new StudRecord(row);
                 //依據社團參與記錄進行資料篩選
-                if (!StudentScjoinDic.ContainsKey(re.id))
+                if (!StudentScjoinDic.ContainsKey(stud.id))
                 {
-                    IsStudentList.Add(re);
+                    IsStudentList.Add(stud);
+
+                }
+
+                //所有學生,都加入清單
+                if (!IsStudentDic.ContainsKey(stud.id))
+                {
+                    IsStudentDic.Add(stud.id, stud);
                 }
             }
         }
@@ -197,16 +226,16 @@ namespace K12.Club.Volunteer
             labelX1.Text = string.Format("{0}學年度　第{1}學期　未選社清單(共{2}人)：", seting_school_year, seting_school_semester, IsStudentList.Count);
 
 
-            foreach (StudRecord re in IsStudentList)
+            foreach (StudRecord stud in IsStudentList)
             {
                 DataGridViewRow dataRow = new DataGridViewRow();
                 dataRow.CreateCells(dataGridViewX1);
-                dataRow.Tag = re;
-                dataRow.Cells[0].Value = re.grade_year;
-                dataRow.Cells[1].Value = re.class_name;
-                dataRow.Cells[2].Value = re.seat_no;
-                dataRow.Cells[3].Value = re.name;
-                dataRow.Cells[4].Value = re.student_number;
+                dataRow.Tag = stud;
+                dataRow.Cells[0].Value = stud.grade_year;
+                dataRow.Cells[1].Value = stud.class_name;
+                dataRow.Cells[2].Value = stud.seat_no;
+                dataRow.Cells[3].Value = stud.name;
+                dataRow.Cells[4].Value = stud.student_number;
 
                 dataGridViewX1.Rows.Add(dataRow);
             }
@@ -216,14 +245,52 @@ namespace K12.Club.Volunteer
 
             foreach (CLUBRecord record in CLUBRecordList)
             {
-                ButtonItem btnItem = new ButtonItem();
-                btnItem.Text = record.ClubName;
-                btnItem.Tag = record;
-                btnItem.OptionGroup = "itmPnlTimeName";
-                btnItem.ButtonStyle = eButtonStyle.ImageAndText;
-                btnItem.Click += new EventHandler(btnItem_Click);
+                int count = 0;
+                if (ScjDic.ContainsKey(record.UID))
+                {
+                    count = ScjDic[record.UID].Count;
+                }
 
-                itmPnlTimeName.Items.Add(btnItem);
+                if (record.Limit.HasValue)
+                {
+                    if (count < record.Limit.Value)
+                    {
+
+                        ButtonItem btnItem = new ButtonItem();
+                        btnItem.Text = record.ClubName + string.Format("(人數:{0}/{1})", count, record.Limit.Value);
+                        btnItem.Tag = record;
+                        btnItem.OptionGroup = "itmPnlTimeName";
+                        btnItem.ButtonStyle = eButtonStyle.ImageAndText;
+                        btnItem.Click += new EventHandler(btnItem_Click);
+                        btnItem.ForeColor = Color.Blue;
+
+                        itmPnlTimeName.Items.Add(btnItem);
+                    }
+                    else
+                    {
+                        ButtonItem btnItem = new ButtonItem();
+                        btnItem.Text = record.ClubName + string.Format("(人數:{0}/{1}) 額滿", count, record.Limit.Value);
+                        btnItem.Tag = record;
+                        btnItem.OptionGroup = "itmPnlTimeName";
+                        btnItem.ButtonStyle = eButtonStyle.ImageAndText;
+                        btnItem.Click += new EventHandler(btnItem_Click);
+                        btnItem.Enabled = false;
+                        btnItem.ForeColor = Color.Gainsboro;
+
+                        itmPnlTimeName.Items.Add(btnItem);
+                    }
+                }
+                else
+                {
+                    ButtonItem btnItem = new ButtonItem();
+                    btnItem.Text = record.ClubName + string.Format("(人數:{0}/{1})", count, "無限制");
+                    btnItem.Tag = record;
+                    btnItem.OptionGroup = "itmPnlTimeName";
+                    btnItem.ButtonStyle = eButtonStyle.ImageAndText;
+                    btnItem.Click += new EventHandler(btnItem_Click);
+
+                    itmPnlTimeName.Items.Add(btnItem);
+                }
             }
 
             itmPnlTimeName.ResumeLayout();
@@ -235,17 +302,153 @@ namespace K12.Club.Volunteer
         {
             if (itmPnlTimeName.SelectedItems.Count == 1)
             {
+                List<CLUBRecord> clubList = new List<CLUBRecord>();
                 //取得目前所選擇的Button
                 ButtonItem Buttonitem = itmPnlTimeName.SelectedItems[0] as ButtonItem;
+
                 //取得課程Record
                 CLUBRecord club = (CLUBRecord)Buttonitem.Tag;
+                clubList.Add(club);
 
+                //該課程目前有多少選課學生
+                int count = 0;
+                if (ScjDic.ContainsKey(club.UID))
+                {
+                    count = ScjDic[club.UID].Count;
+                }
+
+                //
                 foreach (DataGridViewRow row in dataGridViewX1.SelectedRows)
                 {
-                    row.Cells[5].Value = "" + club.ClubName;
-                    row.Cells[5].Tag = club;
+                    //先清除原本的
+                    if (row.Cells[colSelectClub.Index].Tag != null)
+                    {
+                        CLUBRecord reClub = (CLUBRecord)row.Cells[colSelectClub.Index].Tag;
+                        StudRecord stud = (StudRecord)row.Tag;
+                        if (ClubAddDic.ContainsKey(reClub.UID))
+                        {
+                            ClubAddDic[reClub.UID].Remove(stud.id);
+                        }
+
+                        if (!clubList.Contains(reClub))
+                        {
+                            clubList.Add(reClub);
+                        }
+                    }
+
+                    //填入學生所選的社團資料
+                    row.Cells[colSelectClub.Index].Value = "" + club.ClubName;
+                    row.Cells[colSelectClub.Index].Tag = club;
+
+                    //統計,此按鈕造成新增多少學生(不重複)
+                    if (ClubAddDic.ContainsKey(club.UID))
+                    {
+                        //不包含此學生則加入
+                        StudRecord stud = (StudRecord)row.Tag;
+                        if (!ClubAddDic[club.UID].Contains(stud.id))
+                        {
+                            ClubAddDic[club.UID].Add(stud.id);
+                        }
+                    }
+                }
+
+                RefreshButtonItem(clubList);
+            }
+        }
+
+        /// <summary>
+        /// 重新處理畫面顯示
+        /// </summary>
+        private void RefreshButtonItem(List<CLUBRecord> ClubList)
+        {
+            foreach (CLUBRecord club in ClubList)
+            {
+                foreach (ButtonItem Buttonitem in itmPnlTimeName.Items)
+                {
+                    CLUBRecord record = (CLUBRecord)Buttonitem.Tag;
+                    if (club.UID == record.UID)
+                    {
+                        //使用者若使用過按鈕分配,就會儲存在 ClubAddDic
+                        if (ClubAddDic.ContainsKey(record.UID))
+                        {
+                            int count = 0;
+
+                            if (ScjDic.ContainsKey(record.UID))
+                            {
+                                count += ScjDic[record.UID].Count;
+                            }
+                            count += ClubAddDic[record.UID].Count;
+
+                            if (record.Limit.HasValue)
+                            {
+                                if (count == record.Limit.Value)
+                                {
+                                    Buttonitem.Text = record.ClubName + string.Format("(人數:{0}/{1}) +{2} 額滿", count, record.Limit.Value, ClubAddDic[record.UID].Count);
+                                    Buttonitem.ForeColor = Color.Blue;
+                                }
+                                else if (count > record.Limit.Value)
+                                {
+                                    Buttonitem.Text = record.ClubName + string.Format("(人數:{0}/{1}) +{2} 超額", count, record.Limit.Value, ClubAddDic[record.UID].Count);
+                                    Buttonitem.ForeColor = Color.Red;
+                                }
+                                else if (ClubAddDic[record.UID].Count == 0)
+                                {
+                                    Buttonitem.Text = record.ClubName + string.Format("(人數:{0}/{1})", count, record.Limit.Value);
+                                    Buttonitem.ForeColor = Color.Blue;
+                                }
+                                else
+                                {
+                                    Buttonitem.Text = record.ClubName + string.Format("(人數:{0}/{1}) +{2}", count, record.Limit.Value, ClubAddDic[record.UID].Count);
+                                    Buttonitem.ForeColor = Color.Blue;
+                                }
+                            }
+                            else
+                            {
+                                Buttonitem.Text = record.ClubName + string.Format("(人數:{0}/{1}) +{2}", count, record.Limit.Value, ClubAddDic[record.UID].Count);
+                                Buttonitem.ForeColor = Color.Blue;
+                            }
+                        }
+                    }
                 }
             }
+
+            itmPnlTimeName.ResumeLayout();
+            itmPnlTimeName.Refresh();
+        }
+
+        private void 清除指定社團ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+            List<CLUBRecord> clublist = new List<CLUBRecord>();
+            foreach (DataGridViewRow row in dataGridViewX1.SelectedRows)
+            {
+                //取得課程Record
+                CLUBRecord club = (CLUBRecord)row.Cells[colSelectClub.Index].Tag;
+                clublist.Add(club);
+                //該課程目前有多少選課學生
+                int count = 0;
+                if (ScjDic.ContainsKey(club.UID))
+                {
+                    count = ScjDic[club.UID].Count;
+                }
+
+                row.Cells[colSelectClub.Index].Value = "";
+                row.Cells[colSelectClub.Index].Tag = null;
+
+                //統計,此按鈕造成新增多少學生(不重複)
+                if (ClubAddDic.ContainsKey(club.UID))
+                {
+                    //包含此學生,則移除學生
+                    StudRecord stud = (StudRecord)row.Tag;
+                    if (ClubAddDic[club.UID].Contains(stud.id))
+                    {
+                        ClubAddDic[club.UID].Remove(stud.id);
+                    }
+                }
+
+            }
+
+            RefreshButtonItem(clublist);
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -256,17 +459,13 @@ namespace K12.Club.Volunteer
 
             btnSave.Enabled = false;
 
-            SCJoinList.Clear();
+            List<SCJoin> SCJoinList = new List<SCJoin>();
             foreach (DataGridViewRow row in dataGridViewX1.Rows)
             {
-                if (row.Cells[5].Tag != null)
+                if (row.Cells[colSelectClub.Index].Tag != null)
                 {
-
-
                     StudRecord sr = (StudRecord)row.Tag;
-
-                    CLUBRecord cr = (CLUBRecord)row.Cells[5].Tag;
-
+                    CLUBRecord cr = (CLUBRecord)row.Cells[colSelectClub.Index].Tag;
 
                     SCJoin sc = new SCJoin();
                     sc.RefClubID = cr.UID;
@@ -319,20 +518,6 @@ namespace K12.Club.Volunteer
 
         }
 
-        private void btnExit_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
-        private void 清除指定社團ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            foreach (DataGridViewRow row in dataGridViewX1.SelectedRows)
-            {
-                row.Cells[5].Value = "";
-                row.Cells[5].Tag = null;
-            }
-        }
-
         private void 加入待處理學生ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             List<string> list = new List<string>();
@@ -359,6 +544,379 @@ namespace K12.Club.Volunteer
                 System.Diagnostics.Process.Start(saveFileDialog1.FileName);
             #endregion
         }
+
+        private void btnStartAuto_Click(object sender, EventArgs e)
+        {
+            DialogResult dr = MsgBox.Show("自動分配將會把本畫面中\n未手動指定社團的學生\n進行[依選社條件]亂數分配\n確認開始指定?", MessageBoxButtons.YesNo, MessageBoxDefaultButton.Button2);
+            if (dr == DialogResult.No)
+            {
+                MsgBox.Show("已取消");
+                return;
+            }
+
+            //開始自動分配
+            //1.取得系統內的各社團的條件
+            //a.人數上限(目前社團人數)
+            //b.科別限制
+            //c.男女限制
+            //d.年級限制
+            List<CLUBRecord> InsertClubLimit = new List<CLUBRecord>();
+            foreach (CLUBRecord club in CLUBRecordList)
+            {
+                int count = 0;
+                if (ScjDic.ContainsKey(club.UID))
+                {
+                    count += ScjDic[club.UID].Count;
+                }
+
+                if (ClubAddDic.ContainsKey(club.UID))
+                {
+                    count += ClubAddDic[club.UID].Count;
+                }
+
+                //目前人數
+                club.NewCount = count;
+
+                if (ScjDic.ContainsKey(club.UID))
+                {
+                    //社團的選社人數低於目前人數上限
+                    if (club.Limit.HasValue)
+                    {
+                        if (count < club.Limit.Value)
+                        {
+                            InsertClubLimit.Add(club);
+                        }
+                    }
+                    else
+                    {
+                        InsertClubLimit.Add(club);
+                    }
+
+                    foreach (SCJoin scj in ScjDic[club.UID])
+                    {
+                        //取得學生資料
+                        if (IsStudentDic.ContainsKey(scj.RefStudentID))
+                        {
+                            StudRecord stud = IsStudentDic[scj.RefStudentID];
+
+                            if (stud.grade_year == "1" || stud.grade_year == "7")
+                            {
+                                club.NewGrade1Limit++;
+                            }
+                            else if (stud.grade_year == "2" || stud.grade_year == "8")
+                            {
+                                club.NewGrade2Limit++;
+                            }
+                            else if (stud.grade_year == "3" || stud.grade_year == "9")
+                            {
+                                club.NewGrade3Limit++;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    if (club.Limit.HasValue)
+                    {
+                        if (club.Limit.Value != 0)
+                        {
+                            //有設定上限,且不為0
+                            InsertClubLimit.Add(club);
+                        }
+                    }
+                    else
+                    {
+                        //沒設定上限的社團
+                        InsertClubLimit.Add(club);
+                    }
+                }
+            }
+
+            //這一段主要是要將學生進行亂數排序
+            List<StudRecord> StudList = new List<StudRecord>();
+            Random xy01 = new Random();
+            foreach (DataGridViewRow row in dataGridViewX1.Rows)
+            {
+                //如果沒有設定過,才進行分配
+                if (row.Cells[colSelectClub.Index].Value == null)
+                {
+                    //學生基本資料
+                    StudRecord stud = (StudRecord)row.Tag;
+                    stud.row = row;
+                    stud.RandomIndex = xy01.Next(1, 99999);
+                    StudList.Add(stud);
+                }
+            }
+            StudList.Sort(SortRandom);
+
+            //開始分配作業
+            foreach (StudRecord stud in StudList)
+            {
+                DataGridViewRow row = stud.row;
+                //可以分配的社團
+                foreach (CLUBRecord club in InsertClubLimit)
+                {
+                    //這個社團,有人數上限
+                    if (club.Limit.HasValue)
+                    {
+                        if (club.Limit > club.NewCount)
+                        {
+                            //如果沒有設定過,才進行分配
+                            if (row.Cells[colSelectClub.Index].Value == null)
+                            {
+                                //當學生是一年級時
+                                if (stud.grade_year == "1" || stud.grade_year == "7")
+                                {
+
+                                    if (club.Grade1Limit.HasValue)
+                                    {
+                                        //一年級人數上限還沒滿
+                                        if (club.Grade1Limit.Value > club.NewGrade1Limit)
+                                        {
+                                            row.Cells[colSelectClub.Index].Value = "" + club.ClubName;
+                                            row.Cells[colSelectClub.Index].Tag = club;
+
+                                            club.NewCount++;
+                                            club.NewGrade1Limit++;
+
+                                            //新加入多少人
+                                            if (ClubAddDic.ContainsKey(club.UID))
+                                            {
+                                                ClubAddDic[club.UID].Add(stud.id);
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        //沒有人數上限
+                                        row.Cells[colSelectClub.Index].Value = "" + club.ClubName;
+                                        row.Cells[colSelectClub.Index].Tag = club;
+
+                                        club.NewCount++;
+                                        club.NewGrade1Limit++;
+
+                                        //新加入多少人
+                                        if (ClubAddDic.ContainsKey(club.UID))
+                                        {
+                                            ClubAddDic[club.UID].Add(stud.id);
+                                        }
+                                    }
+                                }
+                                else if (stud.grade_year == "2" || stud.grade_year == "8")
+                                {
+                                    if (club.Grade2Limit.HasValue)
+                                    {
+                                        //二年級人數上限還沒滿
+                                        if (club.Grade2Limit.Value > club.NewGrade2Limit)
+                                        {
+                                            row.Cells[colSelectClub.Index].Value = "" + club.ClubName;
+                                            row.Cells[colSelectClub.Index].Tag = club;
+
+                                            club.NewCount++;
+                                            club.NewGrade2Limit++;
+
+                                            //新加入多少人
+                                            if (ClubAddDic.ContainsKey(club.UID))
+                                            {
+                                                ClubAddDic[club.UID].Add(stud.id);
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        //沒有人數上限
+                                        row.Cells[colSelectClub.Index].Value = "" + club.ClubName;
+                                        row.Cells[colSelectClub.Index].Tag = club;
+
+                                        club.NewCount++;
+                                        club.NewGrade2Limit++;
+
+                                        //新加入多少人
+                                        if (ClubAddDic.ContainsKey(club.UID))
+                                        {
+                                            ClubAddDic[club.UID].Add(stud.id);
+                                        }
+                                    }
+                                }
+                                else if (stud.grade_year == "3" || stud.grade_year == "9")
+                                {
+                                    if (club.Grade3Limit.HasValue)
+                                    {
+                                        //三年級人數上限還沒滿
+                                        if (club.Grade3Limit.Value > club.NewGrade3Limit)
+                                        {
+                                            row.Cells[colSelectClub.Index].Value = "" + club.ClubName;
+                                            row.Cells[colSelectClub.Index].Tag = club;
+
+                                            club.NewCount++;
+                                            club.NewGrade3Limit++;
+
+                                            //新加入多少人
+                                            if (ClubAddDic.ContainsKey(club.UID))
+                                            {
+                                                ClubAddDic[club.UID].Add(stud.id);
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        //沒有人數上限
+                                        row.Cells[colSelectClub.Index].Value = "" + club.ClubName;
+                                        row.Cells[colSelectClub.Index].Tag = club;
+
+                                        club.NewCount++;
+                                        club.NewGrade3Limit++;
+
+                                        //新加入多少人
+                                        if (ClubAddDic.ContainsKey(club.UID))
+                                        {
+                                            ClubAddDic[club.UID].Add(stud.id);
+                                        }
+                                    }
+                                }
+                            }
+
+                        }
+                        else
+                        {
+                            //這個社團人數上限已滿
+                        }
+                    }
+                    else
+                    {
+                        //沒有人數上限
+                        //如果沒有設定過,才進行分配
+                        if (row.Cells[colSelectClub.Index].Value == null)
+                        {
+
+                            //當學生是一年級時
+                            if (stud.grade_year == "1" || stud.grade_year == "7")
+                            {
+
+                                if (club.Grade1Limit.HasValue)
+                                {
+                                    //一年級人數上限還沒滿
+                                    if (club.Grade1Limit.Value > club.NewGrade1Limit)
+                                    {
+                                        row.Cells[colSelectClub.Index].Value = "" + club.ClubName;
+                                        row.Cells[colSelectClub.Index].Tag = club;
+
+                                        club.NewCount++;
+                                        club.NewGrade1Limit++;
+
+                                        //新加入多少人
+                                        if (ClubAddDic.ContainsKey(club.UID))
+                                        {
+                                            ClubAddDic[club.UID].Add(stud.id);
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    //沒有人數上限
+                                    row.Cells[colSelectClub.Index].Value = "" + club.ClubName;
+                                    row.Cells[colSelectClub.Index].Tag = club;
+
+                                    club.NewCount++;
+                                    club.NewGrade1Limit++;
+
+                                    //新加入多少人
+                                    if (ClubAddDic.ContainsKey(club.UID))
+                                    {
+                                        ClubAddDic[club.UID].Add(stud.id);
+                                    }
+                                }
+                            }
+                            else if (stud.grade_year == "2" || stud.grade_year == "8")
+                            {
+                                if (club.Grade2Limit.HasValue)
+                                {
+                                    //二年級人數上限還沒滿
+                                    if (club.Grade2Limit.Value > club.NewGrade2Limit)
+                                    {
+                                        row.Cells[colSelectClub.Index].Value = "" + club.ClubName;
+                                        row.Cells[colSelectClub.Index].Tag = club;
+
+                                        club.NewCount++;
+                                        club.NewGrade2Limit++;
+
+                                        //新加入多少人
+                                        if (ClubAddDic.ContainsKey(club.UID))
+                                        {
+                                            ClubAddDic[club.UID].Add(stud.id);
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    //沒有人數上限
+                                    row.Cells[colSelectClub.Index].Value = "" + club.ClubName;
+                                    row.Cells[colSelectClub.Index].Tag = club;
+
+                                    club.NewCount++;
+                                    club.NewGrade2Limit++;
+
+                                    //新加入多少人
+                                    if (ClubAddDic.ContainsKey(club.UID))
+                                    {
+                                        ClubAddDic[club.UID].Add(stud.id);
+                                    }
+                                }
+                            }
+                            else if (stud.grade_year == "3" || stud.grade_year == "9")
+                            {
+                                if (club.Grade3Limit.HasValue)
+                                {
+                                    //三年級人數上限還沒滿
+                                    if (club.Grade3Limit.Value > club.NewGrade3Limit)
+                                    {
+                                        row.Cells[colSelectClub.Index].Value = "" + club.ClubName;
+                                        row.Cells[colSelectClub.Index].Tag = club;
+
+                                        club.NewCount++;
+                                        club.NewGrade3Limit++;
+
+                                        //新加入多少人
+                                        if (ClubAddDic.ContainsKey(club.UID))
+                                        {
+                                            ClubAddDic[club.UID].Add(stud.id);
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    //沒有人數上限
+                                    row.Cells[colSelectClub.Index].Value = "" + club.ClubName;
+                                    row.Cells[colSelectClub.Index].Tag = club;
+
+                                    club.NewCount++;
+                                    club.NewGrade3Limit++;
+
+                                    //新加入多少人
+                                    if (ClubAddDic.ContainsKey(club.UID))
+                                    {
+                                        ClubAddDic[club.UID].Add(stud.id);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            //重新處理畫面顯示
+            RefreshButtonItem(InsertClubLimit);
+        }
+
+        private void btnExit_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private int SortRandom(StudRecord x, StudRecord y)
+        {
+            return x.RandomIndex.CompareTo(y.RandomIndex);
+        }
     }
 
     public class StudRecord
@@ -379,6 +937,10 @@ namespace K12.Club.Volunteer
         public string student_number { get; set; }
         public string name { get; set; }
         public string grade_year { get; set; }
+
+        public int RandomIndex { get; set; }
+
+        public DataGridViewRow row { get; set; }
 
     }
 }
