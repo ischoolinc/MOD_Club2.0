@@ -180,7 +180,14 @@ namespace K12.Club.Volunteer
             //取得學校內所有一般生記錄
             //班級/座號/學號/姓名
             //(沒有班級之學生,不列入記錄
-            DataTable studentDT = _QueryHelper.Select("select student.id,class.class_name,student.seat_no,student.student_number,student.name,class.grade_year from student join class on student.ref_class_id=class.id where student.status=1 or student.status=2  ORDER BY class.grade_year,class.class_name,student.seat_no");
+            DataTable studentDT = _QueryHelper.Select(@"select student.id,class.class_name,
+student.seat_no,student.student_number,student.name,class.grade_year,
+student.gender ,dept_Class.name as dept_name_class,dept_Stud.name as dept_name_stud 
+from student join class on student.ref_class_id=class.id 
+left join dept dept_Class on dept_Class.id=class.ref_dept_id
+left join dept dept_Stud on dept_Stud.id=student.ref_dept_id
+where student.status in (1,2) and class.grade_year in (1,2,3,7,8,9) 
+ORDER BY class.grade_year,class.class_name,student.seat_no");
 
             IsStudentList = new List<StudRecord>();
             IsStudentDic = new Dictionary<string, StudRecord>();
@@ -231,11 +238,12 @@ namespace K12.Club.Volunteer
                 DataGridViewRow dataRow = new DataGridViewRow();
                 dataRow.CreateCells(dataGridViewX1);
                 dataRow.Tag = stud;
-                dataRow.Cells[0].Value = stud.grade_year;
-                dataRow.Cells[1].Value = stud.class_name;
-                dataRow.Cells[2].Value = stud.seat_no;
-                dataRow.Cells[3].Value = stud.name;
-                dataRow.Cells[4].Value = stud.student_number;
+                dataRow.Cells[colGrade_year.Index].Value = stud.grade_year;
+                dataRow.Cells[colClass.Index].Value = stud.class_name;
+                dataRow.Cells[colSeat_no.Index].Value = stud.seat_no;
+                dataRow.Cells[colName.Index].Value = stud.name;
+                dataRow.Cells[colGan.Index].Value = stud.gender;
+                dataRow.Cells[colStudentNumber.Index].Value = stud.student_number;
 
                 dataGridViewX1.Rows.Add(dataRow);
             }
@@ -432,7 +440,7 @@ namespace K12.Club.Volunteer
                     count = ScjDic[club.UID].Count;
                 }
 
-                row.Cells[colSelectClub.Index].Value = "";
+                row.Cells[colSelectClub.Index].Value = null;
                 row.Cells[colSelectClub.Index].Tag = null;
 
                 //統計,此按鈕造成新增多少學生(不重複)
@@ -443,6 +451,20 @@ namespace K12.Club.Volunteer
                     if (ClubAddDic[club.UID].Contains(stud.id))
                     {
                         ClubAddDic[club.UID].Remove(stud.id);
+                    }
+
+                    club.NewCount--;
+                    if (stud.grade_year == "1" || stud.grade_year == "7")
+                    {
+                        club.NewGrade1Limit--;
+                    }
+                    else if (stud.grade_year == "2" || stud.grade_year == "8")
+                    {
+                        club.NewGrade2Limit--;
+                    }
+                    else if (stud.grade_year == "3" || stud.grade_year == "9")
+                    {
+                        club.NewGrade3Limit--;
                     }
                 }
 
@@ -563,6 +585,7 @@ namespace K12.Club.Volunteer
             List<CLUBRecord> InsertClubLimit = new List<CLUBRecord>();
             foreach (CLUBRecord club in CLUBRecordList)
             {
+                //取得目前社團修課人數
                 int count = 0;
                 if (ScjDic.ContainsKey(club.UID))
                 {
@@ -577,21 +600,24 @@ namespace K12.Club.Volunteer
                 //目前人數
                 club.NewCount = count;
 
-                if (ScjDic.ContainsKey(club.UID))
+                //本社團,是否有"人數上限"限制
+                if (club.Limit.HasValue)
                 {
-                    //社團的選社人數低於目前人數上限
-                    if (club.Limit.HasValue)
-                    {
-                        if (count < club.Limit.Value)
-                        {
-                            InsertClubLimit.Add(club);
-                        }
-                    }
-                    else
+                    //目前社團人數,是否已超過人數上限
+                    if (count < club.Limit.Value)
                     {
                         InsertClubLimit.Add(club);
                     }
+                }
+                else
+                {
+                    InsertClubLimit.Add(club);
+                }
 
+                //如果社團已經有修課學生
+                if (ScjDic.ContainsKey(club.UID))
+                {
+                    //判斷與分類目前社團修課人數
                     foreach (SCJoin scj in ScjDic[club.UID])
                     {
                         //取得學生資料
@@ -612,22 +638,6 @@ namespace K12.Club.Volunteer
                                 club.NewGrade3Limit++;
                             }
                         }
-                    }
-                }
-                else
-                {
-                    if (club.Limit.HasValue)
-                    {
-                        if (club.Limit.Value != 0)
-                        {
-                            //有設定上限,且不為0
-                            InsertClubLimit.Add(club);
-                        }
-                    }
-                    else
-                    {
-                        //沒設定上限的社團
-                        InsertClubLimit.Add(club);
                     }
                 }
             }
@@ -659,123 +669,45 @@ namespace K12.Club.Volunteer
                     //這個社團,有人數上限
                     if (club.Limit.HasValue)
                     {
-                        if (club.Limit > club.NewCount)
+                        //人數未滿
+                        if (club.Limit.Value > club.NewCount)
                         {
-                            //如果沒有設定過,才進行分配
-                            if (row.Cells[colSelectClub.Index].Value == null)
+                            //社團有科別限制
+                            if (club.GetDeptRestrictList.Count > 0)
                             {
-                                //當學生是一年級時
-                                if (stud.grade_year == "1" || stud.grade_year == "7")
+                                if (stud.dept_name_stud != "")
                                 {
-
-                                    if (club.Grade1Limit.HasValue)
+                                    //學生科別
+                                    if (club.GetDeptRestrictList.Contains(stud.dept_name_stud))
                                     {
-                                        //一年級人數上限還沒滿
-                                        if (club.Grade1Limit.Value > club.NewGrade1Limit)
-                                        {
-                                            row.Cells[colSelectClub.Index].Value = "" + club.ClubName;
-                                            row.Cells[colSelectClub.Index].Tag = club;
-
-                                            club.NewCount++;
-                                            club.NewGrade1Limit++;
-
-                                            //新加入多少人
-                                            if (ClubAddDic.ContainsKey(club.UID))
-                                            {
-                                                ClubAddDic[club.UID].Add(stud.id);
-                                            }
-                                        }
+                                        NowRunRow(row, club, stud);
                                     }
                                     else
                                     {
-                                        //沒有人數上限
-                                        row.Cells[colSelectClub.Index].Value = "" + club.ClubName;
-                                        row.Cells[colSelectClub.Index].Tag = club;
-
-                                        club.NewCount++;
-                                        club.NewGrade1Limit++;
-
-                                        //新加入多少人
-                                        if (ClubAddDic.ContainsKey(club.UID))
-                                        {
-                                            ClubAddDic[club.UID].Add(stud.id);
-                                        }
+                                        //科別條件不符合
                                     }
                                 }
-                                else if (stud.grade_year == "2" || stud.grade_year == "8")
+                                else if (stud.dept_name_class != "")
                                 {
-                                    if (club.Grade2Limit.HasValue)
+                                    //班級科別
+                                    if (club.GetDeptRestrictList.Contains(stud.dept_name_class))
                                     {
-                                        //二年級人數上限還沒滿
-                                        if (club.Grade2Limit.Value > club.NewGrade2Limit)
-                                        {
-                                            row.Cells[colSelectClub.Index].Value = "" + club.ClubName;
-                                            row.Cells[colSelectClub.Index].Tag = club;
-
-                                            club.NewCount++;
-                                            club.NewGrade2Limit++;
-
-                                            //新加入多少人
-                                            if (ClubAddDic.ContainsKey(club.UID))
-                                            {
-                                                ClubAddDic[club.UID].Add(stud.id);
-                                            }
-                                        }
+                                        NowRunRow(row, club, stud);
                                     }
                                     else
                                     {
-                                        //沒有人數上限
-                                        row.Cells[colSelectClub.Index].Value = "" + club.ClubName;
-                                        row.Cells[colSelectClub.Index].Tag = club;
-
-                                        club.NewCount++;
-                                        club.NewGrade2Limit++;
-
-                                        //新加入多少人
-                                        if (ClubAddDic.ContainsKey(club.UID))
-                                        {
-                                            ClubAddDic[club.UID].Add(stud.id);
-                                        }
+                                        //科別條件不符合
                                     }
                                 }
-                                else if (stud.grade_year == "3" || stud.grade_year == "9")
+                                else
                                 {
-                                    if (club.Grade3Limit.HasValue)
-                                    {
-                                        //三年級人數上限還沒滿
-                                        if (club.Grade3Limit.Value > club.NewGrade3Limit)
-                                        {
-                                            row.Cells[colSelectClub.Index].Value = "" + club.ClubName;
-                                            row.Cells[colSelectClub.Index].Tag = club;
-
-                                            club.NewCount++;
-                                            club.NewGrade3Limit++;
-
-                                            //新加入多少人
-                                            if (ClubAddDic.ContainsKey(club.UID))
-                                            {
-                                                ClubAddDic[club.UID].Add(stud.id);
-                                            }
-                                        }
-                                    }
-                                    else
-                                    {
-                                        //沒有人數上限
-                                        row.Cells[colSelectClub.Index].Value = "" + club.ClubName;
-                                        row.Cells[colSelectClub.Index].Tag = club;
-
-                                        club.NewCount++;
-                                        club.NewGrade3Limit++;
-
-                                        //新加入多少人
-                                        if (ClubAddDic.ContainsKey(club.UID))
-                                        {
-                                            ClubAddDic[club.UID].Add(stud.id);
-                                        }
-                                    }
+                                    //有科別限制,但學生身上無科別
                                 }
                             }
-
+                            else
+                            {
+                                NowRunRow(row, club, stud);
+                            }
                         }
                         else
                         {
@@ -788,117 +720,7 @@ namespace K12.Club.Volunteer
                         //如果沒有設定過,才進行分配
                         if (row.Cells[colSelectClub.Index].Value == null)
                         {
-
-                            //當學生是一年級時
-                            if (stud.grade_year == "1" || stud.grade_year == "7")
-                            {
-
-                                if (club.Grade1Limit.HasValue)
-                                {
-                                    //一年級人數上限還沒滿
-                                    if (club.Grade1Limit.Value > club.NewGrade1Limit)
-                                    {
-                                        row.Cells[colSelectClub.Index].Value = "" + club.ClubName;
-                                        row.Cells[colSelectClub.Index].Tag = club;
-
-                                        club.NewCount++;
-                                        club.NewGrade1Limit++;
-
-                                        //新加入多少人
-                                        if (ClubAddDic.ContainsKey(club.UID))
-                                        {
-                                            ClubAddDic[club.UID].Add(stud.id);
-                                        }
-                                    }
-                                }
-                                else
-                                {
-                                    //沒有人數上限
-                                    row.Cells[colSelectClub.Index].Value = "" + club.ClubName;
-                                    row.Cells[colSelectClub.Index].Tag = club;
-
-                                    club.NewCount++;
-                                    club.NewGrade1Limit++;
-
-                                    //新加入多少人
-                                    if (ClubAddDic.ContainsKey(club.UID))
-                                    {
-                                        ClubAddDic[club.UID].Add(stud.id);
-                                    }
-                                }
-                            }
-                            else if (stud.grade_year == "2" || stud.grade_year == "8")
-                            {
-                                if (club.Grade2Limit.HasValue)
-                                {
-                                    //二年級人數上限還沒滿
-                                    if (club.Grade2Limit.Value > club.NewGrade2Limit)
-                                    {
-                                        row.Cells[colSelectClub.Index].Value = "" + club.ClubName;
-                                        row.Cells[colSelectClub.Index].Tag = club;
-
-                                        club.NewCount++;
-                                        club.NewGrade2Limit++;
-
-                                        //新加入多少人
-                                        if (ClubAddDic.ContainsKey(club.UID))
-                                        {
-                                            ClubAddDic[club.UID].Add(stud.id);
-                                        }
-                                    }
-                                }
-                                else
-                                {
-                                    //沒有人數上限
-                                    row.Cells[colSelectClub.Index].Value = "" + club.ClubName;
-                                    row.Cells[colSelectClub.Index].Tag = club;
-
-                                    club.NewCount++;
-                                    club.NewGrade2Limit++;
-
-                                    //新加入多少人
-                                    if (ClubAddDic.ContainsKey(club.UID))
-                                    {
-                                        ClubAddDic[club.UID].Add(stud.id);
-                                    }
-                                }
-                            }
-                            else if (stud.grade_year == "3" || stud.grade_year == "9")
-                            {
-                                if (club.Grade3Limit.HasValue)
-                                {
-                                    //三年級人數上限還沒滿
-                                    if (club.Grade3Limit.Value > club.NewGrade3Limit)
-                                    {
-                                        row.Cells[colSelectClub.Index].Value = "" + club.ClubName;
-                                        row.Cells[colSelectClub.Index].Tag = club;
-
-                                        club.NewCount++;
-                                        club.NewGrade3Limit++;
-
-                                        //新加入多少人
-                                        if (ClubAddDic.ContainsKey(club.UID))
-                                        {
-                                            ClubAddDic[club.UID].Add(stud.id);
-                                        }
-                                    }
-                                }
-                                else
-                                {
-                                    //沒有人數上限
-                                    row.Cells[colSelectClub.Index].Value = "" + club.ClubName;
-                                    row.Cells[colSelectClub.Index].Tag = club;
-
-                                    club.NewCount++;
-                                    club.NewGrade3Limit++;
-
-                                    //新加入多少人
-                                    if (ClubAddDic.ContainsKey(club.UID))
-                                    {
-                                        ClubAddDic[club.UID].Add(stud.id);
-                                    }
-                                }
-                            }
+                            NowRunRow(row, club, stud);
                         }
                     }
                 }
@@ -906,6 +728,154 @@ namespace K12.Club.Volunteer
 
             //重新處理畫面顯示
             RefreshButtonItem(InsertClubLimit);
+
+            dataGridViewX1.Sort(new RowComparer());
+        }
+
+        private class RowComparer : System.Collections.IComparer
+        {
+            public RowComparer()
+            {
+
+            }
+
+            public int Compare(object x, object y)
+            {
+                DataGridViewRow DataGridViewRow1 = (DataGridViewRow)x;
+                DataGridViewRow DataGridViewRow2 = (DataGridViewRow)y;
+
+                if (("" + DataGridViewRow1.Cells[6].Value != "" || ("" + DataGridViewRow2.Cells[6].Value) != ""))
+                {
+                    string name1 = ("" + DataGridViewRow1.Cells[6].Value).PadLeft(20, 'z');
+                    string name2 = ("" + DataGridViewRow2.Cells[6].Value).PadLeft(20, 'z');
+                    return name2.CompareTo(name1);
+                }
+                else
+                {
+                    string name1 = ("" + DataGridViewRow1.Cells[0].Value).PadLeft(20, '0');
+                    string name2 = ("" + DataGridViewRow2.Cells[0].Value).PadLeft(20, '0');
+
+                    name1 += ("" + DataGridViewRow1.Cells[1].Value).PadLeft(20, '0');
+                    name2 += ("" + DataGridViewRow2.Cells[1].Value).PadLeft(20, '0');
+
+                    name1 += ("" + DataGridViewRow1.Cells[2].Value).PadLeft(20, '0');
+                    name2 += ("" + DataGridViewRow2.Cells[2].Value).PadLeft(20, '0');
+                    return name1.CompareTo(name2);
+                }
+            }
+        }
+
+
+        private void NowRunRow(DataGridViewRow row, CLUBRecord club, StudRecord stud)
+        {
+            //如果沒有設定過,才進行分配
+            if (row.Cells[colSelectClub.Index].Value == null)
+            {
+                //當學生是一年級時
+                if (stud.grade_year == "1" || stud.grade_year == "7")
+                {
+
+                    if (club.Grade1Limit.HasValue)
+                    {
+                        if (club.Grade1Limit.Value > club.NewGrade1Limit)
+                        {
+                            if (club.GenderRestrict != "")
+                            {
+                                //性別判斷
+                                if (club.GenderRestrict == stud.gender)
+                                {
+                                    NowSetRow(row, club, stud, "1");
+                                }
+                            }
+                            else
+                            {
+                                NowSetRow(row, club, stud, "1");
+                            }
+                        }
+                    }
+                    else
+                    {
+                        NowSetRow(row, club, stud, "1");
+                    }
+                }
+                else if (stud.grade_year == "2" || stud.grade_year == "8")
+                {
+                    if (club.Grade2Limit.HasValue)
+                    {
+                        if (club.Grade2Limit.Value > club.NewGrade2Limit)
+                        {
+                            if (club.GenderRestrict != "")
+                            {
+                                //性別判斷
+                                if (club.GenderRestrict == stud.gender)
+                                {
+                                    NowSetRow(row, club, stud, "2");
+                                }
+                            }
+                            else
+                            {
+                                NowSetRow(row, club, stud, "2");
+                            }
+                        }
+                    }
+                    else
+                    {
+                        NowSetRow(row, club, stud, "2");
+                    }
+                }
+                else if (stud.grade_year == "3" || stud.grade_year == "9")
+                {
+                    if (club.Grade3Limit.HasValue)
+                    {
+                        //三年級人數上限還沒滿
+                        if (club.Grade3Limit.Value > club.NewGrade3Limit)
+                        {
+                            if (club.GenderRestrict != "")
+                            {
+                                //性別判斷
+                                if (club.GenderRestrict == stud.gender)
+                                {
+                                    NowSetRow(row, club, stud, "3");
+                                }
+                            }
+                            else
+                            {
+                                NowSetRow(row, club, stud, "3");
+                            }
+                        }
+                    }
+                    else
+                    {
+                        NowSetRow(row, club, stud, "3");
+                    }
+                }
+            }
+        }
+
+        private void NowSetRow(DataGridViewRow row, CLUBRecord club, StudRecord stud, string v)
+        {
+            row.Cells[colSelectClub.Index].Value = "" + club.ClubName;
+            row.Cells[colSelectClub.Index].Tag = club;
+            club.NewCount++;
+
+            //新加入多少人
+            if (ClubAddDic.ContainsKey(club.UID))
+            {
+                ClubAddDic[club.UID].Add(stud.id);
+            }
+
+            if (v == "1")
+            {
+                club.NewGrade1Limit++;
+            }
+            else if (v == "2")
+            {
+                club.NewGrade2Limit++;
+            }
+            else if (v == "3")
+            {
+                club.NewGrade3Limit++;
+            }
         }
 
         private void btnExit_Click(object sender, EventArgs e)
@@ -923,14 +893,31 @@ namespace K12.Club.Volunteer
     {
         public StudRecord(DataRow row)
         {
-            id = "" + row[0];
-            class_name = "" + row[1];
-            seat_no = "" + row[2];
-            student_number = "" + row[3];
-            name = "" + row[4];
-            grade_year = "" + row[5];
-        }
+            //select student.id,class.class_name,student.seat_no,
+            //student.student_number,student.name,class.grade_year,student.gender 
+            //from student join class on student.ref_class_id=class.id 
+            //where student.status=1 or student.status=2  
+            //ORDER BY class.grade_year,class.class_name,student.seat_no
 
+            id = "" + row["id"];
+            class_name = "" + row["class_name"];
+            seat_no = "" + row["seat_no"];
+            student_number = "" + row["student_number"];
+            name = "" + row["name"];
+            grade_year = "" + row["grade_year"];
+            dept_name_stud = "" + row["dept_name_stud"];
+            dept_name_class = "" + row["dept_name_class"];
+            if ("" + row["gender"] == "0")
+                gender = "女";
+            else if ("" + row["gender"] == "1")
+                gender = "男";
+            else
+                gender = "";
+
+        }
+        public string dept_name_stud { get; set; }
+        public string dept_name_class { get; set; }
+        public string gender { get; set; }
         public string id { get; set; }
         public string class_name { get; set; }
         public string seat_no { get; set; }

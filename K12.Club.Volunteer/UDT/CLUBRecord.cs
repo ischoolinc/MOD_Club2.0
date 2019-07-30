@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using FISCA.UDT;
 using System.Xml;
+using FISCA.DSAUtil;
 
 namespace K12.Club.Volunteer
 {
@@ -83,6 +84,27 @@ namespace K12.Club.Volunteer
         /// </summary>
         [Field(Field = "dept_restrict", Indexed = false)]
         public string DeptRestrict { get; set; }
+
+        /// <summary>
+        /// 解析XML
+        /// </summary>
+        public List<string> GetDeptRestrictList
+        {
+            get
+            {
+                List<string> list = new List<string>();
+                XmlElement xmlBase = DSXmlHelper.LoadXml(DeptRestrict);
+                foreach (XmlElement xml in xmlBase.SelectNodes("Dept"))
+                {
+                    if (!list.Contains(xml.InnerText))
+                    {
+                        list.Add(xml.InnerText);
+                    }
+                }
+
+                return list;
+            }
+        }
 
         /// <summary>
         /// 評分老師ID-1

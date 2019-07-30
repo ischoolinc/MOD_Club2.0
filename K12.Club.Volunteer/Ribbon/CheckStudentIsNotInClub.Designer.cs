@@ -29,17 +29,19 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle77 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle67 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle78 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle79 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle80 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle81 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle72 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle73 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle74 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle75 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle76 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle20 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle21 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle22 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle23 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle24 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle25 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle17 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle18 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle19 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dataGridViewX1 = new DevComponents.DotNetBar.Controls.DataGridViewX();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.清除指定社團ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -58,10 +60,12 @@
             this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colGrade_year = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colClass = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colSeat_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colGan = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colStudentNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colSelectClub = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewX1)).BeginInit();
@@ -83,24 +87,25 @@
             this.colClass,
             this.colSeat_no,
             this.colName,
+            this.colGan,
             this.colStudentNumber,
             this.colSelectClub});
             this.dataGridViewX1.ContextMenuStrip = this.contextMenuStrip1;
-            dataGridViewCellStyle77.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle77.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle77.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle77.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle77.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle77.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle77.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridViewX1.DefaultCellStyle = dataGridViewCellStyle77;
+            dataGridViewCellStyle20.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle20.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle20.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle20.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle20.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle20.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle20.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewX1.DefaultCellStyle = dataGridViewCellStyle20;
             this.dataGridViewX1.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(215)))), ((int)(((byte)(229)))));
             this.dataGridViewX1.Location = new System.Drawing.Point(12, 50);
             this.dataGridViewX1.Name = "dataGridViewX1";
             this.dataGridViewX1.RowHeadersVisible = false;
             this.dataGridViewX1.RowTemplate.Height = 24;
             this.dataGridViewX1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewX1.Size = new System.Drawing.Size(502, 391);
+            this.dataGridViewX1.Size = new System.Drawing.Size(599, 398);
             this.dataGridViewX1.TabIndex = 1;
             // 
             // contextMenuStrip1
@@ -132,7 +137,7 @@
             this.btnSave.AutoSize = true;
             this.btnSave.BackColor = System.Drawing.Color.Transparent;
             this.btnSave.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnSave.Location = new System.Drawing.Point(585, 450);
+            this.btnSave.Location = new System.Drawing.Point(682, 457);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 25);
             this.btnSave.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -147,7 +152,7 @@
             this.btnExit.AutoSize = true;
             this.btnExit.BackColor = System.Drawing.Color.Transparent;
             this.btnExit.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnExit.Location = new System.Drawing.Point(666, 450);
+            this.btnExit.Location = new System.Drawing.Point(763, 457);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(75, 25);
             this.btnExit.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -180,7 +185,7 @@
             // 
             this.labelX2.BackgroundStyle.Class = "";
             this.labelX2.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX2.Location = new System.Drawing.Point(520, 15);
+            this.labelX2.Location = new System.Drawing.Point(617, 15);
             this.labelX2.Name = "labelX2";
             this.labelX2.Size = new System.Drawing.Size(74, 21);
             this.labelX2.TabIndex = 2;
@@ -196,7 +201,7 @@
             // 
             this.labelX3.BackgroundStyle.Class = "";
             this.labelX3.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX3.Location = new System.Drawing.Point(116, 452);
+            this.labelX3.Location = new System.Drawing.Point(116, 459);
             this.labelX3.Name = "labelX3";
             this.labelX3.Size = new System.Drawing.Size(108, 21);
             this.labelX3.TabIndex = 4;
@@ -209,7 +214,7 @@
             this.btnOutPut.AutoSize = true;
             this.btnOutPut.BackColor = System.Drawing.Color.Transparent;
             this.btnOutPut.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnOutPut.Location = new System.Drawing.Point(13, 450);
+            this.btnOutPut.Location = new System.Drawing.Point(13, 457);
             this.btnOutPut.Name = "btnOutPut";
             this.btnOutPut.Size = new System.Drawing.Size(75, 25);
             this.btnOutPut.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -231,18 +236,20 @@
             this.itmPnlTimeName.ContainerControlProcessDialogKey = true;
             this.itmPnlTimeName.LayoutOrientation = DevComponents.DotNetBar.eOrientation.Vertical;
             this.itmPnlTimeName.LicenseKey = "F962CEC7-CD8F-4911-A9E9-CAB39962FC1F";
-            this.itmPnlTimeName.Location = new System.Drawing.Point(520, 50);
+            this.itmPnlTimeName.Location = new System.Drawing.Point(617, 50);
             this.itmPnlTimeName.Name = "itmPnlTimeName";
-            this.itmPnlTimeName.Size = new System.Drawing.Size(221, 391);
+            this.itmPnlTimeName.Size = new System.Drawing.Size(221, 398);
             this.itmPnlTimeName.TabIndex = 8;
             this.itmPnlTimeName.Text = "itemPanel1";
             // 
             // btnStartAuto
             // 
             this.btnStartAuto.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
+            this.btnStartAuto.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnStartAuto.BackColor = System.Drawing.Color.Transparent;
             this.btnStartAuto.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnStartAuto.Location = new System.Drawing.Point(371, 450);
+            this.btnStartAuto.ForeColor = System.Drawing.Color.Red;
+            this.btnStartAuto.Location = new System.Drawing.Point(468, 457);
             this.btnStartAuto.Name = "btnStartAuto";
             this.btnStartAuto.Size = new System.Drawing.Size(143, 25);
             this.btnStartAuto.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -252,8 +259,8 @@
             // 
             // dataGridViewTextBoxColumn1
             // 
-            dataGridViewCellStyle67.BackColor = System.Drawing.Color.LightCyan;
-            this.dataGridViewTextBoxColumn1.DefaultCellStyle = dataGridViewCellStyle67;
+            dataGridViewCellStyle7.BackColor = System.Drawing.Color.LightCyan;
+            this.dataGridViewTextBoxColumn1.DefaultCellStyle = dataGridViewCellStyle7;
             this.dataGridViewTextBoxColumn1.HeaderText = "班級";
             this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
             this.dataGridViewTextBoxColumn1.ReadOnly = true;
@@ -261,8 +268,8 @@
             // 
             // dataGridViewTextBoxColumn2
             // 
-            dataGridViewCellStyle78.BackColor = System.Drawing.Color.LightCyan;
-            this.dataGridViewTextBoxColumn2.DefaultCellStyle = dataGridViewCellStyle78;
+            dataGridViewCellStyle21.BackColor = System.Drawing.Color.LightCyan;
+            this.dataGridViewTextBoxColumn2.DefaultCellStyle = dataGridViewCellStyle21;
             this.dataGridViewTextBoxColumn2.HeaderText = "座號";
             this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
             this.dataGridViewTextBoxColumn2.ReadOnly = true;
@@ -270,8 +277,8 @@
             // 
             // dataGridViewTextBoxColumn3
             // 
-            dataGridViewCellStyle79.BackColor = System.Drawing.Color.LightCyan;
-            this.dataGridViewTextBoxColumn3.DefaultCellStyle = dataGridViewCellStyle79;
+            dataGridViewCellStyle22.BackColor = System.Drawing.Color.LightCyan;
+            this.dataGridViewTextBoxColumn3.DefaultCellStyle = dataGridViewCellStyle22;
             this.dataGridViewTextBoxColumn3.HeaderText = "姓名";
             this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
             this.dataGridViewTextBoxColumn3.ReadOnly = true;
@@ -279,8 +286,8 @@
             // 
             // dataGridViewTextBoxColumn4
             // 
-            dataGridViewCellStyle80.BackColor = System.Drawing.Color.LightCyan;
-            this.dataGridViewTextBoxColumn4.DefaultCellStyle = dataGridViewCellStyle80;
+            dataGridViewCellStyle23.BackColor = System.Drawing.Color.LightCyan;
+            this.dataGridViewTextBoxColumn4.DefaultCellStyle = dataGridViewCellStyle23;
             this.dataGridViewTextBoxColumn4.HeaderText = "學號";
             this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
             this.dataGridViewTextBoxColumn4.ReadOnly = true;
@@ -288,8 +295,8 @@
             // 
             // dataGridViewTextBoxColumn5
             // 
-            dataGridViewCellStyle81.BackColor = System.Drawing.Color.LightCyan;
-            this.dataGridViewTextBoxColumn5.DefaultCellStyle = dataGridViewCellStyle81;
+            dataGridViewCellStyle24.BackColor = System.Drawing.Color.LightCyan;
+            this.dataGridViewTextBoxColumn5.DefaultCellStyle = dataGridViewCellStyle24;
             this.dataGridViewTextBoxColumn5.HeaderText = "指定社團";
             this.dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
             this.dataGridViewTextBoxColumn5.ReadOnly = true;
@@ -297,15 +304,24 @@
             // 
             // dataGridViewTextBoxColumn6
             // 
+            dataGridViewCellStyle25.BackColor = System.Drawing.Color.LightCyan;
+            this.dataGridViewTextBoxColumn6.DefaultCellStyle = dataGridViewCellStyle25;
             this.dataGridViewTextBoxColumn6.HeaderText = "指定社團";
             this.dataGridViewTextBoxColumn6.Name = "dataGridViewTextBoxColumn6";
             this.dataGridViewTextBoxColumn6.ReadOnly = true;
             this.dataGridViewTextBoxColumn6.Width = 120;
             // 
+            // dataGridViewTextBoxColumn7
+            // 
+            this.dataGridViewTextBoxColumn7.HeaderText = "指定社團";
+            this.dataGridViewTextBoxColumn7.Name = "dataGridViewTextBoxColumn7";
+            this.dataGridViewTextBoxColumn7.ReadOnly = true;
+            this.dataGridViewTextBoxColumn7.Width = 120;
+            // 
             // colGrade_year
             // 
-            dataGridViewCellStyle72.BackColor = System.Drawing.Color.LightCyan;
-            this.colGrade_year.DefaultCellStyle = dataGridViewCellStyle72;
+            dataGridViewCellStyle14.BackColor = System.Drawing.Color.LightCyan;
+            this.colGrade_year.DefaultCellStyle = dataGridViewCellStyle14;
             this.colGrade_year.HeaderText = "年級";
             this.colGrade_year.Name = "colGrade_year";
             this.colGrade_year.ReadOnly = true;
@@ -313,8 +329,8 @@
             // 
             // colClass
             // 
-            dataGridViewCellStyle73.BackColor = System.Drawing.Color.LightCyan;
-            this.colClass.DefaultCellStyle = dataGridViewCellStyle73;
+            dataGridViewCellStyle15.BackColor = System.Drawing.Color.LightCyan;
+            this.colClass.DefaultCellStyle = dataGridViewCellStyle15;
             this.colClass.HeaderText = "班級";
             this.colClass.Name = "colClass";
             this.colClass.ReadOnly = true;
@@ -322,8 +338,8 @@
             // 
             // colSeat_no
             // 
-            dataGridViewCellStyle74.BackColor = System.Drawing.Color.LightCyan;
-            this.colSeat_no.DefaultCellStyle = dataGridViewCellStyle74;
+            dataGridViewCellStyle16.BackColor = System.Drawing.Color.LightCyan;
+            this.colSeat_no.DefaultCellStyle = dataGridViewCellStyle16;
             this.colSeat_no.HeaderText = "座號";
             this.colSeat_no.Name = "colSeat_no";
             this.colSeat_no.ReadOnly = true;
@@ -331,17 +347,25 @@
             // 
             // colName
             // 
-            dataGridViewCellStyle75.BackColor = System.Drawing.Color.LightCyan;
-            this.colName.DefaultCellStyle = dataGridViewCellStyle75;
+            dataGridViewCellStyle17.BackColor = System.Drawing.Color.LightCyan;
+            this.colName.DefaultCellStyle = dataGridViewCellStyle17;
             this.colName.HeaderText = "姓名";
             this.colName.Name = "colName";
             this.colName.ReadOnly = true;
             this.colName.Width = 80;
             // 
+            // colGan
+            // 
+            dataGridViewCellStyle18.BackColor = System.Drawing.Color.LightCyan;
+            this.colGan.DefaultCellStyle = dataGridViewCellStyle18;
+            this.colGan.HeaderText = "性別";
+            this.colGan.Name = "colGan";
+            this.colGan.ReadOnly = true;
+            // 
             // colStudentNumber
             // 
-            dataGridViewCellStyle76.BackColor = System.Drawing.Color.LightCyan;
-            this.colStudentNumber.DefaultCellStyle = dataGridViewCellStyle76;
+            dataGridViewCellStyle19.BackColor = System.Drawing.Color.LightCyan;
+            this.colStudentNumber.DefaultCellStyle = dataGridViewCellStyle19;
             this.colStudentNumber.HeaderText = "學號";
             this.colStudentNumber.Name = "colStudentNumber";
             this.colStudentNumber.ReadOnly = true;
@@ -358,7 +382,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(753, 484);
+            this.ClientSize = new System.Drawing.Size(850, 491);
             this.Controls.Add(this.btnStartAuto);
             this.Controls.Add(this.itmPnlTimeName);
             this.Controls.Add(this.btnOutPut);
@@ -403,7 +427,9 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colClass;
         private System.Windows.Forms.DataGridViewTextBoxColumn colSeat_no;
         private System.Windows.Forms.DataGridViewTextBoxColumn colName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colGan;
         private System.Windows.Forms.DataGridViewTextBoxColumn colStudentNumber;
         private System.Windows.Forms.DataGridViewTextBoxColumn colSelectClub;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn7;
     }
 }
