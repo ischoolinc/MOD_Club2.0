@@ -33,6 +33,8 @@ namespace K12.Club.Volunteer
 
         List<CLUBRecord> CLUBRecordList = new List<CLUBRecord>();
 
+        StringBuilder sb_log = new StringBuilder();
+
         /// <summary>
         /// 已選社團學生
         /// 學生ID & 修課紀錄
@@ -412,7 +414,7 @@ ORDER BY class.grade_year,class.class_name,student.seat_no");
                             }
                             else
                             {
-                                Buttonitem.Text = record.ClubName + string.Format("(人數:{0}/{1}) +{2}", count, record.Limit.Value, ClubAddDic[record.UID].Count);
+                                Buttonitem.Text = record.ClubName + string.Format("(人數:{0}/{1}) +{2}", count, "無限制", ClubAddDic[record.UID].Count);
                                 Buttonitem.ForeColor = Color.Blue;
                             }
                         }
@@ -482,6 +484,9 @@ ORDER BY class.grade_year,class.class_name,student.seat_no");
             btnSave.Enabled = false;
 
             List<SCJoin> SCJoinList = new List<SCJoin>();
+            sb_log = new StringBuilder();
+            sb_log.AppendLine(string.Format("「{0}」學年度 第「{1}」學期 未選社團學生分發：", seting_school_year, seting_school_semester));
+
             foreach (DataGridViewRow row in dataGridViewX1.Rows)
             {
                 if (row.Cells[colSelectClub.Index].Tag != null)
@@ -493,6 +498,8 @@ ORDER BY class.grade_year,class.class_name,student.seat_no");
                     sc.RefClubID = cr.UID;
                     sc.RefStudentID = sr.id;
                     SCJoinList.Add(sc);
+
+                    sb_log.AppendLine(string.Format("班級「{0}」學生「{1}」社團指定為「{2}」", sr.class_name, sr.name, cr.ClubName));
                 }
             }
 
@@ -514,6 +521,8 @@ ORDER BY class.grade_year,class.class_name,student.seat_no");
                 SmartSchool.ErrorReporting.ReportingService.ReportException(ex);
                 return;
             }
+
+            FISCA.LogAgent.ApplicationLog.Log("未選社團分發作業", "分發", sb_log.ToString());
         }
 
         void BGWSave_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
