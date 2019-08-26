@@ -9,7 +9,6 @@ using System.Windows.Forms;
 using FISCA.Presentation.Controls;
 using K12.Data;
 using FISCA.Data;
-using JHSchool.Association;
 
 namespace K12.Club.Volunteer
 {
@@ -339,11 +338,15 @@ SELECT
     , {2}::BIGINT AS ref_exam_template_id 
     , {3}::SMALLINT AS school_year
     , {4}::SMALLINT AS semester
+    , '{5}'::CHARACTER VARYING AS subject
+    , {6}::INTEGER AS score_calc_flag
                                 ", clubName.Replace("'","''")
                                     , this._dicClubRecordByName[clubName].TeacherID1 == "" ? "null" : this._dicClubRecordByName[clubName].TeacherID1
                                     , this._dicClubRecordByName[clubName].RefExamTemplateID
                                     , cbxSchoolYear.SelectedItem.ToString()
                                     , cbxSemester.SelectedItem.ToString()
+                                    , clubName
+                                    , "2"
     );
                                     listCourseData.Add(data);
                                 }
@@ -364,6 +367,8 @@ WITH data_row AS(
         , ref_exam_template_id
         , school_year
         , semester
+        , subject
+        , score_calc_flag
     )
     SELECT
         course_name
@@ -371,6 +376,8 @@ WITH data_row AS(
         , ref_exam_template_id
         , school_year
         , semester
+        , subject
+        , score_calc_flag
     FROM
         data_row
     RETURNING * 
@@ -574,9 +581,28 @@ WHERE
                     }
                     #endregion
 
-                    MsgBox.Show(string.Format("資料比數[{0}]:轉入成功", dataGridViewX1.SelectedRows.Count));
+
+                    //Log - By Dylan 2019/8/26
+                    StringBuilder sb_log = new StringBuilder();
+                    sb_log.AppendLine("社團轉入課程：");
+                    sb_log.Append(string.Format("學年度「{0}」", cbxSchoolYear.SelectedItem.ToString()));
+                    sb_log.AppendLine(string.Format("學期「{0}」", cbxSemester.SelectedItem.ToString()));
+                    sb_log.AppendLine("社團清單：");
+                    foreach (string each in listSelectedClubName)
+                    {
+                        sb_log.AppendLine(string.Format("{0}", each));
+                    }
+
+                    FISCA.LogAgent.ApplicationLog.Log("社團", "轉入課程", sb_log.ToString());
+
+                    MsgBox.Show(string.Format("轉入成功\n資料筆數「{0}」", dataGridViewX1.SelectedRows.Count));
+                    
+                    //參考高雄社團,造成本功能只能高雄使用
+                    //暫時註解,高雄社團,請他們手動重新整理
+                    //By Dylan - 2019/8/26
                     // 高雄社團頁籤資料Reload
-                    AssnAdmin.Instance.BGW1.RunWorkerAsync();
+                    //AssnAdmin.Instance.BGW1.RunWorkerAsync();
+
                     // 課程頁籤資料Reload
                     JHSchool.Course.Instance.SyncAllBackground();
                     ReloadDataGridView();
