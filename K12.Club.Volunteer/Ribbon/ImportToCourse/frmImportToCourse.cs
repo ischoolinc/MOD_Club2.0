@@ -87,11 +87,11 @@ WHERE
                 try
                 {
                     string insertSQl = @"
-WITH insert_data (
-    INSERT INTO exam_template(
-        name 
+WITH insert_data as (
+    INSERT into exam_template(
+        name , allow_upload
     )VALUES(
-        '社團評量(社團模組)'
+        '社團評量(社團模組)', '0'
     )
     RETURNING *
 )
@@ -137,9 +137,11 @@ WHERE
 WITH insert_data AS(
     INSERT INTO tag(
         prefix
+        ,name
         , category
     ) VALUES(
         '聯課活動'
+        ,'社團'
         , 'Course'
     )
     RETURNING *
@@ -340,6 +342,7 @@ SELECT
     , {4}::SMALLINT AS semester
     , '{5}'::CHARACTER VARYING AS subject
     , {6}::INTEGER AS score_calc_flag
+    , {7}::BIT(1) AS not_included_in_credit
                                 ", clubName.Replace("'","''")
                                     , this._dicClubRecordByName[clubName].TeacherID1 == "" ? "null" : this._dicClubRecordByName[clubName].TeacherID1
                                     , this._dicClubRecordByName[clubName].RefExamTemplateID
@@ -347,6 +350,7 @@ SELECT
                                     , cbxSemester.SelectedItem.ToString()
                                     , clubName
                                     , "2"
+                                    , "1"
     );
                                     listCourseData.Add(data);
                                 }
@@ -369,6 +373,7 @@ WITH data_row AS(
         , semester
         , subject
         , score_calc_flag
+        , not_included_in_credit
     )
     SELECT
         course_name
@@ -378,6 +383,7 @@ WITH data_row AS(
         , semester
         , subject
         , score_calc_flag
+        , not_included_in_credit
     FROM
         data_row
     RETURNING * 
@@ -604,7 +610,8 @@ WHERE
                     //AssnAdmin.Instance.BGW1.RunWorkerAsync();
 
                     // 課程頁籤資料Reload
-                    JHSchool.Course.Instance.SyncAllBackground();
+                    //JHSchool.Course.Instance.SyncAllBackground();
+
                     ReloadDataGridView();
                 }
             }
