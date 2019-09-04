@@ -58,7 +58,7 @@ namespace K12.Club.Volunteer
             int semester = int.Parse(K12.Data.School.DefaultSemester == "" ? null : K12.Data.School.DefaultSemester);
             cbxSemester.Items.Add(1);
             cbxSemester.Items.Add(2);
-            cbxSemester.SelectedIndex = semester - 1; 
+            cbxSemester.SelectedIndex = semester - 1;
             // Init DataGridView
             ReloadDataGridView();
 
@@ -105,7 +105,7 @@ FROM
                     this._examTemplateID = "" + insertDt.Rows[0]["id"];
                     this._examTemplateName = "" + insertDt.Rows[0]["name"];
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     MsgBox.Show(ex.Message);
                 }
@@ -236,7 +236,7 @@ FROM
 ORDER BY
     club_data.club_name
 
-                ", cbxSchoolYear.SelectedItem.ToString(),cbxSemester.SelectedItem.ToString()); 
+                ", cbxSchoolYear.SelectedItem.ToString(), cbxSemester.SelectedItem.ToString());
                 #endregion
                 DataTable dt = this._qh.Select(sql);
 
@@ -284,7 +284,7 @@ ORDER BY
                     dgvrow.Cells[col++].Value = this._dicClubRecordByName[clubName].IsImport;
 
                     dataGridViewX1.Rows.Add(dgvrow);
-                } 
+                }
                 #endregion
             }
             this.ResumeLayout();
@@ -316,7 +316,7 @@ ORDER BY
                     string selectedClub = string.Format("「{0}」", "" + dgvrow.Cells[0].Value);
                     listSelectedClubName.Add(selectedClub);
                 }
-                DialogResult result = MsgBox.Show(string.Format("確定是否將{0}社團資料轉入課程?",string.Join(",", listSelectedClubName)), "提醒", MessageBoxButtons.YesNo);
+                DialogResult result = MsgBox.Show(string.Format("確定是否將{0}社團資料轉入課程?", string.Join(",", listSelectedClubName)), "提醒", MessageBoxButtons.YesNo);
                 if (result == DialogResult.Yes)
                 {
                     DataTable dtCourse = new DataTable();
@@ -343,7 +343,7 @@ SELECT
     , '{5}'::CHARACTER VARYING AS subject
     , {6}::INTEGER AS score_calc_flag
     , {7}::BIT(1) AS not_included_in_credit
-                                ", clubName.Replace("'","''")
+                                ", clubName.Replace("'", "''")
                                     , this._dicClubRecordByName[clubName].TeacherID1 == "" ? "null" : this._dicClubRecordByName[clubName].TeacherID1
                                     , this._dicClubRecordByName[clubName].RefExamTemplateID
                                     , cbxSchoolYear.SelectedItem.ToString()
@@ -545,44 +545,52 @@ FROM
                             #endregion
                             this._up.Execute(sql);
                         }
-                        // 轉入高雄社團上課地點
-                        if (listClubLocation.Count > 0)
+
+                        //2019/9/4 - 如果有上課地點Table,才新增上課地點
+                        string sql_check = "select * from _udt_table where name='jhschool.association.udt.address'";
+                        QueryHelper q = new QueryHelper();
+                        DataTable dt = q.Select(sql_check);
+                        if (dt.Rows.Count > 0)
                         {
-                            #region SQL
-                            string sql = string.Format(@"
-WITH data_row AS(
-    {0}
-) , update_data AS(
-    UPDATE $jhschool.association.udt.address SET
-        associationid = data_row.associationid
-        , schoolyear = data_row.schoolyear
-        , semester = data_row.semester
-        , address = data_row.address
-    FROM    
-        data_row
-    WHERE
-        data_row.associationid = $jhschool.association.udt.address.associationid
-) 
-INSERT INTO $jhschool.association.udt.address(
-    associationid
-    , schoolyear
-    , semester
-    , address
-)
-SELECT
-    data_row.associationid
-    , data_row.schoolyear
-    , data_row.semester
-    , data_row.address
-FROM
-    data_row
-    LEFT OUTER JOIN $jhschool.association.udt.address AS club
-        ON club.associationid = data_row.associationid
-WHERE
-    club.uid IS NULL
-                            ", string.Join("UNION ALL", listClubLocation));
-                            #endregion
-                            this._up.Execute(sql);
+                            // 轉入高雄社團上課地點
+                            if (listClubLocation.Count > 0)
+                            {
+                                #region SQL
+                                string sql = string.Format(@"
+                        WITH data_row AS(
+                            {0}
+                        ) , update_data AS(
+                            UPDATE $jhschool.association.udt.address SET
+                                associationid = data_row.associationid
+                                , schoolyear = data_row.schoolyear
+                                , semester = data_row.semester
+                                , address = data_row.address
+                            FROM    
+                                data_row
+                            WHERE
+                                data_row.associationid = $jhschool.association.udt.address.associationid
+                        ) 
+                        INSERT INTO $jhschool.association.udt.address(
+                            associationid
+                            , schoolyear
+                            , semester
+                            , address
+                        )
+                        SELECT
+                            data_row.associationid
+                            , data_row.schoolyear
+                            , data_row.semester
+                            , data_row.address
+                        FROM
+                            data_row
+                            LEFT OUTER JOIN $jhschool.association.udt.address AS club
+                                ON club.associationid = data_row.associationid
+                        WHERE
+                            club.uid IS NULL
+                                                    ", string.Join("UNION ALL", listClubLocation));
+                                #endregion
+                                this._up.Execute(sql);
+                            }
                         }
                     }
                     #endregion
@@ -602,7 +610,7 @@ WHERE
                     FISCA.LogAgent.ApplicationLog.Log("社團", "轉入課程", sb_log.ToString());
 
                     MsgBox.Show(string.Format("轉入成功\n資料筆數「{0}」", dataGridViewX1.SelectedRows.Count));
-                    
+
                     //參考高雄社團,造成本功能只能高雄使用
                     //暫時註解,高雄社團,請他們手動重新整理
                     //By Dylan - 2019/8/26
@@ -610,7 +618,6 @@ WHERE
                     //AssnAdmin.Instance.BGW1.RunWorkerAsync();
 
                     // 課程頁籤資料Reload
-                    //JHSchool.Course.Instance.SyncAllBackground();
 
                     ReloadDataGridView();
                 }

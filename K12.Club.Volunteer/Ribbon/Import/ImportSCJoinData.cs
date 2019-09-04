@@ -15,7 +15,7 @@ using System.ComponentModel;
 
 namespace K12.Club.Volunteer
 {
-    class ImportSCJoinData : ImportWizard 
+    class ImportSCJoinData : ImportWizard
     {
         private ImportOption _Option;
         private BackgroundWorker BGW = new BackgroundWorker();
@@ -42,6 +42,7 @@ namespace K12.Club.Volunteer
             {
                 List<SCJoin> listSCJoin = this._access.Select<SCJoin>();
 
+                //2019/9/4 - 增加判斷,學號不為空值
                 string sql = @"
 SELECT
     scj.uid
@@ -57,6 +58,7 @@ FROM
         ON club.uid = scj.ref_club_id::BIGINT
     LEFT OUTER JOIN student 
         ON student.id = scj.ref_student_id::BIGINT
+where student.student_number is not null
 ";
                 DataTable dt = this._qh.Select(sql);
 
@@ -65,7 +67,13 @@ FROM
                     // 社團學生參與紀錄整理
                     SCJoin scj = listSCJoin.Where(x => x.UID == "" + row["uid"]).First();
                     string key = string.Format("{0}_{1}_{2}_{3}", "" + row["school_year"], "" + row["semester"], "" + row["club_name"], "" + row["student_number"]);
-                    this._dicSCJoinByKey.Add(key, scj);
+
+                    //2019/9/4 - Dylan修正增加判斷,避免加入重複資料
+                    //(tip:為何資料會重複,也是要確認的問題)
+                    if (!_dicSCJoinByKey.ContainsKey(key))
+                    {
+                        this._dicSCJoinByKey.Add(key, scj);
+                    }
 
                     // 學生編號整理
 
@@ -80,8 +88,17 @@ FROM
                 {
                     // 社團編號整理
                     string clubKey = string.Format("{0}_{1}_{2}", cr.SchoolYear, cr.Semester, cr.ClubName);
-                    this._dicClubIDByKey.Add(clubKey, cr.UID);
-                    this._dicClubDataByID.Add(cr.UID,cr);
+
+                    //2019/9/4 - Dylan修正增加判斷,避免加入重複資料
+                    if (!_dicClubIDByKey.ContainsKey(clubKey))
+                    {
+                        this._dicClubIDByKey.Add(clubKey, cr.UID);
+                    }
+
+                    if (!_dicClubDataByID.ContainsKey(cr.UID))
+                    {
+                        this._dicClubDataByID.Add(cr.UID, cr);
+                    }
                 }
             }
             #endregion
@@ -100,11 +117,19 @@ WHERE
     AND student_number IS NOT NULL
 ";
                 DataTable dt = this._qh.Select(sql);
-
                 foreach (DataRow row in dt.Rows)
                 {
-                    this._dicStudentIDByStudentNumber.Add("" + row["student_number"],"" + row["id"]);
-                    this._dicStudentNameByStudentNumber.Add("" + row["student_number"],"" + row["name"]);
+                    //2019/9/4 - Dylan修正增加判斷,避免加入重複資料
+                    string student_number = "" + row["student_number"];
+                    if (!_dicStudentIDByStudentNumber.ContainsKey(student_number))
+                    {
+                        this._dicStudentIDByStudentNumber.Add(student_number, "" + row["id"]);
+                    }
+
+                    if (!_dicStudentNameByStudentNumber.ContainsKey(student_number))
+                    {
+                        this._dicStudentNameByStudentNumber.Add(student_number, "" + row["name"]);
+                    }
                 }
             }
             #endregion
@@ -134,7 +159,7 @@ WHERE
         /// </summary>
         /// <param name="Rows"></param>
         /// <param name="Messages"></param>
-        private void CustomValidator(List<IRowStream>Rows,RowMessages Messages)
+        private void CustomValidator(List<IRowStream> Rows, RowMessages Messages)
         {
             // 取得資料庫社團資料
             string sql = @"
@@ -146,12 +171,12 @@ SELECT
 FROM
     $k12.clubrecord.universal
 ";
-            
+
             DataTable dt = this._qh.Select(sql);
             IEnumerable<DataRow> clubs = dt.Rows.Cast<DataRow>();
 
             // 資料檢查
-            Rows.ForEach((x) => 
+            Rows.ForEach((x) =>
             {
                 string schoolYear = x.GetValue("學年度").Trim();
                 string semester = x.GetValue("學期").Trim();
@@ -193,7 +218,7 @@ FROM
                 string clubName = row.GetValue("社團名稱");
                 string studentNumber = row.GetValue("學號");
                 string studentName = this._dicStudentNameByStudentNumber[studentNumber];
-                string key = string.Format("{0}_{1}_{2}_{3}",schoolYear,semester,clubName,studentNumber);
+                string key = string.Format("{0}_{1}_{2}_{3}", schoolYear, semester, clubName, studentNumber);
                 string clubKey = string.Format("{0}_{1}_{2}", schoolYear, semester, clubName);
                 string newClubName = this._dicClubDataByID[this._dicClubIDByKey[clubKey]].ClubName;
 
@@ -203,7 +228,7 @@ FROM
 
                     // log資料
                     string originClubName = this._dicClubDataByID[scj.RefClubID].ClubName;
-                    string log = string.Format("「{0}」學生「{1}」學年度「{2}」學期原參與社團「{3}」變更為「{4}」",studentName,schoolYear,semester,originClubName,newClubName);
+                    string log = string.Format("「{0}」學生「{1}」學年度「{2}」學期原參與社團「{3}」變更為「{4}」", studentName, schoolYear, semester, originClubName, newClubName);
                     this._listUpdateLog.Add(log);
 
                     // 更新資料
@@ -214,7 +239,7 @@ FROM
                 else // 新增
                 {
                     // log資料
-                    string log = string.Format("「{0}」學生「{1}」學年度「{2}」學期參與社團「{3}」",studentName,schoolYear,semester, newClubName);
+                    string log = string.Format("「{0}」學生「{1}」學年度「{2}」學期參與社團「{3}」", studentName, schoolYear, semester, newClubName);
                     this._listInsertLog.Add(log);
 
                     // 新增資料
@@ -242,7 +267,7 @@ FROM
                     }
                     FISCA.LogAgent.ApplicationLog.Log("社團", "新增匯入", logs.ToString());
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     MsgBox.Show(ex.Message);
                 }
@@ -272,7 +297,7 @@ FROM
         {
             StringBuilder log = new StringBuilder();
 
-            log.AppendLine(string.Format("社團編號「{0}」學生編號「{1}」",scj.RefClubID,scj.RefStudentID));
+            log.AppendLine(string.Format("社團編號「{0}」學生編號「{1}」", scj.RefClubID, scj.RefStudentID));
 
             return "";
         }
