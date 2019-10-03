@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using FISCA.Presentation.Controls;
 using K12.Data;
 using FISCA.Data;
+using FISCA;
 
 namespace K12.Club.Volunteer
 {
@@ -19,6 +20,12 @@ namespace K12.Club.Volunteer
         private bool _initFinish = false;
         private string _examTemplateID;
         private string _examTemplateName;
+
+        //2019/9/11 - Dylan
+        //新增評分樣版內容
+        private string _examID;
+        private string _examName;
+
         private string _courseTagID;
 
         private class ClubRecord
@@ -34,7 +41,12 @@ namespace K12.Club.Volunteer
             public string RefExamTemplateID { get; set; }
             public string IsImport { get; set; }
             public List<string> listStudentID { get; set; }
+
         }
+
+        EventHandler eh;
+        string EventCode = "課程/重新整理";
+
         private Dictionary<string, ClubRecord> _dicClubRecordByName = new Dictionary<string, ClubRecord>();
 
         public frmImportToCourse()
@@ -44,10 +56,18 @@ namespace K12.Club.Volunteer
 
         private void frmImportToCourse_Load(object sender, EventArgs e)
         {
-            // Init exam_template
+            //評分樣板
             InitExamTemplate();
-            // Init tag
+
+            //評量名稱
+            InitExam();
+
+            //評分項目
+            InitTeInclude();
+
+            //類別
             InitTag();
+
             // Init SchoolYear
             int schoolYear = int.Parse(K12.Data.School.DefaultSchoolYear == "" ? null : K12.Data.School.DefaultSchoolYear);
             cbxSchoolYear.Items.Add(schoolYear - 1);
@@ -63,8 +83,13 @@ namespace K12.Club.Volunteer
             ReloadDataGridView();
 
             this._initFinish = true;
+
+            eh = FISCA.InteractionService.PublishEvent(EventCode);
         }
 
+        /// <summary>
+        /// 評分樣板
+        /// </summary>
         private void InitExamTemplate()
         {
             string sql = @"
@@ -112,6 +137,108 @@ FROM
             }
         }
 
+        /// <summary>
+        /// 評量名稱
+        /// </summary>
+        private void InitExam()
+        {
+            string sql = @"
+SELECT
+    *
+FROM
+    exam
+WHERE 
+    exam_name = '社團評量'
+";
+            DataTable dt = this._qh.Select(sql);
+
+            if (dt.Rows.Count > 0)
+            {
+                this._examID = "" + dt.Rows[0]["id"];
+                this._examName = "" + dt.Rows[0]["exam_name"];
+            }
+            else
+            {
+                try
+                {
+                    string insertSQl = @"
+WITH insert_data as (
+    INSERT into exam(
+        exam_name
+    )VALUES(
+        '社團評量'
+    )
+    RETURNING *
+)
+SELECT
+    *
+FROM 
+    insert_data
+";
+                    DataTable insertDt = this._qh.Select(insertSQl);
+
+                    this._examID = "" + insertDt.Rows[0]["id"];
+                    this._examName = "" + insertDt.Rows[0]["exam_name"];
+                }
+                catch (Exception ex)
+                {
+                    MsgBox.Show(ex.Message);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 評分項目
+        /// </summary>
+        private void InitTeInclude()
+        {
+            string sql = @"
+SELECT
+    *
+FROM
+    te_include
+WHERE 
+    ref_exam_template_id='{0}'
+";
+            DataTable dt = this._qh.Select(string.Format(sql, _examTemplateID));
+
+            if (dt.Rows.Count > 0)
+            {
+                //不予處理
+            }
+            else
+            {
+                try
+                {
+                    string insertSQl = @"
+WITH insert_data as (
+    INSERT into te_include(
+        ref_exam_template_id , ref_exam_id , weight , use_score , use_text , extension
+    )VALUES(
+        '{0}' , '{1}' , '{2}' , '{3}' , '{4}' , '{5}'
+    )
+    RETURNING *
+)
+SELECT
+    *
+FROM 
+    insert_data
+";
+                    DataTable insertDt = this._qh.Select(
+                        string.Format(insertSQl, _examTemplateID, _examID, "100", "1" , "0", @"<Extension><UseScore>是</UseScore><UseEffort>否</UseEffort><UseText>否</UseText></Extension>")
+                        );
+                }
+                catch (Exception ex)
+                {
+                    MsgBox.Show(ex.Message);
+                }
+            }
+
+        }
+
+        /// <summary>
+        /// 類別
+        /// </summary>
         private void InitTag()
         {
             string sql = @"
@@ -343,6 +470,7 @@ SELECT
     , '{5}'::CHARACTER VARYING AS subject
     , {6}::INTEGER AS score_calc_flag
     , {7}::BIT(1) AS not_included_in_credit
+    , {8}::BIT(1) AS not_included_in_calc
                                 ", clubName.Replace("'", "''")
                                     , this._dicClubRecordByName[clubName].TeacherID1 == "" ? "null" : this._dicClubRecordByName[clubName].TeacherID1
                                     , this._dicClubRecordByName[clubName].RefExamTemplateID
@@ -351,7 +479,8 @@ SELECT
                                     , clubName
                                     , "2"
                                     , "1"
-    );
+                                    , "1"
+        );
                                     listCourseData.Add(data);
                                 }
                             }
@@ -374,6 +503,7 @@ WITH data_row AS(
         , subject
         , score_calc_flag
         , not_included_in_credit
+        , not_included_in_calc
     )
     SELECT
         course_name
@@ -384,6 +514,7 @@ WITH data_row AS(
         , subject
         , score_calc_flag
         , not_included_in_credit
+        , not_included_in_calc
     FROM
         data_row
     RETURNING * 
@@ -609,15 +740,14 @@ FROM
 
                     FISCA.LogAgent.ApplicationLog.Log("社團", "轉入課程", sb_log.ToString());
 
+                    //處理產品社團,當使用轉入課程功能時
+                    //需要引發
+                    //1.國中課程 or 高中社團 的更新事件
+                    //2.引發高雄社團更新事件
+                    //2019/9/10 - Dylan
+                    eh(null, EventArgs.Empty);
+
                     MsgBox.Show(string.Format("轉入成功\n資料筆數「{0}」", dataGridViewX1.SelectedRows.Count));
-
-                    //參考高雄社團,造成本功能只能高雄使用
-                    //暫時註解,高雄社團,請他們手動重新整理
-                    //By Dylan - 2019/8/26
-                    // 高雄社團頁籤資料Reload
-                    //AssnAdmin.Instance.BGW1.RunWorkerAsync();
-
-                    // 課程頁籤資料Reload
 
                     ReloadDataGridView();
                 }
