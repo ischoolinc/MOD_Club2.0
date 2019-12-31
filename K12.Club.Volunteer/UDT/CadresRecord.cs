@@ -7,7 +7,7 @@ using FISCA.UDT;
 namespace K12.Club.Volunteer
 {
     [TableName("K12.CadresRecord.Universal")]
-    class CadresRecord : ActiveRecord
+    public class CadresRecord : ActiveRecord
     {
         /// <summary>
         /// 幹部名稱
