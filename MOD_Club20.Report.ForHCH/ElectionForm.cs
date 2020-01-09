@@ -207,18 +207,20 @@ namespace MOD_Club20.Report.ForHCH
             List<string> name = new List<string>();
             List<string> value = new List<string>();
 
+            name.Add("學校名稱");
+            value.Add(School.ChineseName);
+
             name.Add("名稱");
             value.Add(RePortName);
-
 
             name.Add("班級");
             value.Add(Class.SelectByID(classID).Name);
 
             name.Add("學年度");
-            value.Add(School.DefaultSchoolYear);
+            value.Add("" + _SchoolYear);
 
             name.Add("學期");
-            value.Add(School.DefaultSemester);
+            value.Add("" + _Semester);
 
             PageOne.MailMerge.Execute(name.ToArray(), value.ToArray());
             #endregion
@@ -238,7 +240,14 @@ namespace MOD_Club20.Report.ForHCH
             foreach (StudentRecord each in StudentList)
             {
                 StudentSCjoinObj scj = SCjoinObjDic[each.ID];
-                foreach (CLUBRecord club in scj.CLUBRecord)
+                if (scj.CLUBRecord.Count > 0)
+                {
+                    foreach (CLUBRecord club in scj.CLUBRecord)
+                    {
+                        addcount++;
+                    }
+                }
+                else
                 {
                     addcount++;
                 }
@@ -253,7 +262,62 @@ namespace MOD_Club20.Report.ForHCH
             foreach (StudentRecord each in StudentList)
             {
                 StudentSCjoinObj scj = SCjoinObjDic[each.ID];
-                foreach (CLUBRecord club in scj.CLUBRecord)
+                if (scj.CLUBRecord.Count > 0)
+                {
+                    foreach (CLUBRecord club in scj.CLUBRecord)
+                    {
+                        //座號
+                        Write(cell, scj.SeatNo);
+                        cell = GetMoveRightCell(cell, 1);
+
+                        Write(cell, scj.Name);
+                        cell = GetMoveRightCell(cell, 1);
+
+                        Write(cell, scj.StudentNumber);
+                        cell = GetMoveRightCell(cell, 1);
+
+                        Write(cell, scj.Gender);
+                        cell = GetMoveRightCell(cell, 1);
+
+                        Write(cell, club.ClubName);
+                        cell = GetMoveRightCell(cell, 1);
+
+                        //社團類型
+                        Write(cell, club.ClubCategory);
+                        cell = GetMoveRightCell(cell, 1);
+
+                        //學生擔任幹部
+                        List<string> list = new List<string>();
+                        if (club.President == each.ID)
+                            list.Add("社長"); //社長
+
+                        if (club.VicePresident == each.ID)
+                            list.Add("副社長");
+
+                        List<CadresRecord> CadreList = tool._A.Select<CadresRecord>("ref_club_id='" + club.UID + "'");
+                        foreach (CadresRecord cadre in CadreList)
+                        {
+                            if (cadre.RefStudentID == each.ID)
+                            {
+                                list.Add(cadre.CadreName);
+                            }
+                        }
+
+                        if (list.Count > 0)
+                        {
+                            Write(cell, string.Join(",", list));
+                        }
+
+                        Row Nextrow = cell.ParentRow.NextSibling as Row; //取得下一行
+                        if (Nextrow == null)
+                        {
+                            break;
+                        }
+                        cell = Nextrow.FirstCell; //第一格
+
+                    }
+                }
+                else
                 {
                     //座號
                     Write(cell, scj.SeatNo);
@@ -268,43 +332,12 @@ namespace MOD_Club20.Report.ForHCH
                     Write(cell, scj.Gender);
                     cell = GetMoveRightCell(cell, 1);
 
-                    Write(cell, club.ClubName);
-                    cell = GetMoveRightCell(cell, 1);
-
-                    //社團類型
-                    Write(cell, club.ClubCategory);
-                    cell = GetMoveRightCell(cell, 1);
-
-                    //學生擔任幹部
-                    List<string> list = new List<string>();
-                    if (club.President == each.ID)
-                        list.Add("社長"); //社長
-
-                    if (club.VicePresident == each.ID)
-                        list.Add("副社長");
-
-                    List<CadresRecord> CadreList = tool._A.Select<CadresRecord>("ref_club_id='" + club.UID + "'");
-                    foreach (CadresRecord cadre in CadreList)
-                    {
-                        if (cadre.RefStudentID == each.ID)
-                        {
-                            list.Add(cadre.CadreName);
-                        }
-                    }
-
-                    if (list.Count > 0)
-                    {
-                        Write(cell, string.Join(",", list));
-                    }
-
                     Row Nextrow = cell.ParentRow.NextSibling as Row; //取得下一行
                     if (Nextrow == null)
                     {
                         break;
                     }
                     cell = Nextrow.FirstCell; //第一格
-
-
                 }
             }
 
