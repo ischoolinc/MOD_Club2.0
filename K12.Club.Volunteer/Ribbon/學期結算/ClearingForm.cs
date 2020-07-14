@@ -26,7 +26,9 @@ namespace K12.Club.Volunteer
 
         List<ResultScoreRecord> UPDateScoreList { get; set; }
 
-        //List<ResultScoreRecord> DeleteScoreList { get; set; }
+        成績取得器 tool { get; set; }
+
+        Dictionary<string, 社團幹部obj> CadreDic { get; set; }
 
         public ClearingForm()
         {
@@ -59,14 +61,14 @@ namespace K12.Club.Volunteer
         {
 
             //取得目前選擇課程
-            成績取得器 tool = new 成績取得器();
+            tool = new 成績取得器();
             tool.GetSCJoinByClubIDList(ClubAdmin.Instance.SelectedSource);
 
             //取得運算比例
             tool.SetWeightProportion();
 
             //社團ID : 社團幹部obj
-            Dictionary<string, 社團幹部obj> CadreDic = new Dictionary<string, 社團幹部obj>();
+            CadreDic = new Dictionary<string, 社團幹部obj>();
 
             #region 處理幹部記錄
 
@@ -95,8 +97,8 @@ namespace K12.Club.Volunteer
 
             #region 結算回學務幹部
             List<string> dataList = new List<string>();
-            
-            
+
+
             foreach (社團幹部obj cadre in CadreDic.Values)
             {
                 string clubID = cadre._Club.UID;
@@ -137,10 +139,10 @@ SELECT
 
                         dataList.Add(data);
                     }
-                } 
+                }
             }
-            
-            string dataRow = string.Join(" UNION ALL",dataList);
+
+            string dataRow = string.Join(" UNION ALL", dataList);
 
             #region SQL
             // 判斷條件: 學生ID、學年度、學期、社團名稱
@@ -223,9 +225,6 @@ WITH data_row AS(
 
             #endregion
 
-
-            Dictionary<string, ResultScoreRecord> ResultScoreDic = new Dictionary<string, ResultScoreRecord>();
-
             List<string> list_2 = new List<string>();
             foreach (List<SCJoin> each in tool._SCJoinDic.Values)
             {
@@ -245,16 +244,26 @@ WITH data_row AS(
                 semester = "" + tool._ClubDic[clubID].Semester;
                 clubNameList.Add("'" + clubName + "'");
             }
-            string clubNames = string.Join(",",clubNameList);
+            string clubNames = string.Join(",", clubNameList);
             // 201/03/22 羿均 更新: 修改讀取學期結算成績的KEY值為 studentID、clubName、schoolYear、semester
-            string condition = string.Format("ref_student_id IN ('{0}') AND school_year = {1} AND semester = {2} AND club_name IN ({3}) ", studentIDs, schoolYear,semester, clubNames);
+            string condition = string.Format("ref_student_id IN ('{0}') AND school_year = {1} AND semester = {2} AND club_name IN ({3}) ", studentIDs, schoolYear, semester, clubNames);
+
             List<ResultScoreRecord> ResultList = _AccessHelper.Select<ResultScoreRecord>(condition);
-            //List<ResultScoreRecord> ResultList = _AccessHelper.Select<ResultScoreRecord>("ref_scjoin_id in ('" + uq + "')");
+            Dictionary<string, Dictionary<string, ResultScoreRecord>> ResultScoreDic = new Dictionary<string, Dictionary<string, ResultScoreRecord>>();
             foreach (ResultScoreRecord rsr in ResultList)
             {
+                //學生有社團成績
                 if (!ResultScoreDic.ContainsKey(rsr.RefStudentID))
                 {
-                    ResultScoreDic.Add(rsr.RefStudentID, rsr);
+                    ResultScoreDic.Add(rsr.RefStudentID, new Dictionary<string, ResultScoreRecord>());
+                    ResultScoreDic[rsr.RefStudentID].Add(rsr.RefClubID, rsr);
+                }
+                else
+                {
+                    if (!ResultScoreDic[rsr.RefStudentID].ContainsKey(rsr.RefClubID))
+                    {
+                        ResultScoreDic[rsr.RefStudentID].Add(rsr.RefClubID, rsr);
+                    }
                 }
             }
 
@@ -268,110 +277,78 @@ WITH data_row AS(
             {
                 foreach (SCJoin scj in scjList)
                 {
-                    
+                    //有學生紀錄
                     if (ResultScoreDic.ContainsKey(scj.RefStudentID))
                     {
-                        #region 如果有原資料
-                        if (tool._StudentDic.ContainsKey(scj.RefStudentID))
+                        //相同社團
+                        if (ResultScoreDic[scj.RefStudentID].ContainsKey(scj.RefClubID))
                         {
-                            //社團
-                            CLUBRecord cr = tool._ClubDic[scj.RefClubID];
-                            //學生
-                            StudentRecord sr = tool._StudentDic[scj.RefStudentID];
-                            //原有社團成績記錄
-                            ResultScoreRecord update_rsr = ResultScoreDic[scj.RefStudentID];
-
-                            update_rsr.SchoolYear = cr.SchoolYear;
-                            update_rsr.Semester = cr.Semester;
-
-                            update_rsr.RefClubID = cr.UID; //社團ID
-                            update_rsr.RefStudentID = sr.ID; //學生ID
-                            update_rsr.RefSCJoinID = scj.UID; //參與記錄ID
-
-                            update_rsr.ClubName = cr.ClubName;
-
-                            update_rsr.ClubLevel = cr.Level; //社團評等
-
-                            #region 成績
-                            if (!string.IsNullOrEmpty(scj.Score))
+                            #region 如果有原資料
+                            if (tool._StudentDic.ContainsKey(scj.RefStudentID))
                             {
-                                update_rsr.ResultScore = tool.GetDecimalValue(scj); //成績
-                            }
-                            else
-                            {
-                                //當成績已被清空,結算內容也被清空
-                                update_rsr.ResultScore = null;
-                            }
-                            #endregion
+                                //社團
+                                CLUBRecord cr = tool._ClubDic[scj.RefClubID];
+                                //學生
+                                StudentRecord sr = tool._StudentDic[scj.RefStudentID];
+                                //原有社團成績記錄
+                                ResultScoreRecord update_rsr = ResultScoreDic[scj.RefStudentID][scj.RefClubID];
 
-                            #region 幹部
-                            if (CadreDic.ContainsKey(cr.UID))
-                            {
-                                if (CadreDic[cr.UID]._Cadre1.ContainsKey(sr.ID))
+                                update_rsr.SchoolYear = cr.SchoolYear;
+                                update_rsr.Semester = cr.Semester;
+
+                                update_rsr.RefClubID = cr.UID; //社團ID
+                                update_rsr.RefStudentID = sr.ID; //學生ID
+                                update_rsr.RefSCJoinID = scj.UID; //參與記錄ID
+
+                                update_rsr.ClubName = cr.ClubName;
+
+                                update_rsr.ClubLevel = cr.Level; //社團評等
+
+                                #region 成績
+                                if (!string.IsNullOrEmpty(scj.Score))
                                 {
-                                    update_rsr.CadreName = CadreDic[cr.UID]._Cadre1[sr.ID];
+                                    update_rsr.ResultScore = tool.GetDecimalValue(scj); //成績
+                                }
+                                else
+                                {
+                                    //當成績已被清空,結算內容也被清空
+                                    update_rsr.ResultScore = null;
+                                }
+                                #endregion
+
+                                #region 幹部
+                                if (CadreDic.ContainsKey(cr.UID))
+                                {
+                                    if (CadreDic[cr.UID]._Cadre1.ContainsKey(sr.ID))
+                                    {
+                                        update_rsr.CadreName = CadreDic[cr.UID]._Cadre1[sr.ID];
+                                    }
+                                    else
+                                    {
+                                        update_rsr.CadreName = "";
+                                    }
                                 }
                                 else
                                 {
                                     update_rsr.CadreName = "";
                                 }
-                            }
-                            else
-                            {
-                                update_rsr.CadreName = "";
-                            }
-                            #endregion
+                                #endregion
 
-                            UPDateScoreList.Add(update_rsr);
+                                UPDateScoreList.Add(update_rsr);
+                            }
+                        }
+                        else
+                        {
+                            //學生有社團紀錄,但社團不相同
+                            RunInsert(scj);
+
                         }
                         #endregion
                     }
                     else
                     {
-                        #region 完全沒有成績記錄
-                        if (tool._StudentDic.ContainsKey(scj.RefStudentID))
-                        {
-                            //社團
-                            CLUBRecord cr = tool._ClubDic[scj.RefClubID];
-                            //學生
-                            StudentRecord sr = tool._StudentDic[scj.RefStudentID];
-
-                            ResultScoreRecord rsr = new ResultScoreRecord();
-                            rsr.SchoolYear = cr.SchoolYear;
-                            rsr.Semester = cr.Semester;
-
-                            rsr.RefClubID = cr.UID; //社團ID
-                            rsr.RefStudentID = sr.ID; //學生ID
-                            rsr.RefSCJoinID = scj.UID; //參與記錄ID
-
-                            rsr.ClubName = cr.ClubName;
-
-                            rsr.ClubLevel = cr.Level; //社團評等
-
-
-                            if (!string.IsNullOrEmpty(scj.Score))
-                            {
-                                rsr.ResultScore = tool.GetDecimalValue(scj); //成績
-                            }
-
-                            #region 幹部
-                            if (CadreDic.ContainsKey(cr.UID))
-                            {
-                                if (CadreDic[cr.UID]._Cadre1.ContainsKey(sr.ID))
-                                {
-                                    rsr.CadreName = CadreDic[cr.UID]._Cadre1[sr.ID];
-                                }
-                                else
-                                {
-                                    rsr.CadreName = "";
-                                }
-                            }
-                            #endregion
-                             
-                            InsertScoreList.Add(rsr);
-                            
-                        }
-                        #endregion
+                        //完全沒有成績記錄
+                        RunInsert(scj);
                     }
                 }
             }
@@ -458,6 +435,52 @@ WITH data_row AS(
             }
 
             #endregion
+        }
+
+        public void RunInsert(SCJoin scj)
+        {
+            if (tool._StudentDic.ContainsKey(scj.RefStudentID))
+            {
+                //社團
+                CLUBRecord cr = tool._ClubDic[scj.RefClubID];
+                //學生
+                StudentRecord sr = tool._StudentDic[scj.RefStudentID];
+
+                ResultScoreRecord rsr = new ResultScoreRecord();
+                rsr.SchoolYear = cr.SchoolYear;
+                rsr.Semester = cr.Semester;
+
+                rsr.RefClubID = cr.UID; //社團ID
+                rsr.RefStudentID = sr.ID; //學生ID
+                rsr.RefSCJoinID = scj.UID; //參與記錄ID
+
+                rsr.ClubName = cr.ClubName;
+
+                rsr.ClubLevel = cr.Level; //社團評等
+
+
+                if (!string.IsNullOrEmpty(scj.Score))
+                {
+                    rsr.ResultScore = tool.GetDecimalValue(scj); //成績
+                }
+
+                #region 幹部
+                if (CadreDic.ContainsKey(cr.UID))
+                {
+                    if (CadreDic[cr.UID]._Cadre1.ContainsKey(sr.ID))
+                    {
+                        rsr.CadreName = CadreDic[cr.UID]._Cadre1[sr.ID];
+                    }
+                    else
+                    {
+                        rsr.CadreName = "";
+                    }
+                }
+                #endregion
+
+                InsertScoreList.Add(rsr);
+
+            }
         }
 
         void BGW_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
