@@ -495,12 +495,12 @@ namespace K12.Club.Volunteer
 
             #region Search
 
-            Campus.Configuration.ConfigData cd = Campus.Configuration.Config.User["AssociationSearchOptionPreference"];
+            Campus.Configuration.ConfigData cd = Campus.Configuration.Config.User["ClubSearchOptionPreference"];
 
             SearchClubName = SetSearchButton("名稱", "SearchClubName", cd);
             SearchClubTeacher = SetSearchButton("老師", "SearchClubTeacher", cd);
-            SearchStudentName = SetSearchButton("參與學生", "SearchStudentName", cd);
-            SearchAddress = SetSearchButton("場地", "SearchAddress", cd);
+            SearchStudentName = SetSearchButton("參與學生", "SearchClubStudentName", cd);
+            SearchAddress = SetSearchButton("場地", "SearchClubAddress", cd);
             #endregion
 
             this.Search += new EventHandler<SearchEventArgs>(ClubAdmin_Search);
