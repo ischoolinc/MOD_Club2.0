@@ -14,6 +14,7 @@ using System.Diagnostics;
 using Aspose.Words.Drawing;
 using Aspose.Words.Tables;
 using Aspose.Words.Reporting;
+using Campus.Report2014;
 
 namespace K12.Club.Volunteer
 {
@@ -51,17 +52,17 @@ namespace K12.Club.Volunteer
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             //取得設定檔
-            Campus.Report.ReportConfiguration ConfigurationInCadre = new Campus.Report.ReportConfiguration(CadreConfig);
+            ReportConfiguration ConfigurationInCadre = new ReportConfiguration(CadreConfig);
             //畫面內容(範本內容,預設樣式
-            Campus.Report.TemplateSettingForm TemplateForm;
+            TemplateSettingForm TemplateForm;
             if (ConfigurationInCadre.Template != null)
             {
-                TemplateForm = new Campus.Report.TemplateSettingForm(ConfigurationInCadre.Template, new Campus.Report.ReportTemplate(Properties.Resources.社團幹部證明單, Campus.Report.TemplateType.Word));
+                TemplateForm = new TemplateSettingForm(ConfigurationInCadre.Template, new ReportTemplate(Properties.Resources.社團幹部證明單1, TemplateType.docx));
             }
             else
             {
-                ConfigurationInCadre.Template = new Campus.Report.ReportTemplate(Properties.Resources.社團幹部證明單, Campus.Report.TemplateType.Word);
-                TemplateForm = new Campus.Report.TemplateSettingForm(ConfigurationInCadre.Template, new Campus.Report.ReportTemplate(Properties.Resources.社團幹部證明單, Campus.Report.TemplateType.Word));
+                ConfigurationInCadre.Template = new ReportTemplate(Properties.Resources.社團幹部證明單1, TemplateType.docx);
+                TemplateForm = new TemplateSettingForm(ConfigurationInCadre.Template, new ReportTemplate(Properties.Resources.社團幹部證明單1, TemplateType.docx));
             }
 
             //預設名稱
@@ -91,17 +92,13 @@ namespace K12.Club.Volunteer
             _doc.Sections.Clear(); //清空此Document
 
             //取得設定檔
-            Campus.Report.ReportConfiguration ConfigurationInCadre = new Campus.Report.ReportConfiguration(CadreConfig);
+            ReportConfiguration ConfigurationInCadre = new ReportConfiguration(CadreConfig);
             if (ConfigurationInCadre.Template == null)
             {
                 //如果範本為空,則建立一個預設範本
-                Campus.Report.ReportConfiguration ConfigurationInCadre_1 = new Campus.Report.ReportConfiguration(CadreConfig);
-                ConfigurationInCadre_1.Template = new Campus.Report.ReportTemplate(Properties.Resources.社團幹部證明單, Campus.Report.TemplateType.Word);
-                //ConfigurationInCadre_1.Template = new Campus.Report.ReportTemplate(Properties.Resources.社團點名表_合併欄位總表, Campus.Report.TemplateType.Word);
-                //_template = ConfigurationInCadre_1.Template.ToDocument();
+                ReportConfiguration ConfigurationInCadre_1 = new ReportConfiguration(CadreConfig);
+                ConfigurationInCadre_1.Template = new ReportTemplate(Properties.Resources.社團幹部證明單1, TemplateType.docx);
                 _template = new Document(ConfigurationInCadre_1.Template.GetStream());
-                //
-                //Document doc = new Document(ConfigurationInCadre_1.Template.GetStream());
             }
             else
             {

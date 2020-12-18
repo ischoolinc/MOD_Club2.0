@@ -72,7 +72,7 @@ namespace K12.Club.Volunteer
             //社團ID : 社團特殊物件
             Dictionary<string, List<FactsObj_big>> DoWorkDic = GetClubData(); //分類
 
-            Document _template = new Document(new MemoryStream(Properties.Resources.社團概況表_範本));
+            Document _template = new Document(new MemoryStream(Properties.Resources.社團概況表_範本1));
             _doc.Sections.Clear();
 
             //取得範本樣式

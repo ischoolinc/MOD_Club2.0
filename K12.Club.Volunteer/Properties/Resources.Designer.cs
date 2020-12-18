@@ -346,9 +346,9 @@ namespace K12.Club.Volunteer.Properties {
         /// <summary>
         ///   查詢類型 System.Byte[] 的當地語系化資源。
         /// </summary>
-        internal static byte[] 班級學生選社_範本 {
+        internal static byte[] 班級學生選社_範本1 {
             get {
-                object obj = ResourceManager.GetObject("班級學生選社_範本", resourceCulture);
+                object obj = ResourceManager.GetObject("班級學生選社_範本1", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -366,9 +366,9 @@ namespace K12.Club.Volunteer.Properties {
         /// <summary>
         ///   查詢類型 System.Byte[] 的當地語系化資源。
         /// </summary>
-        internal static byte[] 社團幹部證明單 {
+        internal static byte[] 社團幹部證明單1 {
             get {
-                object obj = ResourceManager.GetObject("社團幹部證明單", resourceCulture);
+                object obj = ResourceManager.GetObject("社團幹部證明單1", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -386,9 +386,9 @@ namespace K12.Club.Volunteer.Properties {
         /// <summary>
         ///   查詢類型 System.Byte[] 的當地語系化資源。
         /// </summary>
-        internal static byte[] 社團概況表_範本 {
+        internal static byte[] 社團概況表_範本1 {
             get {
-                object obj = ResourceManager.GetObject("社團概況表_範本", resourceCulture);
+                object obj = ResourceManager.GetObject("社團概況表_範本1", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -396,9 +396,9 @@ namespace K12.Club.Volunteer.Properties {
         /// <summary>
         ///   查詢類型 System.Byte[] 的當地語系化資源。
         /// </summary>
-        internal static byte[] 社團點名單_套表列印 {
+        internal static byte[] 社團點名單_套表列印1 {
             get {
-                object obj = ResourceManager.GetObject("社團點名單_套表列印", resourceCulture);
+                object obj = ResourceManager.GetObject("社團點名單_套表列印1", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -416,9 +416,9 @@ namespace K12.Club.Volunteer.Properties {
         /// <summary>
         ///   查詢類型 System.Byte[] 的當地語系化資源。
         /// </summary>
-        internal static byte[] 社團點名表_合併欄位總表 {
+        internal static byte[] 社團點名表_合併欄位總表1 {
             get {
-                object obj = ResourceManager.GetObject("社團點名表_合併欄位總表", resourceCulture);
+                object obj = ResourceManager.GetObject("社團點名表_合併欄位總表1", resourceCulture);
                 return ((byte[])(obj));
             }
         }

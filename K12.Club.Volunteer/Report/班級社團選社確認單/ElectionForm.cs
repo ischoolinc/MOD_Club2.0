@@ -94,7 +94,7 @@ namespace K12.Club.Volunteer
             //取得學生資料
             GetAndSortStudent();
 
-            _template = new Document(new MemoryStream(Properties.Resources.班級學生選社_範本));
+            _template = new Document(new MemoryStream(Properties.Resources.班級學生選社_範本1));
 
             _doc.Sections.Clear();
 

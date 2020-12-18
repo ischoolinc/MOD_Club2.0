@@ -160,9 +160,6 @@
   <data name="社團點名單_範本" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\社團點名單_範本.xls;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="班級學生選社_範本" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\班級學生選社_範本.doc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="meeting_64" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\meeting_64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -172,20 +169,11 @@
   <data name="brand_write_64" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\brand_write_64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="社團概況表_範本" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\社團概況表_範本.doc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="社團成績單_範本" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\社團成績單_範本.xls;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="班級社團成績單_範本" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\班級社團成績單_範本.xls;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="社團點名單_套表列印" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\社團點名單_套表列印.doc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="社團點名表_合併欄位總表" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\社團點名表_合併欄位總表.doc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="presentation_a_config_64" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\presentation_a_config_64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -195,9 +183,6 @@
   </data>
   <data name="group_up_64" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\group_up_64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="社團幹部證明單" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\社團幹部證明單.doc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="ImportCLUBDataValRule" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ImportCLUBDataValRule.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
@@ -216,5 +201,20 @@
   </data>
   <data name="library_up_64" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\library_up_64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="班級學生選社_範本1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\班級學生選社_範本.docx;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="社團幹部證明單1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\社團幹部證明單.docx;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="社團概況表_範本1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\社團概況表_範本.docx;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="社團點名單_套表列印1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\社團點名單_套表列印.docx;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="社團點名表_合併欄位總表1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\社團點名表_合併欄位總表.docx;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

@@ -7,7 +7,6 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using FISCA.Presentation.Controls;
-using Aspose.Words;
 using System.IO;
 using FISCA.DSAUtil;
 using FISCA.UDT;
@@ -16,6 +15,8 @@ using System.Xml;
 using System.Diagnostics;
 using FISCA.Data;
 using System.Xml.Linq;
+using Campus.Report2014;
+using Aspose.Words;
 
 namespace K12.Club.Volunteer
 {
@@ -168,14 +169,14 @@ namespace K12.Club.Volunteer
 
         void BGW_DoWork(object sender, DoWorkEventArgs e)
         {
-            Campus.Report.ReportConfiguration ConfigurationInCadre = new Campus.Report.ReportConfiguration(ClassPrint_Config_1);
+            ReportConfiguration ConfigurationInCadre = new ReportConfiguration(ClassPrint_Config_1);
             Aspose.Words.Document Template;
 
             if (ConfigurationInCadre.Template == null)
             {
                 //如果範本為空,則建立一個預設範本
-                Campus.Report.ReportConfiguration ConfigurationInCadre_1 = new Campus.Report.ReportConfiguration(ClassPrint_Config_1);
-                ConfigurationInCadre_1.Template = new Campus.Report.ReportTemplate(Properties.Resources.社團點名單_套表列印, Campus.Report.TemplateType.Word);
+                ReportConfiguration ConfigurationInCadre_1 = new ReportConfiguration(ClassPrint_Config_1);
+                ConfigurationInCadre_1.Template = new ReportTemplate(Properties.Resources.社團點名單_套表列印1, TemplateType.docx);
                 //ConfigurationInCadre_1.Template = new Campus.Report.ReportTemplate(Properties.Resources.社團點名表_合併欄位總表, Campus.Report.TemplateType.Word);
                 //Jean
                 Template = new Document(ConfigurationInCadre_1.Template.GetStream());
@@ -478,17 +479,17 @@ namespace K12.Club.Volunteer
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             //取得設定檔
-            Campus.Report.ReportConfiguration ConfigurationInCadre = new Campus.Report.ReportConfiguration(ClassPrint_Config_1);
-            Campus.Report.TemplateSettingForm TemplateForm;
+            ReportConfiguration ConfigurationInCadre = new ReportConfiguration(ClassPrint_Config_1);
+            TemplateSettingForm TemplateForm;
             //畫面內容(範本內容,預設樣式
             if (ConfigurationInCadre.Template != null)
             {
-                TemplateForm = new Campus.Report.TemplateSettingForm(ConfigurationInCadre.Template, new Campus.Report.ReportTemplate(Properties.Resources.社團點名單_套表列印, Campus.Report.TemplateType.Word));
+                TemplateForm = new TemplateSettingForm(ConfigurationInCadre.Template, new ReportTemplate(Properties.Resources.社團點名單_套表列印1, TemplateType.docx));
             }
             else
             {
-                ConfigurationInCadre.Template = new Campus.Report.ReportTemplate(Properties.Resources.社團點名單_套表列印, Campus.Report.TemplateType.Word);
-                TemplateForm = new Campus.Report.TemplateSettingForm(ConfigurationInCadre.Template, new Campus.Report.ReportTemplate(Properties.Resources.社團點名單_套表列印, Campus.Report.TemplateType.Word));
+                ConfigurationInCadre.Template = new ReportTemplate(Properties.Resources.社團點名單_套表列印1, TemplateType.docx);
+                TemplateForm = new TemplateSettingForm(ConfigurationInCadre.Template, new ReportTemplate(Properties.Resources.社團點名單_套表列印1, TemplateType.docx));
             }
 
             //預設名稱
@@ -508,14 +509,14 @@ namespace K12.Club.Volunteer
         {
             SaveFileDialog sfd = new SaveFileDialog();
             sfd.Title = "另存新檔";
-            sfd.FileName = "社團點名表_合併欄位總表.doc";
-            sfd.Filter = "Word檔案 (*.doc)|*.doc|所有檔案 (*.*)|*.*";
+            sfd.FileName = "社團點名表_合併欄位總表.docx";
+            sfd.Filter = "Word檔案 (*.docx)|*.docx|所有檔案 (*.*)|*.*";
             if (sfd.ShowDialog() == DialogResult.OK)
             {
                 try
                 {
                     FileStream fs = new FileStream(sfd.FileName, FileMode.Create);
-                    fs.Write(Properties.Resources.社團點名表_合併欄位總表, 0, Properties.Resources.社團點名表_合併欄位總表.Length);
+                    fs.Write(Properties.Resources.社團點名表_合併欄位總表1, 0, Properties.Resources.社團點名表_合併欄位總表1.Length);
                     fs.Close();
                     System.Diagnostics.Process.Start(sfd.FileName);
                 }
