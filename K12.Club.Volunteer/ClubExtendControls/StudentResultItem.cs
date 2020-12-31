@@ -125,6 +125,7 @@ namespace K12.Club.Volunteer
                     row.Cells[2].Value = each.ClubName;
                     row.Cells[3].Value = each.ResultScore.HasValue ? each.ResultScore.Value.ToString() : "";
                     row.Cells[4].Value = each.CadreName;
+                    row.Cells[5].Value = each.ClubLevel;
                     row.Tag = each;
                 }
                 else
@@ -134,6 +135,7 @@ namespace K12.Club.Volunteer
                     row.Cells[2].Value = each.ClubName;
                     row.Cells[3].Value = each.ResultScore.HasValue ? each.ResultScore.Value.ToString() : "";
                     row.Cells[4].Value = each.CadreName;
+                    row.Cells[5].Value = each.ClubLevel;
                     row.Tag = each;
 
                     foreach (DataGridViewCell cell in row.Cells)
@@ -194,7 +196,6 @@ namespace K12.Club.Volunteer
                         rsr.ResultScore = xy; //成績              
                     }
                     rsr.CadreName = "" + row.Cells[4].Value; //幹部
-
                     InsertList.Add(rsr);
                 }
                 else
@@ -221,7 +222,7 @@ namespace K12.Club.Volunteer
                         rsr.ResultScore = null;
                     }
                     rsr.CadreName = "" + row.Cells[4].Value; //幹部
-
+                    rsr.ClubLevel = "" + row.Cells[5].Value; //社團評等
                     updateList.Add(rsr);
                 }
 

@@ -22,6 +22,8 @@ namespace AllProveReport.Report
     {
         private string CadreConfig = "AllProveReport.cs.Aki";
 
+        private string 顯示成績Config = "AllProveReport.ShowScore";
+
         private BackgroundWorker BGW = new BackgroundWorker();
 
         //主文件
@@ -30,6 +32,9 @@ namespace AllProveReport.Report
         private Document _template;
         //移動使用
         private static Run _run;
+
+        private static string 顯示成績 = "False";
+
 
         // 入學照片
         Dictionary<string, string> _PhotoPDict = new Dictionary<string, string>();
@@ -44,6 +49,19 @@ namespace AllProveReport.Report
         public ProveReport()
         {
             InitializeComponent();
+
+            K12.Data.Configuration.ConfigData conf = K12.Data.School.Configuration[顯示成績Config];
+            if (conf["顯示成績"] == "")
+            {
+                顯示成績 = "False";
+                checkBoxX1.Checked = false;
+            }
+            else
+            {
+                顯示成績 = "True";
+                checkBoxX1.Checked = true;
+            }
+
         }
 
         private void CadreProveReport_Load(object sender, EventArgs e)
@@ -58,14 +76,30 @@ namespace AllProveReport.Report
             Campus.Report.ReportConfiguration ConfigurationInCadre = new Campus.Report.ReportConfiguration(CadreConfig);
             //畫面內容(範本內容,預設樣式
             Campus.Report.TemplateSettingForm TemplateForm;
-            if (ConfigurationInCadre.Template != null)
+
+            if (顯示成績 == "True")
             {
-                TemplateForm = new Campus.Report.TemplateSettingForm(ConfigurationInCadre.Template, new Campus.Report.ReportTemplate(Properties.Resources.社團參與證明單, Campus.Report.TemplateType.Word));
+                if (ConfigurationInCadre.Template != null)
+                {
+                    TemplateForm = new Campus.Report.TemplateSettingForm(ConfigurationInCadre.Template, new Campus.Report.ReportTemplate(Properties.Resources.社團參與證明單_score, Campus.Report.TemplateType.Word));
+                }
+                else
+                {
+                    ConfigurationInCadre.Template = new Campus.Report.ReportTemplate(Properties.Resources.社團參與證明單_score, Campus.Report.TemplateType.Word);
+                    TemplateForm = new Campus.Report.TemplateSettingForm(ConfigurationInCadre.Template, new Campus.Report.ReportTemplate(Properties.Resources.社團參與證明單_score, Campus.Report.TemplateType.Word));
+                }
             }
             else
             {
-                ConfigurationInCadre.Template = new Campus.Report.ReportTemplate(Properties.Resources.社團參與證明單, Campus.Report.TemplateType.Word);
-                TemplateForm = new Campus.Report.TemplateSettingForm(ConfigurationInCadre.Template, new Campus.Report.ReportTemplate(Properties.Resources.社團參與證明單, Campus.Report.TemplateType.Word));
+                if (ConfigurationInCadre.Template != null)
+                {
+                    TemplateForm = new Campus.Report.TemplateSettingForm(ConfigurationInCadre.Template, new Campus.Report.ReportTemplate(Properties.Resources.社團參與證明單, Campus.Report.TemplateType.Word));
+                }
+                else
+                {
+                    ConfigurationInCadre.Template = new Campus.Report.ReportTemplate(Properties.Resources.社團參與證明單, Campus.Report.TemplateType.Word);
+                    TemplateForm = new Campus.Report.TemplateSettingForm(ConfigurationInCadre.Template, new Campus.Report.ReportTemplate(Properties.Resources.社團參與證明單, Campus.Report.TemplateType.Word));
+                }
             }
 
             //預設名稱
@@ -88,6 +122,10 @@ namespace AllProveReport.Report
 
         void BGW_DoWork(object sender, DoWorkEventArgs e)
         {
+            K12.Data.Configuration.ConfigData conf = K12.Data.School.Configuration[顯示成績Config];
+            conf["顯示成績"] = 顯示成績;
+            conf.Save();
+
             List<string> StudentIDList = K12.Presentation.NLDPanels.Student.SelectedSource;
 
             _doc = new Document();
@@ -99,9 +137,11 @@ namespace AllProveReport.Report
             {
                 //如果範本為空,則建立一個預設範本
                 Campus.Report.ReportConfiguration ConfigurationInCadre_1 = new Campus.Report.ReportConfiguration(CadreConfig);
-                ConfigurationInCadre_1.Template = new Campus.Report.ReportTemplate(Properties.Resources.社團參與證明單, Campus.Report.TemplateType.Word);
-                //ConfigurationInCadre_1.Template = new Campus.Report.ReportTemplate(Properties.Resources.社團點名表_合併欄位總表, Campus.Report.TemplateType.Word);
-             
+                if (顯示成績 == "True")
+                    ConfigurationInCadre_1.Template = new Campus.Report.ReportTemplate(Properties.Resources.社團參與證明單_score, Campus.Report.TemplateType.Word);
+                else
+                    ConfigurationInCadre_1.Template = new Campus.Report.ReportTemplate(Properties.Resources.社團參與證明單, Campus.Report.TemplateType.Word);
+
                 _template = new Document(ConfigurationInCadre_1.Template.GetStream());
 
             }
@@ -373,6 +413,15 @@ namespace AllProveReport.Report
 
                         list.Add(obj.ClubLevel);
 
+                        if (顯示成績 == "True")
+                        {
+                            //2020/12/29
+                            //考量宏文高中康組長客服內容(#9480)
+                            //轉學生會帶成績離開
+                            //
+                            list.Add(obj.ResultScore.HasValue ? obj.ResultScore.Value.ToString() : ""); //社團學期成績
+                        }
+
                         foreach (string listEach in list)
                         {
                             Write(cell, listEach);
@@ -396,8 +445,8 @@ namespace AllProveReport.Report
         #endregion
 
 
-      
-        private static  int SortResultScore(ResultScoreRecord r1, ResultScoreRecord r2)
+
+        private static int SortResultScore(ResultScoreRecord r1, ResultScoreRecord r2)
         {
             string school_1 = r1.SchoolYear.ToString().PadLeft(3, '0');
             school_1 += r1.Semester.ToString().PadLeft(1, '0');
@@ -456,6 +505,11 @@ namespace AllProveReport.Report
         private void buttonX2_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void checkBoxX1_CheckedChanged(object sender, EventArgs e)
+        {
+            顯示成績 = checkBoxX1.Checked.ToString();
         }
     }
 }

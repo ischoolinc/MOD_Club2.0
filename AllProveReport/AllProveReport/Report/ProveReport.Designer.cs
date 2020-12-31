@@ -34,6 +34,7 @@
             this.groupPanel1 = new DevComponents.DotNetBar.Controls.GroupPanel();
             this.labelX2 = new DevComponents.DotNetBar.LabelX();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.checkBoxX1 = new DevComponents.DotNetBar.Controls.CheckBoxX();
             this.groupPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -145,16 +146,35 @@
             this.linkLabel1.Text = "設定樣板";
             this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
+            // checkBoxX1
+            // 
+            this.checkBoxX1.AutoSize = true;
+            this.checkBoxX1.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.checkBoxX1.BackgroundStyle.Class = "";
+            this.checkBoxX1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.checkBoxX1.Location = new System.Drawing.Point(100, 115);
+            this.checkBoxX1.Name = "checkBoxX1";
+            this.checkBoxX1.Size = new System.Drawing.Size(80, 21);
+            this.checkBoxX1.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
+            this.checkBoxX1.TabIndex = 12;
+            this.checkBoxX1.Text = "顯示成績";
+            this.checkBoxX1.CheckedChanged += new System.EventHandler(this.checkBoxX1_CheckedChanged);
+            // 
             // ProveReport
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(437, 150);
+            this.Controls.Add(this.checkBoxX1);
             this.Controls.Add(this.groupPanel1);
             this.Controls.Add(this.buttonX2);
             this.Controls.Add(this.btnPrint);
             this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.labelX1);
+            this.DoubleBuffered = true;
             this.Name = "ProveReport";
             this.Text = "社團參與證明單";
             this.Load += new System.EventHandler(this.CadreProveReport_Load);
@@ -173,5 +193,6 @@
         private DevComponents.DotNetBar.Controls.GroupPanel groupPanel1;
         private DevComponents.DotNetBar.LabelX labelX2;
         private System.Windows.Forms.LinkLabel linkLabel1;
+        private DevComponents.DotNetBar.Controls.CheckBoxX checkBoxX1;
     }
 }

@@ -35,6 +35,7 @@
             this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.labelX1 = new DevComponents.DotNetBar.LabelX();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewX1)).BeginInit();
             this.SuspendLayout();
@@ -49,7 +50,8 @@
             this.Column2,
             this.Column3,
             this.Column4,
-            this.Column5});
+            this.Column5,
+            this.Column6});
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle1.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
@@ -94,6 +96,11 @@
             this.Column5.HeaderText = "幹部名稱";
             this.Column5.Name = "Column5";
             // 
+            // Column6
+            // 
+            this.Column6.HeaderText = "社團評等";
+            this.Column6.Name = "Column6";
+            // 
             // labelX1
             // 
             this.labelX1.AutoSize = true;
@@ -102,11 +109,11 @@
             // 
             this.labelX1.BackgroundStyle.Class = "";
             this.labelX1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX1.Location = new System.Drawing.Point(13, 197);
+            this.labelX1.Location = new System.Drawing.Point(13, 201);
             this.labelX1.Name = "labelX1";
-            this.labelX1.Size = new System.Drawing.Size(301, 21);
+            this.labelX1.Size = new System.Drawing.Size(270, 39);
             this.labelX1.TabIndex = 1;
-            this.labelX1.Text = "說明：有顏色的行，是社團結算功能產生之資料。";
+            this.labelX1.Text = "*.有顏色的行，是社團結算功能產生之資料。\r\n*.經由社團結算的資料才會有社團評等。";
             // 
             // StudentResultItem
             // 
@@ -115,7 +122,7 @@
             this.Controls.Add(this.labelX1);
             this.Controls.Add(this.dataGridViewX1);
             this.Name = "StudentResultItem";
-            this.Size = new System.Drawing.Size(550, 225);
+            this.Size = new System.Drawing.Size(550, 250);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewX1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -125,11 +132,12 @@
         #endregion
 
         private DevComponents.DotNetBar.Controls.DataGridViewX dataGridViewX1;
+        private DevComponents.DotNetBar.LabelX labelX1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column5;
-        private DevComponents.DotNetBar.LabelX labelX1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column6;
     }
 }

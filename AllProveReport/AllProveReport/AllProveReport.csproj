@@ -20,7 +20,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\..\ischool高中\addmodules\MOD_Club.Volunteer\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -133,6 +133,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\社團參與證明單.doc" />
+    <None Include="Resources\社團參與證明單_score.doc" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Library\Aspose.Words.dll" />
