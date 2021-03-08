@@ -40,7 +40,9 @@ namespace K12.Club.Volunteer
 
         List<SCJoin> _InsertSCJList = new List<SCJoin>();
 
-        List<string> _SkipList = new List<string>();
+        List<string> _SkipList = new List<string>();        
+        List<string> _SkipIDList = new List<string>(); //跳過的社團編號
+        
 
         List<CadresRecord> _InsertCadreList = new List<CadresRecord>();
 
@@ -148,6 +150,11 @@ namespace K12.Club.Volunteer
                     copyClubList.Add(item);
                     copyClubIDList.Add(item.UID);
                 }
+                else
+                {
+                    _SkipIDList.Add(item.UID);
+                }
+
             }
 
             if (copyClubList.Count == 0) return;
@@ -395,17 +402,21 @@ namespace K12.Club.Volunteer
             {
                 StringBuilder sb = new StringBuilder();
                 sb.AppendLine("共" + _NewInsertList.Count + "個社團複製成功!!\n");
-                sb.AppendLine("共" + _SkipList.Count + "個重覆社團,已略過處理!!");
-                if (_CopyOtherStudent)
+                sb.AppendLine("共" + _SkipList.Count + "個重覆社團,已略過並加入待處理社團!!");
+
+                // 將跳過的社團加入待處理
+                ClubAdmin.Instance.AddToTemp(_SkipIDList);
+
+                if (_CopyOtherStudent & _NewInsertList.Count!=0)
                 {
                     sb.AppendLine("已同步建立" + _InsertSCJList.Count + "名學生的社團參與記錄!!");
                 }
 
-                if (_CopyCadresStudent)
+                if (_CopyCadresStudent & _NewInsertList.Count != 0)
                 {
                     sb.AppendLine("已同步建立學生的社團幹部記錄!!");
                 }
-                if (_CopyPresidentStudent)
+                if (_CopyPresidentStudent & _NewInsertList.Count != 0)
                 {
 
                     sb.AppendLine("已同步複製社長、副社長社團參與紀錄");

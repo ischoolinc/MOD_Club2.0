@@ -30,6 +30,7 @@ namespace K12.Club.Volunteer
 
         private class ClubRecord
         {
+            public string ClubUID { get; set; }
             public string ClubName { get; set; }
             public string ClubLocation { get; set; }
             public string TeacherName1 { get; set; }
@@ -373,6 +374,7 @@ ORDER BY
                     if (!this._dicClubRecordByName.ContainsKey("" + row["club_name"]))
                     {
                         ClubRecord data = new ClubRecord();
+                        data.ClubUID = "" + row["uid"];
                         data.ClubName = "" + row["club_name"];
                         data.ClubLocation = "" + row["location"];
                         data.TeacherID1 = "" + row["ref_teacher_id"];
@@ -403,12 +405,14 @@ ORDER BY
 
                     int col = 0;
                     dgvrow.Cells[col++].Value = clubName;
-                    dgvrow.Cells[col++].Value = this._dicClubRecordByName[clubName].listStudentID.Count;
+                    dgvrow.Cells[col++].Value = _dicClubRecordByName[clubName].listStudentID.Count;
                     dgvrow.Cells[col++].Value = this._dicClubRecordByName[clubName].TeacherName1;
                     dgvrow.Cells[col++].Value = this._dicClubRecordByName[clubName].TeacherName2;
                     dgvrow.Cells[col++].Value = this._dicClubRecordByName[clubName].TeacherName3;
                     dgvrow.Cells[col++].Value = this._examTemplateName;
                     dgvrow.Cells[col++].Value = this._dicClubRecordByName[clubName].IsImport;
+
+                    dgvrow.Tag = _dicClubRecordByName[clubName].ClubUID;
 
                     dataGridViewX1.Rows.Add(dgvrow);
                 }
@@ -443,14 +447,15 @@ ORDER BY
                     string selectedClub = string.Format("「{0}」", "" + dgvrow.Cells[0].Value);
                     listSelectedClubName.Add(selectedClub);
                 }
-                DialogResult result = MsgBox.Show(string.Format("確定是否將{0}社團資料轉入課程?", string.Join(",", listSelectedClubName)), "提醒", MessageBoxButtons.YesNo);
+                DialogResult result = MsgBox.Show(string.Format("確定將{0}社團資料轉入課程?", string.Join(",", listSelectedClubName)), "提醒", MessageBoxButtons.YesNo);
                 if (result == DialogResult.Yes)
                 {
                     DataTable dtCourse = new DataTable();
-
+                    List<string> listCourseData = new List<string>();
+                    List<string> skipIDList = new List<string>(); //跳過的社團編號
                     #region 建立課程，並取回課程資料
                     {
-                        List<string> listCourseData = new List<string>();
+                        
                         #region 資料整理
                         foreach (DataGridViewRow dgvrow in dataGridViewX1.SelectedRows)
                         {
@@ -463,17 +468,15 @@ ORDER BY
                                     string data = string.Format(@"
 SELECT
     '{0}'::TEXT AS course_name
-    , {1}::BIGINT AS ref_teacher_id
-    , {2}::BIGINT AS ref_exam_template_id 
-    , {3}::SMALLINT AS school_year
-    , {4}::SMALLINT AS semester
-    , '{5}'::CHARACTER VARYING AS subject
-    , {6}::INTEGER AS score_calc_flag
-    , {7}::BIT(1) AS not_included_in_credit
-    , {8}::BIT(1) AS not_included_in_calc
+    , {1}::BIGINT AS ref_teacher_id    
+    , {2}::SMALLINT AS school_year
+    , {3}::SMALLINT AS semester
+    , '{4}'::CHARACTER VARYING AS subject
+    , {5}::INTEGER AS score_calc_flag
+    , {6}::BIT(1) AS not_included_in_credit
+    , {7}::BIT(1) AS not_included_in_calc
                                 ", clubName.Replace("'", "''")
                                     , this._dicClubRecordByName[clubName].TeacherID1 == "" ? "null" : this._dicClubRecordByName[clubName].TeacherID1
-                                    , this._dicClubRecordByName[clubName].RefExamTemplateID
                                     , cbxSchoolYear.SelectedItem.ToString()
                                     , cbxSemester.SelectedItem.ToString()
                                     , clubName
@@ -483,6 +486,12 @@ SELECT
         );
                                     listCourseData.Add(data);
                                 }
+                                else
+                                {
+                                    // 若選擇的 dgvrow中 已經有加入下學期課程的社團，將之放到待處理社團 供使用者處理
+                                    skipIDList.Add("" + dgvrow.Tag);
+                                }
+
                             }
 
                         }
@@ -496,8 +505,7 @@ WITH data_row AS(
 ) , insert_data AS(
     INSERT INTO course(
         course_name
-        , ref_teacher_id
-        , ref_exam_template_id
+        , ref_teacher_id        
         , school_year
         , semester
         , subject
@@ -507,8 +515,7 @@ WITH data_row AS(
     )
     SELECT
         course_name
-        , ref_teacher_id
-        , ref_exam_template_id
+        , ref_teacher_id        
         , school_year
         , semester
         , subject
@@ -530,6 +537,17 @@ FROM
                         else
                         {
                             MsgBox.Show("沒有資料可以轉入課程!");
+
+                            if (skipIDList.Count > 0)
+                            {
+                                // 加入待處理
+                                DialogResult result3 = MsgBox.Show("是否將重複之課程/社團加入待處理?", "提醒", MessageBoxButtons.YesNo);
+                                if (result3 == DialogResult.Yes)
+                                {
+                                    ClubAdmin.Instance.AddToTemp(skipIDList);
+                                }
+                            }
+                           
                             return;
                         }
                     }
@@ -747,8 +765,18 @@ FROM
                     //2019/9/10 - Dylan
                     eh(null, EventArgs.Empty);
 
-                    MsgBox.Show(string.Format("轉入成功\n資料筆數「{0}」", dataGridViewX1.SelectedRows.Count));
+                    MsgBox.Show(string.Format("轉入成功資料筆數「{0}」，重複之課程/社團筆數「{1}」", listCourseData.Count, dataGridViewX1.SelectedRows.Count- listCourseData.Count));
 
+                    if (skipIDList.Count > 0)
+                    {
+                        // 加入待處理
+                        DialogResult result2 = MsgBox.Show("是否將重複之課程/社團加入待處理?", "提醒", MessageBoxButtons.YesNo);
+                        if (result2 == DialogResult.Yes)
+                        {
+                            ClubAdmin.Instance.AddToTemp(skipIDList);
+                        }
+                    }
+                    
                     ReloadDataGridView();
                 }
             }
