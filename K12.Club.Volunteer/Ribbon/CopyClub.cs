@@ -398,52 +398,32 @@ namespace K12.Club.Volunteer
                 return;
             }
 
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("共" + _NewInsertList.Count + "個社團複製成功!!\n");
+
+            if (_CopyOtherStudent & _NewInsertList.Count != 0)
+            {
+                sb.AppendLine("已同步建立" + _InsertSCJList.Count + "名學生的社團參與記錄!!");
+            }
+
+            if (_CopyCadresStudent & _NewInsertList.Count != 0)
+            {
+                sb.AppendLine("已同步建立學生的社團幹部記錄!!");
+            }
+            if (_CopyPresidentStudent & _NewInsertList.Count != 0)
+            {
+
+                sb.AppendLine("已同步複製社長、副社長社團參與紀錄");
+            }
+
             if (_SkipList.Count != 0)
             {
-                StringBuilder sb = new StringBuilder();
-                sb.AppendLine("共" + _NewInsertList.Count + "個社團複製成功!!\n");
-                sb.AppendLine("共" + _SkipList.Count + "個重覆社團,已略過並加入待處理社團!!");
+                sb.AppendLine("\n共" + _SkipList.Count + "個重覆社團,已略過並加入待處理社團!!");
 
                 // 將跳過的社團加入待處理
                 ClubAdmin.Instance.AddToTemp(_SkipIDList);
 
-                if (_CopyOtherStudent & _NewInsertList.Count!=0)
-                {
-                    sb.AppendLine("已同步建立" + _InsertSCJList.Count + "名學生的社團參與記錄!!");
-                }
-
-                if (_CopyCadresStudent & _NewInsertList.Count != 0)
-                {
-                    sb.AppendLine("已同步建立學生的社團幹部記錄!!");
-                }
-                if (_CopyPresidentStudent & _NewInsertList.Count != 0)
-                {
-
-                    sb.AppendLine("已同步複製社長、副社長社團參與紀錄");
-                }
-
-                sb.AppendLine(string.Join(",", _SkipList));
-
-                MsgBox.Show(sb.ToString());
-            }
-            else
-            {
-                StringBuilder sb = new StringBuilder();
-                sb.AppendLine("共" + _NewInsertList.Count + "個社團複製成功!!\n");
-                if (_CopyOtherStudent)
-                {
-                    sb.AppendLine("已同步建立" + _InsertSCJList.Count + "名學生的社團參與記錄!!");
-                }
-
-                if (_CopyCadresStudent)
-                {
-                    sb.AppendLine("已同步建立學生的社團幹部記錄!!");
-                }
-                if (_CopyPresidentStudent)
-                {
-
-                    sb.AppendLine("已同步複製社長、副社長社團參與紀錄");
-                }
+                sb.AppendLine("重覆社團: " + string.Join(",", _SkipList));
 
                 MsgBox.Show(sb.ToString());
             }

@@ -332,8 +332,6 @@ WITH club_data AS(
     WHERE
         school_year = {0}
         AND semester = {1}
-        AND tag.category = 'Course'
-        AND tag.prefix = '聯課活動'
 )   
 SELECT
     club_data.*
@@ -409,7 +407,7 @@ ORDER BY
                     dgvrow.Cells[col++].Value = this._dicClubRecordByName[clubName].TeacherName1;
                     dgvrow.Cells[col++].Value = this._dicClubRecordByName[clubName].TeacherName2;
                     dgvrow.Cells[col++].Value = this._dicClubRecordByName[clubName].TeacherName3;
-                    dgvrow.Cells[col++].Value = this._examTemplateName;
+                    //dgvrow.Cells[col++].Value = this._examTemplateName; 新改版社團轉入課程 取消此欄位
                     dgvrow.Cells[col++].Value = this._dicClubRecordByName[clubName].IsImport;
 
                     dgvrow.Tag = _dicClubRecordByName[clubName].ClubUID;
@@ -536,18 +534,17 @@ FROM
                         }
                         else
                         {
-                            MsgBox.Show("沒有資料可以轉入課程!");
-
                             if (skipIDList.Count > 0)
                             {
                                 // 加入待處理
-                                DialogResult result3 = MsgBox.Show("是否將重複之課程/社團加入待處理?", "提醒", MessageBoxButtons.YesNo);
-                                if (result3 == DialogResult.Yes)
+                                DialogResult result2 = MsgBox.Show(string.Format("重覆之課程/社團筆數「{0}」\n", dataGridViewX1.SelectedRows.Count - listCourseData.Count) +
+                                    "是否將重複之社團加入待處理?", "提醒", MessageBoxButtons.YesNo);
+                                if (result2 == DialogResult.Yes)
                                 {
                                     ClubAdmin.Instance.AddToTemp(skipIDList);
                                 }
                             }
-                           
+
                             return;
                         }
                     }
@@ -764,13 +761,13 @@ FROM
                     //2.引發高雄社團更新事件
                     //2019/9/10 - Dylan
                     eh(null, EventArgs.Empty);
-
-                    MsgBox.Show(string.Format("轉入成功資料筆數「{0}」，重複之課程/社團筆數「{1}」", listCourseData.Count, dataGridViewX1.SelectedRows.Count- listCourseData.Count));
+            
 
                     if (skipIDList.Count > 0)
                     {
                         // 加入待處理
-                        DialogResult result2 = MsgBox.Show("是否將重複之課程/社團加入待處理?", "提醒", MessageBoxButtons.YesNo);
+                        DialogResult result2 = MsgBox.Show(string.Format("轉入成功資料筆數「{0}」，重複之課程/社團筆數「{1}」\n", listCourseData.Count, dataGridViewX1.SelectedRows.Count - listCourseData.Count) +
+                            "是否將重複之社團加入待處理?", "提醒", MessageBoxButtons.YesNo);
                         if (result2 == DialogResult.Yes)
                         {
                             ClubAdmin.Instance.AddToTemp(skipIDList);
