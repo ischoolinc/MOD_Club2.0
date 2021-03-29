@@ -773,5 +773,14 @@ namespace K12.Club.Volunteer
         {
             dataGridViewX1.BeginEdit(true);
         }
+
+        private void dataGridViewX1_CellEnter(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex > 5)
+            {
+                dataGridViewX1.ImeMode = ImeMode.OnHalf;
+                dataGridViewX1.ImeMode = ImeMode.Off;
+            }
+        }
     }
 }

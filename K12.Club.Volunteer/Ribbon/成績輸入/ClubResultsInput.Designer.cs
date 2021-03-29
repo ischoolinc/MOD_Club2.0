@@ -29,6 +29,12 @@
         private void InitializeComponent()
         {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -38,13 +44,13 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dataGridViewX1 = new DevComponents.DotNetBar.Controls.DataGridViewX();
+            this.ColClubName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColClass = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColTeacher = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colSeatNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColStudentNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.btnSave = new DevComponents.DotNetBar.ButtonX();
             this.btnExit = new DevComponents.DotNetBar.ButtonX();
             this.labelX1 = new DevComponents.DotNetBar.LabelX();
@@ -61,12 +67,6 @@
             this.dataGridViewTextBoxColumn10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn11 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn12 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColClubName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColClass = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColTeacher = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colSeatNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColStudentNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewX1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -99,12 +99,80 @@
             this.dataGridViewX1.Location = new System.Drawing.Point(12, 12);
             this.dataGridViewX1.Name = "dataGridViewX1";
             this.dataGridViewX1.RowHeadersVisible = false;
+            this.dataGridViewX1.RowHeadersWidth = 51;
             this.dataGridViewX1.RowTemplate.Height = 24;
             this.dataGridViewX1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.dataGridViewX1.Size = new System.Drawing.Size(768, 410);
             this.dataGridViewX1.TabIndex = 0;
+            this.dataGridViewX1.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewX1_CellEnter);
             this.dataGridViewX1.CurrentCellDirtyStateChanged += new System.EventHandler(this.dataGridViewX1_CurrentCellDirtyStateChanged);
             this.dataGridViewX1.SelectionChanged += new System.EventHandler(this.dataGridViewX1_SelectionChanged);
+            // 
+            // ColClubName
+            // 
+            this.ColClubName.DataPropertyName = "ClubName";
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.LightCyan;
+            this.ColClubName.DefaultCellStyle = dataGridViewCellStyle1;
+            this.ColClubName.HeaderText = "社團名稱";
+            this.ColClubName.MinimumWidth = 6;
+            this.ColClubName.Name = "ColClubName";
+            this.ColClubName.ReadOnly = true;
+            this.ColClubName.Width = 125;
+            // 
+            // ColClass
+            // 
+            this.ColClass.DataPropertyName = "ClassName";
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.LightCyan;
+            this.ColClass.DefaultCellStyle = dataGridViewCellStyle2;
+            this.ColClass.HeaderText = "班級";
+            this.ColClass.MinimumWidth = 6;
+            this.ColClass.Name = "ColClass";
+            this.ColClass.ReadOnly = true;
+            this.ColClass.Width = 80;
+            // 
+            // ColTeacher
+            // 
+            this.ColTeacher.DataPropertyName = "TeacherName";
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.LightCyan;
+            this.ColTeacher.DefaultCellStyle = dataGridViewCellStyle3;
+            this.ColTeacher.HeaderText = "老師";
+            this.ColTeacher.MinimumWidth = 6;
+            this.ColTeacher.Name = "ColTeacher";
+            this.ColTeacher.ReadOnly = true;
+            this.ColTeacher.Width = 80;
+            // 
+            // colSeatNo
+            // 
+            this.colSeatNo.DataPropertyName = "SeatNo";
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.LightCyan;
+            this.colSeatNo.DefaultCellStyle = dataGridViewCellStyle4;
+            this.colSeatNo.HeaderText = "座號";
+            this.colSeatNo.MinimumWidth = 6;
+            this.colSeatNo.Name = "colSeatNo";
+            this.colSeatNo.ReadOnly = true;
+            this.colSeatNo.Width = 60;
+            // 
+            // ColName
+            // 
+            this.ColName.DataPropertyName = "StudentName";
+            dataGridViewCellStyle5.BackColor = System.Drawing.Color.LightCyan;
+            this.ColName.DefaultCellStyle = dataGridViewCellStyle5;
+            this.ColName.HeaderText = "姓名";
+            this.ColName.MinimumWidth = 6;
+            this.ColName.Name = "ColName";
+            this.ColName.ReadOnly = true;
+            this.ColName.Width = 80;
+            // 
+            // ColStudentNumber
+            // 
+            this.ColStudentNumber.DataPropertyName = "StudentNumber";
+            dataGridViewCellStyle6.BackColor = System.Drawing.Color.LightCyan;
+            this.ColStudentNumber.DefaultCellStyle = dataGridViewCellStyle6;
+            this.ColStudentNumber.HeaderText = "學號";
+            this.ColStudentNumber.MinimumWidth = 6;
+            this.ColStudentNumber.Name = "ColStudentNumber";
+            this.ColStudentNumber.ReadOnly = true;
+            this.ColStudentNumber.Width = 80;
             // 
             // btnSave
             // 
@@ -115,7 +183,7 @@
             this.btnSave.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
             this.btnSave.Location = new System.Drawing.Point(623, 431);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(75, 25);
+            this.btnSave.Size = new System.Drawing.Size(75, 30);
             this.btnSave.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.btnSave.TabIndex = 1;
             this.btnSave.Text = "儲存";
@@ -130,7 +198,7 @@
             this.btnExit.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
             this.btnExit.Location = new System.Drawing.Point(705, 431);
             this.btnExit.Name = "btnExit";
-            this.btnExit.Size = new System.Drawing.Size(75, 25);
+            this.btnExit.Size = new System.Drawing.Size(75, 30);
             this.btnExit.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.btnExit.TabIndex = 2;
             this.btnExit.Text = "關閉";
@@ -148,7 +216,7 @@
             this.labelX1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX1.Location = new System.Drawing.Point(102, 433);
             this.labelX1.Name = "labelX1";
-            this.labelX1.Size = new System.Drawing.Size(301, 21);
+            this.labelX1.Size = new System.Drawing.Size(376, 26);
             this.labelX1.TabIndex = 3;
             this.labelX1.Text = "說明：試算結果為即時資訊，並不會儲存於系統內";
             // 
@@ -173,6 +241,7 @@
             this.dataGridViewTextBoxColumn1.DefaultCellStyle = dataGridViewCellStyle8;
             this.dataGridViewTextBoxColumn1.Frozen = true;
             this.dataGridViewTextBoxColumn1.HeaderText = "班級";
+            this.dataGridViewTextBoxColumn1.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
             this.dataGridViewTextBoxColumn1.ReadOnly = true;
             this.dataGridViewTextBoxColumn1.Width = 60;
@@ -184,6 +253,7 @@
             this.dataGridViewTextBoxColumn2.DefaultCellStyle = dataGridViewCellStyle9;
             this.dataGridViewTextBoxColumn2.Frozen = true;
             this.dataGridViewTextBoxColumn2.HeaderText = "座號";
+            this.dataGridViewTextBoxColumn2.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
             this.dataGridViewTextBoxColumn2.ReadOnly = true;
             this.dataGridViewTextBoxColumn2.Width = 60;
@@ -195,6 +265,7 @@
             this.dataGridViewTextBoxColumn3.DefaultCellStyle = dataGridViewCellStyle10;
             this.dataGridViewTextBoxColumn3.Frozen = true;
             this.dataGridViewTextBoxColumn3.HeaderText = "姓名";
+            this.dataGridViewTextBoxColumn3.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
             this.dataGridViewTextBoxColumn3.ReadOnly = true;
             this.dataGridViewTextBoxColumn3.Width = 80;
@@ -206,6 +277,7 @@
             this.dataGridViewTextBoxColumn4.DefaultCellStyle = dataGridViewCellStyle11;
             this.dataGridViewTextBoxColumn4.Frozen = true;
             this.dataGridViewTextBoxColumn4.HeaderText = "學號";
+            this.dataGridViewTextBoxColumn4.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
             this.dataGridViewTextBoxColumn4.ReadOnly = true;
             this.dataGridViewTextBoxColumn4.Width = 80;
@@ -217,6 +289,7 @@
             this.dataGridViewTextBoxColumn5.DefaultCellStyle = dataGridViewCellStyle12;
             this.dataGridViewTextBoxColumn5.Frozen = true;
             this.dataGridViewTextBoxColumn5.HeaderText = "平時活動";
+            this.dataGridViewTextBoxColumn5.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
             this.dataGridViewTextBoxColumn5.ReadOnly = true;
             this.dataGridViewTextBoxColumn5.Width = 80;
@@ -227,6 +300,7 @@
             dataGridViewCellStyle13.BackColor = System.Drawing.Color.LightCyan;
             this.dataGridViewTextBoxColumn6.DefaultCellStyle = dataGridViewCellStyle13;
             this.dataGridViewTextBoxColumn6.HeaderText = "出缺席率";
+            this.dataGridViewTextBoxColumn6.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn6.Name = "dataGridViewTextBoxColumn6";
             this.dataGridViewTextBoxColumn6.ReadOnly = true;
             this.dataGridViewTextBoxColumn6.Width = 120;
@@ -235,6 +309,7 @@
             // 
             this.dataGridViewTextBoxColumn7.DataPropertyName = "aas_Score";
             this.dataGridViewTextBoxColumn7.HeaderText = "活動力及服務";
+            this.dataGridViewTextBoxColumn7.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn7.Name = "dataGridViewTextBoxColumn7";
             this.dataGridViewTextBoxColumn7.Width = 110;
             // 
@@ -242,6 +317,7 @@
             // 
             this.dataGridViewTextBoxColumn8.DataPropertyName = "far_Score";
             this.dataGridViewTextBoxColumn8.HeaderText = "成品成果考驗";
+            this.dataGridViewTextBoxColumn8.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn8.Name = "dataGridViewTextBoxColumn8";
             this.dataGridViewTextBoxColumn8.Width = 110;
             // 
@@ -249,6 +325,7 @@
             // 
             this.dataGridViewTextBoxColumn9.DataPropertyName = "far_Score";
             this.dataGridViewTextBoxColumn9.HeaderText = "成品成果考驗";
+            this.dataGridViewTextBoxColumn9.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn9.Name = "dataGridViewTextBoxColumn9";
             this.dataGridViewTextBoxColumn9.Width = 110;
             // 
@@ -258,6 +335,7 @@
             dataGridViewCellStyle14.BackColor = System.Drawing.Color.Gainsboro;
             this.dataGridViewTextBoxColumn10.DefaultCellStyle = dataGridViewCellStyle14;
             this.dataGridViewTextBoxColumn10.HeaderText = "總成績";
+            this.dataGridViewTextBoxColumn10.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn10.Name = "dataGridViewTextBoxColumn10";
             this.dataGridViewTextBoxColumn10.ReadOnly = true;
             this.dataGridViewTextBoxColumn10.Width = 80;
@@ -268,6 +346,7 @@
             dataGridViewCellStyle15.BackColor = System.Drawing.Color.LightCyan;
             this.dataGridViewTextBoxColumn11.DefaultCellStyle = dataGridViewCellStyle15;
             this.dataGridViewTextBoxColumn11.HeaderText = "學期成績";
+            this.dataGridViewTextBoxColumn11.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn11.Name = "dataGridViewTextBoxColumn11";
             this.dataGridViewTextBoxColumn11.ReadOnly = true;
             this.dataGridViewTextBoxColumn11.Width = 80;
@@ -278,72 +357,14 @@
             dataGridViewCellStyle16.BackColor = System.Drawing.Color.LightCyan;
             this.dataGridViewTextBoxColumn12.DefaultCellStyle = dataGridViewCellStyle16;
             this.dataGridViewTextBoxColumn12.HeaderText = "學期成績";
+            this.dataGridViewTextBoxColumn12.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn12.Name = "dataGridViewTextBoxColumn12";
             this.dataGridViewTextBoxColumn12.ReadOnly = true;
             this.dataGridViewTextBoxColumn12.Width = 90;
             // 
-            // ColClubName
-            // 
-            this.ColClubName.DataPropertyName = "ClubName";
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.LightCyan;
-            this.ColClubName.DefaultCellStyle = dataGridViewCellStyle1;
-            this.ColClubName.HeaderText = "社團名稱";
-            this.ColClubName.Name = "ColClubName";
-            this.ColClubName.ReadOnly = true;
-            // 
-            // ColClass
-            // 
-            this.ColClass.DataPropertyName = "ClassName";
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.LightCyan;
-            this.ColClass.DefaultCellStyle = dataGridViewCellStyle2;
-            this.ColClass.HeaderText = "班級";
-            this.ColClass.Name = "ColClass";
-            this.ColClass.ReadOnly = true;
-            this.ColClass.Width = 80;
-            // 
-            // ColTeacher
-            // 
-            this.ColTeacher.DataPropertyName = "TeacherName";
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.LightCyan;
-            this.ColTeacher.DefaultCellStyle = dataGridViewCellStyle3;
-            this.ColTeacher.HeaderText = "老師";
-            this.ColTeacher.Name = "ColTeacher";
-            this.ColTeacher.ReadOnly = true;
-            this.ColTeacher.Width = 80;
-            // 
-            // colSeatNo
-            // 
-            this.colSeatNo.DataPropertyName = "SeatNo";
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.LightCyan;
-            this.colSeatNo.DefaultCellStyle = dataGridViewCellStyle4;
-            this.colSeatNo.HeaderText = "座號";
-            this.colSeatNo.Name = "colSeatNo";
-            this.colSeatNo.ReadOnly = true;
-            this.colSeatNo.Width = 60;
-            // 
-            // ColName
-            // 
-            this.ColName.DataPropertyName = "StudentName";
-            dataGridViewCellStyle5.BackColor = System.Drawing.Color.LightCyan;
-            this.ColName.DefaultCellStyle = dataGridViewCellStyle5;
-            this.ColName.HeaderText = "姓名";
-            this.ColName.Name = "ColName";
-            this.ColName.ReadOnly = true;
-            this.ColName.Width = 80;
-            // 
-            // ColStudentNumber
-            // 
-            this.ColStudentNumber.DataPropertyName = "StudentNumber";
-            dataGridViewCellStyle6.BackColor = System.Drawing.Color.LightCyan;
-            this.ColStudentNumber.DefaultCellStyle = dataGridViewCellStyle6;
-            this.ColStudentNumber.HeaderText = "學號";
-            this.ColStudentNumber.Name = "ColStudentNumber";
-            this.ColStudentNumber.ReadOnly = true;
-            this.ColStudentNumber.Width = 80;
-            // 
             // ClubResultsInput
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(792, 466);
             this.Controls.Add(this.btnReport);
@@ -351,6 +372,7 @@
             this.Controls.Add(this.btnExit);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.dataGridViewX1);
+            this.DoubleBuffered = true;
             this.MaximizeBox = true;
             this.Name = "ClubResultsInput";
             this.Text = "成績輸入";
