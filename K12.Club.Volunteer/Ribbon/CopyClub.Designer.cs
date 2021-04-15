@@ -40,6 +40,9 @@
             this.checkBoxX3 = new DevComponents.DotNetBar.Controls.CheckBoxX();
             this.labelX2 = new DevComponents.DotNetBar.LabelX();
             this.lbHelp2 = new DevComponents.DotNetBar.LabelX();
+            this.checkBoxX4 = new DevComponents.DotNetBar.Controls.CheckBoxX();
+            this.checkBoxX5 = new DevComponents.DotNetBar.Controls.CheckBoxX();
+            this.labelX1 = new DevComponents.DotNetBar.LabelX();
             ((System.ComponentModel.ISupportInitialize)(this.intSchoolYear)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.intSemester)).BeginInit();
             this.SuspendLayout();
@@ -52,7 +55,7 @@
             // 
             this.lbHelp1.BackgroundStyle.Class = "";
             this.lbHelp1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.lbHelp1.Location = new System.Drawing.Point(13, 180);
+            this.lbHelp1.Location = new System.Drawing.Point(12, 283);
             this.lbHelp1.Name = "lbHelp1";
             this.lbHelp1.Size = new System.Drawing.Size(352, 98);
             this.lbHelp1.TabIndex = 5;
@@ -133,7 +136,7 @@
             this.btnStart.AutoSize = true;
             this.btnStart.BackColor = System.Drawing.Color.Transparent;
             this.btnStart.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnStart.Location = new System.Drawing.Point(211, 284);
+            this.btnStart.Location = new System.Drawing.Point(211, 384);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(75, 25);
             this.btnStart.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -147,7 +150,7 @@
             this.btnClose.AutoSize = true;
             this.btnClose.BackColor = System.Drawing.Color.Transparent;
             this.btnClose.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnClose.Location = new System.Drawing.Point(292, 284);
+            this.btnClose.Location = new System.Drawing.Point(292, 384);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(75, 25);
             this.btnClose.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -183,10 +186,10 @@
             this.checkBoxX2.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.checkBoxX2.Location = new System.Drawing.Point(30, 128);
             this.checkBoxX2.Name = "checkBoxX2";
-            this.checkBoxX2.Size = new System.Drawing.Size(126, 20);
+            this.checkBoxX2.Size = new System.Drawing.Size(232, 20);
             this.checkBoxX2.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.checkBoxX2.TabIndex = 3;
-            this.checkBoxX2.Text = "加入<b><u>其他社團幹部</u></b>";
+            this.checkBoxX2.Text = "加入<b><u>其他社團幹部(社長/副社長以外)</u></b>";
             this.checkBoxX2.CheckedChanged += new System.EventHandler(this.checkBoxX2_CheckedChanged);
             // 
             // checkBoxX3
@@ -237,11 +240,67 @@
             this.lbHelp2.TabIndex = 1;
             this.lbHelp2.Text = "學年度";
             // 
+            // checkBoxX4
+            // 
+            this.checkBoxX4.AutoSize = true;
+            this.checkBoxX4.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.checkBoxX4.BackgroundStyle.Class = "";
+            this.checkBoxX4.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.checkBoxX4.CheckBoxStyle = DevComponents.DotNetBar.eCheckBoxStyle.RadioButton;
+            this.checkBoxX4.Checked = true;
+            this.checkBoxX4.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxX4.CheckValue = "Y";
+            this.checkBoxX4.Location = new System.Drawing.Point(30, 226);
+            this.checkBoxX4.Name = "checkBoxX4";
+            this.checkBoxX4.Size = new System.Drawing.Size(147, 21);
+            this.checkBoxX4.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
+            this.checkBoxX4.TabIndex = 13;
+            this.checkBoxX4.Text = "依照原鎖定狀態複製";
+            // 
+            // checkBoxX5
+            // 
+            this.checkBoxX5.AutoSize = true;
+            this.checkBoxX5.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.checkBoxX5.BackgroundStyle.Class = "";
+            this.checkBoxX5.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.checkBoxX5.CheckBoxStyle = DevComponents.DotNetBar.eCheckBoxStyle.RadioButton;
+            this.checkBoxX5.Location = new System.Drawing.Point(30, 253);
+            this.checkBoxX5.Name = "checkBoxX5";
+            this.checkBoxX5.Size = new System.Drawing.Size(80, 21);
+            this.checkBoxX5.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
+            this.checkBoxX5.TabIndex = 14;
+            this.checkBoxX5.Text = "全部鎖定";
+            // 
+            // labelX1
+            // 
+            this.labelX1.AutoSize = true;
+            this.labelX1.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.labelX1.BackgroundStyle.Class = "";
+            this.labelX1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX1.Font = new System.Drawing.Font("微軟正黑體", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.labelX1.Location = new System.Drawing.Point(12, 194);
+            this.labelX1.Name = "labelX1";
+            this.labelX1.Size = new System.Drawing.Size(162, 22);
+            this.labelX1.TabIndex = 15;
+            this.labelX1.Text = "設定選社鎖定狀態<font color=\"#ED1C24\">(New)</font>";
+            // 
             // CopyClub
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(379, 312);
+            this.ClientSize = new System.Drawing.Size(379, 421);
+            this.Controls.Add(this.labelX1);
+            this.Controls.Add(this.checkBoxX5);
+            this.Controls.Add(this.checkBoxX4);
             this.Controls.Add(this.labelX2);
             this.Controls.Add(this.checkBoxX3);
             this.Controls.Add(this.checkBoxX2);
@@ -279,5 +338,8 @@
         private DevComponents.DotNetBar.Controls.CheckBoxX checkBoxX3;
         private DevComponents.DotNetBar.LabelX labelX2;
         private DevComponents.DotNetBar.LabelX lbHelp2;
+        private DevComponents.DotNetBar.Controls.CheckBoxX checkBoxX4;
+        private DevComponents.DotNetBar.Controls.CheckBoxX checkBoxX5;
+        private DevComponents.DotNetBar.LabelX labelX1;
     }
 }

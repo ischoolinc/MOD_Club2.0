@@ -28,6 +28,7 @@ namespace K12.Club.Volunteer
 
         int _SchoolYear = 90;
         int _Semester = 1;
+        bool IsNowLock = true;
 
         /// <summary>
         /// 所要拷貝的社團
@@ -40,9 +41,7 @@ namespace K12.Club.Volunteer
 
         List<SCJoin> _InsertSCJList = new List<SCJoin>();
 
-        List<string> _SkipList = new List<string>();        
-        List<string> _SkipIDList = new List<string>(); //跳過的社團編號
-        
+        List<string> _SkipList = new List<string>();
 
         List<CadresRecord> _InsertCadreList = new List<CadresRecord>();
 
@@ -123,6 +122,8 @@ namespace K12.Club.Volunteer
                 _SchoolYear = intSchoolYear.Value;
                 _Semester = intSemester.Value;
 
+                IsNowLock = checkBoxX4.Checked;
+
                 BGW.RunWorkerAsync();
             }
             else
@@ -150,11 +151,6 @@ namespace K12.Club.Volunteer
                     copyClubList.Add(item);
                     copyClubIDList.Add(item.UID);
                 }
-                else
-                {
-                    _SkipIDList.Add(item.UID);
-                }
-
             }
 
             if (copyClubList.Count == 0) return;
@@ -296,7 +292,13 @@ namespace K12.Club.Volunteer
                                         SCJoin scj = new SCJoin();
                                         scj.RefStudentID = scjRec.RefStudentID;
                                         scj.RefClubID = newClubRec.UID;
-                                        scj.Lock = true; //強制鎖定
+
+                                        //鎖定狀態 - 2021/4/15(鎖定狀態,依原鎖定狀態)
+                                        if (IsNowLock)
+                                            scj.Lock = scjRec.Lock;
+                                        else
+                                            scj.Lock = true;
+
                                         _InsertSCJList.Add(scj);
                                         #endregion
                                         continue;
@@ -319,14 +321,20 @@ namespace K12.Club.Volunteer
                                                 SCJoin scj = new SCJoin();
                                                 scj.RefStudentID = scjRec.RefStudentID;
                                                 scj.RefClubID = newClubRec.UID;
-                                                scj.Lock = true; //強制鎖定
+
+                                                //鎖定狀態 - 2021/4/15(鎖定狀態,依原鎖定狀態)
+                                                if (IsNowLock)
+                                                    scj.Lock = scjRec.Lock;
+                                                else
+                                                    scj.Lock = true;
+
                                                 _InsertSCJList.Add(scj);
                                                 match = true;
                                                 break;
                                             }
                                         }
                                         #endregion
-                                        if(match)
+                                        if (match)
                                             continue;
                                     }
 
@@ -336,7 +344,13 @@ namespace K12.Club.Volunteer
                                         SCJoin scj = new SCJoin();
                                         scj.RefStudentID = scjRec.RefStudentID;
                                         scj.RefClubID = newClubRec.UID;
-                                        scj.Lock = true; //強制鎖定
+
+                                        //鎖定狀態 - 2021/4/15(鎖定狀態,依原鎖定狀態)
+                                        if (IsNowLock)
+                                            scj.Lock = scjRec.Lock;
+                                        else
+                                            scj.Lock = true;
+
                                         _InsertSCJList.Add(scj);
                                         #endregion
                                         continue;
@@ -347,7 +361,7 @@ namespace K12.Club.Volunteer
                     }
                 }
 
-                
+
                 try
                 {
                     _AccessHelper.InsertValues(_InsertSCJList);
@@ -398,32 +412,48 @@ namespace K12.Club.Volunteer
                 return;
             }
 
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine("共" + _NewInsertList.Count + "個社團複製成功!!\n");
-
-            if (_CopyOtherStudent & _NewInsertList.Count != 0)
-            {
-                sb.AppendLine("已同步建立" + _InsertSCJList.Count + "名學生的社團參與記錄!!");
-            }
-
-            if (_CopyCadresStudent & _NewInsertList.Count != 0)
-            {
-                sb.AppendLine("已同步建立學生的社團幹部記錄!!");
-            }
-            if (_CopyPresidentStudent & _NewInsertList.Count != 0)
-            {
-
-                sb.AppendLine("已同步複製社長、副社長社團參與紀錄");
-            }
-
             if (_SkipList.Count != 0)
             {
-                sb.AppendLine("\n共" + _SkipList.Count + "個重覆社團,已略過並加入待處理社團!!");
+                StringBuilder sb = new StringBuilder();
+                sb.AppendLine("共" + _NewInsertList.Count + "個社團複製成功!!\n");
+                sb.AppendLine("共" + _SkipList.Count + "個重覆社團,已略過處理!!");
+                if (_CopyOtherStudent)
+                {
+                    sb.AppendLine("已同步建立" + _InsertSCJList.Count + "名學生的社團參與記錄!!");
+                }
 
-                // 將跳過的社團加入待處理
-                ClubAdmin.Instance.AddToTemp(_SkipIDList);
+                if (_CopyCadresStudent)
+                {
+                    sb.AppendLine("已同步建立學生的社團幹部記錄!!");
+                }
+                if (_CopyPresidentStudent)
+                {
 
-                sb.AppendLine("重覆社團: " + string.Join(",", _SkipList));
+                    sb.AppendLine("已同步複製社長、副社長社團參與紀錄");
+                }
+
+                sb.AppendLine(string.Join(",", _SkipList));
+
+                MsgBox.Show(sb.ToString());
+            }
+            else
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.AppendLine("共" + _NewInsertList.Count + "個社團複製成功!!\n");
+                if (_CopyOtherStudent)
+                {
+                    sb.AppendLine("已同步建立" + _InsertSCJList.Count + "名學生的社團參與記錄!!");
+                }
+
+                if (_CopyCadresStudent)
+                {
+                    sb.AppendLine("已同步建立學生的社團幹部記錄!!");
+                }
+                if (_CopyPresidentStudent)
+                {
+
+                    sb.AppendLine("已同步複製社長、副社長社團參與紀錄");
+                }
 
                 MsgBox.Show(sb.ToString());
             }
