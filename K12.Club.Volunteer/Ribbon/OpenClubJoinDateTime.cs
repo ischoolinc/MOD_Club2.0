@@ -32,7 +32,8 @@ namespace K12.Club.Volunteer
         public OpenClubJoinDateTime()
         {
             InitializeComponent();
-
+            List<int> cols = new List<int>() { 2, 3, 5, 6 };
+            Campus.Windows.DataGridViewImeDecorator dec = new Campus.Windows.DataGridViewImeDecorator(this.dgvTimes, cols);
         }
 
         private void DailyLifeInputControl_Load(object sender, EventArgs e)

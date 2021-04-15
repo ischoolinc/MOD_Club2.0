@@ -31,6 +31,8 @@ namespace K12.Club.Volunteer
         public GradingProjectConfig()
         {
             InitializeComponent();
+            List<int> cols = new List<int>() { 1 };
+            Campus.Windows.DataGridViewImeDecorator dec = new Campus.Windows.DataGridViewImeDecorator(this.dataGridViewX1, cols);
         }
 
         private void GradingProjectConfig_Load(object sender, EventArgs e)
