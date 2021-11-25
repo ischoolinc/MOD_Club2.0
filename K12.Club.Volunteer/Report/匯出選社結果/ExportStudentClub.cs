@@ -38,7 +38,7 @@ namespace K12.Club.Volunteer.Report.匯出選社結果
                 try
                 {
                     bkw.ReportProgress(1);
-                    
+
                     List<CLUBRecord> _clubList = this.access.Select<CLUBRecord>();
                     foreach (CLUBRecord club in _clubList)
                     {
@@ -46,7 +46,7 @@ namespace K12.Club.Volunteer.Report.匯出選社結果
                     }
                     //建立Excel範本
                     Workbook template = new Workbook();
-                    template.Open(new MemoryStream(Properties.Resources.匯出選社結果_範本), FileFormatType.Excel2007Xlsx);
+                    template.Open(new MemoryStream(Properties.Resources.匯出選社結果_範本), FileFormatType.Excel97To2003);
 
                     wb.Copy(template);
                     //取得Sheet
@@ -171,13 +171,13 @@ ORDER BY
                     #region Excel 存檔
                     {
                         SaveFileDialog SaveFileDialog1 = new SaveFileDialog();
-                        SaveFileDialog1.Filter = "Excel (*.xlsx)|*.xlsx|所有檔案 (*.*)|*.*";
+                        SaveFileDialog1.Filter = "Excel (*.xls)|*.xls|所有檔案 (*.*)|*.*";
                         SaveFileDialog1.FileName = "匯出選社結果";
                         try
                         {
                             if (SaveFileDialog1.ShowDialog() == DialogResult.OK)
                             {
-                                wb.Save(SaveFileDialog1.FileName);
+                                wb.Save(SaveFileDialog1.FileName, SaveFormat.Excel97To2003);
                                 Process.Start(SaveFileDialog1.FileName);
                                 MotherForm.SetStatusBarMessage("匯出選社結果,列印完成!!");
 

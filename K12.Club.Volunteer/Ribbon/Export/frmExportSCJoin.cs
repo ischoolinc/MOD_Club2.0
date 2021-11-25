@@ -42,14 +42,14 @@ namespace K12.Club.Volunteer.Ribbon.Export
                 MsgBox.Show("請先選取社團!");
                 return;
             }
-            
+
             // 取得資料庫 社團參與學生資料
             DataTable dt = getSCJoin(string.Join("','", listClubID));
 
             // 寫入資料表
             Workbook wb = new Workbook();
             wb.Worksheets[0].Name = "社團參與學生資料";
-            fillData(wb,dt);
+            fillData(wb, dt);
 
             // 儲存資料表
             save(wb);
@@ -96,7 +96,7 @@ WHERE
         /// </summary>
         /// <param name="wb"></param>
         /// <param name="dt"></param>
-        private void fillData(Workbook wb,DataTable dt)
+        private void fillData(Workbook wb, DataTable dt)
         {
             // HeaderText
             for (int i = 0; i < _listExportField.Count(); i++)
@@ -151,15 +151,15 @@ WHERE
 
             SaveFileDialog saveFileDialog = new SaveFileDialog();
             saveFileDialog.Title = "匯出社團參與學生";
-            saveFileDialog.FileName = "匯出社團參與學生.xlsx";
-            saveFileDialog.Filter = "Excel (*.xlsx)|*.xlsx|所有檔案 (*.*)|*.*";
+            saveFileDialog.FileName = "匯出社團參與學生.xls";
+            saveFileDialog.Filter = "Excel (*.xls)|*.xls|所有檔案 (*.*)|*.*";
 
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
                 DialogResult result = new DialogResult();
                 try
                 {
-                    wb.Save(saveFileDialog.FileName);
+                    wb.Save(saveFileDialog.FileName, SaveFormat.Excel97To2003);
                     result = MsgBox.Show("檔案儲存完成，是否開啟檔案?", "是否開啟", MessageBoxButtons.YesNo);
                 }
                 catch (Exception ex)

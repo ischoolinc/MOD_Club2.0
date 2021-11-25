@@ -316,24 +316,27 @@ namespace K12.Club.Volunteer
                 {
                     foreach (SCJoin scj in SCJDic[each.UID])
                     {
-                        StudentRecord SR = StudentDic[scj.RefStudentID];
-                        if (SR.Status == StudentRecord.StudentStatus.一般 || SR.Status == StudentRecord.StudentStatus.延修)
+                        if (StudentDic.ContainsKey(scj.RefStudentID))
                         {
-                            if (SR.Class != null)
+                            StudentRecord SR = StudentDic[scj.RefStudentID];
+                            if (SR.Status == StudentRecord.StudentStatus.一般 || SR.Status == StudentRecord.StudentStatus.延修)
                             {
-                                if (SR.Class.GradeYear.HasValue)
+                                if (SR.Class != null)
                                 {
-                                    if (SR.Class.GradeYear.Value == 1)
+                                    if (SR.Class.GradeYear.HasValue)
                                     {
-                                        F.StudentList_1.Add(SR);
-                                    }
-                                    else if (SR.Class.GradeYear.Value == 2)
-                                    {
-                                        F.StudentList_2.Add(SR);
-                                    }
-                                    else if (SR.Class.GradeYear.Value == 3)
-                                    {
-                                        F.StudentList_3.Add(SR);
+                                        if (SR.Class.GradeYear.Value == 1)
+                                        {
+                                            F.StudentList_1.Add(SR);
+                                        }
+                                        else if (SR.Class.GradeYear.Value == 2)
+                                        {
+                                            F.StudentList_2.Add(SR);
+                                        }
+                                        else if (SR.Class.GradeYear.Value == 3)
+                                        {
+                                            F.StudentList_3.Add(SR);
+                                        }
                                     }
                                 }
                             }

@@ -339,5 +339,14 @@ namespace K12.Club.Volunteer
                 return FISCA.Permission.UserAcl.Current[轉入課程].Executable;
             }
         }
+
+        public static string 匯入社團幹部清單 { get { return "K12.Club.Universal.ImportClubCadres.cs"; } }
+        public static bool 匯入社團幹部清單權限
+        {
+            get
+            {
+                return FISCA.Permission.UserAcl.Current[匯入社團幹部清單].Executable;
+            }
+        }
     }
 }

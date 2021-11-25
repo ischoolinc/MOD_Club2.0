@@ -260,7 +260,7 @@ ORDER by
             lbSchoolYear.Text = ClubPrimary.SchoolYear + "學年度　第" + ClubPrimary.Semester + "學期";
             txtAbout.Text = ClubPrimary.About.Replace("<br>", "\r\n");
             //tbCategory.Text = ClubPrimary.ClubCategory;
-            
+
             cbRank.Text = ClubPrimary.Level;
 
 
@@ -677,6 +677,31 @@ ORDER by
             bool d = tool.ComboBoxValueInItemList(cbTeacher3);
             if (!SetComboBoxError(d, cbTeacher3, ep_Teacher3, "社團老師必須存在於下拉清單中!!"))
                 a = false;
+
+            if (!string.IsNullOrEmpty(cbTeacher1.Text) && !string.IsNullOrEmpty(cbTeacher2.Text) 
+                &&  cbTeacher1.Text == cbTeacher2.Text)
+            {
+                ep_Teacher1.SetError(cbTeacher1, "社團老師1不可重覆選擇");
+                ep_Teacher2.SetError(cbTeacher2, "社團老師2不可重覆選擇");
+
+                a = false;
+            }
+
+            if (!string.IsNullOrEmpty(cbTeacher1.Text) && !string.IsNullOrEmpty(cbTeacher3.Text)
+                && cbTeacher1.Text == cbTeacher3.Text)
+            {
+                ep_Teacher1.SetError(cbTeacher1, "社團老師1不可重覆選擇");
+                ep_Teacher3.SetError(cbTeacher3, "社團老師3不可重覆選擇");
+                a = false;
+            }
+
+            if (!string.IsNullOrEmpty(cbTeacher2.Text) && !string.IsNullOrEmpty(cbTeacher3.Text)
+                && cbTeacher2.Text == cbTeacher3.Text)
+            {
+                ep_Teacher2.SetError(cbTeacher2, "社團老師2不可重覆選擇");
+                ep_Teacher3.SetError(cbTeacher3, "社團老師3不可重覆選擇");
+                a = false;
+            }
 
             ////社長
             //bool c = tool.ComboBoxValueInItemList(cbPresident);

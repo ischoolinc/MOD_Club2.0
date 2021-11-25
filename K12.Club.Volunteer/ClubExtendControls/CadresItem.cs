@@ -280,7 +280,14 @@ namespace K12.Club.Volunteer
                     if (ClubPrimary.President != "")
                     {
                         StudentRecord sp = Student.SelectByID(ClubPrimary.President);
-                        row1.ErrorText = "社長：" + sp.Name + "，已不存在本社團";
+                        if (sp != null)
+                        {
+                            row1.ErrorText = "社長：" + sp.Name + "，已不存在本社團";
+                        }
+                        else
+                        {
+                            row1.ErrorText = "查無學生ID："+ ClubPrimary.President;
+                        }
                     }
                     else
                     {
@@ -311,7 +318,14 @@ namespace K12.Club.Volunteer
                     if (ClubPrimary.VicePresident != "")
                     {
                         StudentRecord sp = Student.SelectByID(ClubPrimary.VicePresident);
-                        row2.ErrorText = "副社長：" + sp.Name + "，已不存在本社團";
+                        if (sp != null)
+                        {
+                            row2.ErrorText = "副社長：" + sp.Name + "，已不存在本社團";
+                        }
+                        else
+                        {
+                            row2.ErrorText = "查無學生ID：" + ClubPrimary.President;
+                        }
                     }
                     else
                     {

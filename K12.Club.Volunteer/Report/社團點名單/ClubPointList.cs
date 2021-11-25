@@ -145,7 +145,7 @@ namespace K12.Club.Volunteer
                 if (e.Error == null)
                 {
                     SaveFileDialog SaveFileDialog1 = new SaveFileDialog();
-                    SaveFileDialog1.Filter = "Excel (*.xlsx)|*.xlsx|所有檔案 (*.*)|*.*";
+                    SaveFileDialog1.Filter = "Excel (*.xls)|*.xls|所有檔案 (*.*)|*.*";
                     SaveFileDialog1.FileName = "社團點名單";
 
                     //資料
@@ -154,7 +154,7 @@ namespace K12.Club.Volunteer
                         if (SaveFileDialog1.ShowDialog() == DialogResult.OK)
                         {
                             Workbook inResult = (Workbook)e.Result;
-                            inResult.Save(SaveFileDialog1.FileName);
+                            inResult.Save(SaveFileDialog1.FileName,SaveFormat.Excel97To2003);
                             Process.Start(SaveFileDialog1.FileName);
                             MotherForm.SetStatusBarMessage("社團點名單,列印完成!!");
                         }

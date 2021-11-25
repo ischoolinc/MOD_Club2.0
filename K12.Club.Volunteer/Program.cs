@@ -32,7 +32,7 @@ namespace K12.Club.Volunteer
             ConfigData cd = K12.Data.School.Configuration["通用社團UDT載入設定"];
             bool checkClubUDT = false;
 
-            string name = "社團UDT是否已載入_20130328";
+            string name = "社團UDT是否已載入_20210912";
             //如果尚無設定值,預設為
             if (string.IsNullOrEmpty(cd[name]))
             {
@@ -219,6 +219,14 @@ namespace K12.Club.Volunteer
                 totle["匯入"]["匯入社團參與學生"].Click += delegate 
                 {
                     new ImportSCJoinData().Execute();
+                    ClubEvents.RaiseAssnChanged();
+                };
+
+                totle["匯入"]["匯入社團幹部清單"].Enable = Permissions.匯入社團幹部清單權限;
+                totle["匯入"]["匯入社團幹部清單"].Click += delegate
+                {
+                    new ImportClubCadres().Execute();
+                    
                     ClubEvents.RaiseAssnChanged();
                 };
 
@@ -587,9 +595,12 @@ namespace K12.Club.Volunteer
             detail1.Add(new RibbonFeature(Permissions.匯出社團基本資料, "匯出社團基本資料"));
             detail1.Add(new RibbonFeature(Permissions.匯出社團幹部清單, "匯出社團幹部清單"));
             detail1.Add(new RibbonFeature(Permissions.匯出社團成績_資料介接, "匯出社團學期成績(資料介接)"));
-            detail1.Add(new RibbonFeature(Permissions.匯入社團基本資料, "匯入社團基本資料"));
             detail1.Add(new RibbonFeature(Permissions.匯出社團參與學生, "匯出社團參與學生"));
+
+            //匯入
+            detail1.Add(new RibbonFeature(Permissions.匯入社團基本資料, "匯入社團基本資料"));
             detail1.Add(new RibbonFeature(Permissions.匯入社團參與學生, "匯入社團參與學生"));
+            detail1.Add(new RibbonFeature(Permissions.匯入社團幹部清單, "匯入社團幹部清單"));
 
             detail1 = RoleAclSource.Instance["社團"]["報表"];
             detail1.Add(new RibbonFeature(Permissions.社團點名單, "社團點名單"));

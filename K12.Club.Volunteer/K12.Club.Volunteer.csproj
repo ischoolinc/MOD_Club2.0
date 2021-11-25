@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>K12.Club.Volunteer</RootNamespace>
     <AssemblyName>K12.Club.Volunteer</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>
     </SccProjectName>
@@ -50,6 +50,7 @@
     <Reference Include="Aspose.Words_201402, Version=14.1.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Library\Aspose.Words_201402.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Campus.Configuration, Version=1.0.0.5, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -89,6 +90,7 @@
     <Reference Include="DevComponents.DotNetBar2, Version=9.5.0.1, Culture=neutral, PublicKeyToken=7eb7c3a35b91de04, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Library\DevComponents.DotNetBar2.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="FISCA, Version=2.1.4.8, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -237,6 +239,7 @@
     <Compile Include="ImportExport\Export\匯出社團志願序\ExportVolunteerRecord.cs" />
     <Compile Include="ImportExport\Import\匯入社團基本資料\CLUBImportBOT.cs" />
     <Compile Include="ImportExport\Import\匯入社團基本資料\ImputLog.cs" />
+    <Compile Include="ImportExport\Import\匯入社團幹部清單\ImportClubCadres.cs" />
     <Compile Include="ImportExport\Import\匯入社團志願序\VolunteerImportBOT.cs" />
     <Compile Include="ImportExport\Import\匯入社團志願序\ImportVolunteerMPG.cs" />
     <Compile Include="ImportExport\Import\匯入社團志願序\LogVolunteer.cs" />
@@ -250,16 +253,17 @@
     <Compile Include="ImportExport\Export\匯出社團基本資料\ExportCLUBData.cs" />
     <Compile Include="ImportExport\Import\匯入社團基本資料\ImportCLUBData.cs" />
     <Compile Include="ImportExport\ValidationRule\CLUBFieldValidatorFactory.cs" />
+    <Compile Include="ImportExport\ValidationRule\RowValidator\CLUBCadresCheck.cs" />
     <Compile Include="ImportExport\ValidationRule\RowValidator\CLUBNameCheck.cs" />
     <Compile Include="ImportExport\ValidationRule\CLUBRowValidatorFactory.cs" />
     <Compile Include="ImportExport\ValidationRule\RowValidator\CLUBNotBeRepeatedFill.cs" />
     <Compile Include="ImportExport\ValidationRule\RowValidator\CLUBVolunteerNameCheck.cs" />
     <Compile Include="ImportExport\已過時功能\x_ExportClubResult.cs" />
     <Compile Include="ImportExport\Export\匯出社團學期成績\ExportStudentClubResult.cs" />
-    <Compile Include="ImportExport\Export\匯出社團學期成績\ExportStudentV2.cs">
+    <Compile Include="ImportExport\Export\ExportStudentV2.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ImportExport\Export\匯出社團學期成績\ExportStudentV2.designer.cs">
+    <Compile Include="ImportExport\Export\ExportStudentV2.designer.cs">
       <DependentUpon>ExportStudentV2.cs</DependentUpon>
     </Compile>
     <Compile Include="ImportExport\Export\匯出聯課活動成績\SpecialResult.cs" />
@@ -540,7 +544,7 @@
     <EmbeddedResource Include="ExtracurricularActivitiesView.resx">
       <DependentUpon>ExtracurricularActivitiesView.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ImportExport\Export\匯出社團學期成績\ExportStudentV2.resx">
+    <EmbeddedResource Include="ImportExport\Export\ExportStudentV2.resx">
       <DependentUpon>ExportStudentV2.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ImportExport\Export\匯出聯課活動成績\ExportStudentV2.resx">
@@ -719,6 +723,9 @@
     <Content Include="Report\班級社團成績單\不及格的定義.txt" />
     <None Include="Resources\wizard1.BackgroundImage.png" />
     <None Include="Resources\SCJoinValidate.xml" />
+    <None Include="Resources\ImportClubCadresValRule.xml">
+      <SubType>Designer</SubType>
+    </None>
     <Content Include="Resources\library_up_64.png" />
     <Content Include="這個社團是社團2.0.txt" />
     <None Include="Resources\presentation_a_config_64.png" />
@@ -727,7 +734,9 @@
     <None Include="Resources\ImportCLUBDataValRule.xml">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Resources\ImportVolunteerRecordValRule.xml" />
+    <None Include="Resources\ImportVolunteerRecordValRule.xml">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Resources\社團點名單_套表列印.docx" />
     <None Include="Resources\社團點名表_合併欄位總表.docx" />
   </ItemGroup>

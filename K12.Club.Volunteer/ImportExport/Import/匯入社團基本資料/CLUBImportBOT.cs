@@ -6,6 +6,7 @@ using Campus.DocumentValidator;
 using FISCA.DSAUtil;
 using K12.Data;
 using System.Xml;
+using System.Data;
 
 namespace K12.Club.Volunteer
 {
@@ -16,6 +17,10 @@ namespace K12.Club.Volunteer
         public Dictionary<string, TeacherRecord> TeacherNameDic { get; set; }
 
         public Dictionary<string, TeacherRecord> TeacherIDDic { get; set; }
+
+        public Dictionary<string, CadresRecord> CadreIDDic { get; set; }
+
+        public Dictionary<string, StudDe> StudentDic { get; set; }
 
         public string GetLogString(CLUBRecord each)
         {
@@ -186,6 +191,38 @@ namespace K12.Club.Volunteer
         }
 
         /// <summary>
+        /// 取得幹部清單 Name:Record
+        /// </summary>
+        public Dictionary<string, CadresRecord> GetCadreDic()
+        {
+            CadreIDDic = new Dictionary<string, CadresRecord>();
+
+            Dictionary<string, CadresRecord> dic = new Dictionary<string, CadresRecord>();
+
+            //Select();
+            List<CadresRecord> CadresList = new List<CadresRecord>();
+
+
+            foreach (CadresRecord each in CadresList)
+            {
+                string cadreName = each.CadreName;
+
+                if (!dic.ContainsKey(cadreName))
+                {
+                    dic.Add(cadreName, each);
+                }
+
+                //建立老師對照 ID:Record
+                if (!CadreIDDic.ContainsKey(each.RefClubID))
+                {
+                    CadreIDDic.Add(each.RefClubID, each);
+                }
+            }
+
+            return dic;
+        }
+
+        /// <summary>
         /// 傳入老師Record,回傳包含老師暱稱的名字
         /// </summary>
         public string GetTeacherName(TeacherRecord tr)
@@ -217,6 +254,29 @@ namespace K12.Club.Volunteer
                 }
             }
             return dic;
+        }
+
+        /// <summary>
+        /// 以學生學號取得學生清單
+        /// </summary>
+        public void GetStudentIDList(List<string> StudentNumberList)
+        {
+            StudentDic = new Dictionary<string, StudDe>();
+
+            StringBuilder sb_log = new StringBuilder();
+            sb_log.Append(@"select student.id,student.student_number,student.name,student.seat_no,class.class_name from student join class on student.ref_class_id=class.id where student.student_number in ('{0}')");
+
+            DataTable dt = tool._Q.Select(string.Format(sb_log.ToString(), string.Join("','", StudentNumberList)));
+            foreach (DataRow row in dt.Rows)
+            {
+                string number = "" + row["student_number"];
+
+                StudDe stuf = new StudDe(row);
+                if (!StudentDic.ContainsKey(stuf.number))
+                {
+                    StudentDic.Add(stuf.number, stuf);
+                }
+            }
         }
 
         public string SetLog(ImputLog log)
@@ -294,5 +354,22 @@ namespace K12.Club.Volunteer
         {
             return string.Format("「{0}」由「{1}」修改為「{2}」", a, b, c);
         }
+    }
+
+    class StudDe
+    {
+        public StudDe(DataRow row)
+        {
+            id = "" + row["id"];
+            number = "" + row["student_number"];
+            Name = "" + row["name"];
+            ClassName = "" + row["class_name"];
+            seat_no = "" + row["seat_no"];
+        }
+        public string seat_no { get; set; }
+        public string ClassName { get; set; }
+        public string Name { get; set; }
+        public string number { get; set; }
+        public string id { get; set; }
     }
 }

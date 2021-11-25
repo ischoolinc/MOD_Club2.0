@@ -71,7 +71,7 @@ namespace K12.Club.Volunteer
 
             int ColumnNameIndex = 0;
             //Jean 更新Aspose
-            Style style= prototype.CreateStyle();
+            Style style = prototype.CreateStyle();
             style.IsTextWrapped = true;
 
             foreach (string each in ColumnNameList)
@@ -257,7 +257,7 @@ namespace K12.Club.Volunteer
                 if (e.Error == null)
                 {
                     SaveFileDialog SaveFileDialog1 = new SaveFileDialog();
-                    SaveFileDialog1.Filter = "Excel (*.xlsx)|*.xlsx|所有檔案 (*.*)|*.*";
+                    SaveFileDialog1.Filter = "Excel (*.xls)|*.xls|所有檔案 (*.*)|*.*";
                     SaveFileDialog1.FileName = "社團成績單";
 
                     //資料
@@ -266,7 +266,7 @@ namespace K12.Club.Volunteer
                         if (SaveFileDialog1.ShowDialog() == DialogResult.OK)
                         {
                             Workbook inResult = (Workbook)e.Result;
-                            inResult.Save(SaveFileDialog1.FileName);
+                            inResult.Save(SaveFileDialog1.FileName, SaveFormat.Excel97To2003);
                             Process.Start(SaveFileDialog1.FileName);
                             MotherForm.SetStatusBarMessage("社團成績單,列印完成!!");
                         }

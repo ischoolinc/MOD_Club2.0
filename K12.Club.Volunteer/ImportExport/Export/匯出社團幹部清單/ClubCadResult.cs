@@ -115,6 +115,8 @@ namespace K12.Club.Volunteer.CLUB
                 foreach (ClubCadresObj Result in _startList)
                 {
                     StudentRecord sr = Result._Student;
+                    if (sr == null)
+                        continue;
 
                     //社團代碼
                     string CLUBCode = Result._Club.ClubNumber;
@@ -138,7 +140,7 @@ namespace K12.Club.Volunteer.CLUB
                                 case "座號": row.Add(field, sr.SeatNo.HasValue ? sr.SeatNo.Value.ToString() : ""); break;
                                 case "學號": row.Add(field, sr.StudentNumber); break;
                                 case "姓名": row.Add(field, sr.Name); break;
-                                case "幹部職稱": row.Add(field, Result.CadreName); break;
+                                case "幹部名稱": row.Add(field, Result.CadreName); break;
                             }
                         }
 
@@ -260,7 +262,7 @@ namespace K12.Club.Volunteer.CLUB
             list.Add("座號");
             list.Add("學號");
             list.Add("姓名");
-            list.Add("幹部職稱");
+            list.Add("幹部名稱");
             return list;
         }
     }

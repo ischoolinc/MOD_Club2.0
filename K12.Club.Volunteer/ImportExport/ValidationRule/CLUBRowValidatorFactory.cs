@@ -23,6 +23,8 @@ namespace K12.Club.Volunteer
                     return new CLUBNotBeRepeatedFill();
                 case "CLUBVOLUNTEERNAMECHECK":
                     return new CLUBVolunteerNameCheck();
+                case "STUDENTINCLUBISTRUE":
+                    return new CLUBCadresCheck();
                 default:
                     return null;
             }
