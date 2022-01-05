@@ -257,6 +257,7 @@
     <Compile Include="ImportExport\ValidationRule\RowValidator\CLUBNameCheck.cs" />
     <Compile Include="ImportExport\ValidationRule\CLUBRowValidatorFactory.cs" />
     <Compile Include="ImportExport\ValidationRule\RowValidator\CLUBNotBeRepeatedFill.cs" />
+    <Compile Include="ImportExport\ValidationRule\RowValidator\CLUBTeacherCheck.cs" />
     <Compile Include="ImportExport\ValidationRule\RowValidator\CLUBVolunteerNameCheck.cs" />
     <Compile Include="ImportExport\已過時功能\x_ExportClubResult.cs" />
     <Compile Include="ImportExport\Export\匯出社團學期成績\ExportStudentClubResult.cs" />

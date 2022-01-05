@@ -572,6 +572,8 @@ SELECT
                                 ", studentID, courseID);
                                 listSCAttend.Add(scData);
                             }
+
+                            List<string> CheckTeacherID = new List<string>();
                             // 課程老師資料
                             for (int i = 1; i <= 3; i++)
                             {
@@ -597,7 +599,14 @@ SELECT
     , {1}::BIGINT AS ref_course_id
     , {2}::SMALLINT AS sequence
                                 ", teacherID, courseID, i);
-                                    listCourseTeacher.Add(ctData);
+
+                                    string ctCheck = teacherID + "_" + courseID;
+                                    if (!CheckTeacherID.Contains(ctCheck))
+                                    {
+                                        listCourseTeacher.Add(ctData);
+                                    }
+                                    
+                                    CheckTeacherID.Add(ctCheck);
                                 }
                             }
                             // 聯課活動標籤
@@ -626,6 +635,7 @@ SELECT
                             }
                         }
                         #endregion
+
                         // 轉入課程修課學生
                         if (listSCAttend.Count > 0)
                         {

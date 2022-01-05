@@ -98,11 +98,11 @@
         <Variation>false</Variation>
       </Item>
     </FieldValidator>
-    <!-- <RowValidator Name="社團學年期名稱是否重覆" Type="CLUBNAMECHECK" /> -->
+    <RowValidator Name="單一社團老師不可重複" Type="CLUBTEACHERDOUBLE" />
   </ValidatorList>
 
   <RowValidate>
-    <!--  <Validate AutoCorrect="false" Description="「學年度/學期/社團名稱」匯入資料與系統資料不可重覆組合" ErrorType="Error" Validator="社團學年期名稱是否重覆" When=""/> -->
+    <Validate AutoCorrect="false" Description="同一社團「社團老師1 , 2 , 3」不可相同" ErrorType="Error" Validator="單一社團老師不可重複" When=""/>
   </RowValidate>
   <ConditionList/>
 </ValidateRule>
