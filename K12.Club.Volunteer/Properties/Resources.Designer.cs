@@ -189,12 +189,12 @@ namespace K12.Club.Volunteer.Properties {
         ///      &lt;Field Name=&quot;學年度&quot;/&gt;
         ///      &lt;Field Name=&quot;學期&quot;/&gt;
         ///      &lt;Field Name=&quot;社團名稱&quot;/&gt;
+        ///      &lt;Field Name=&quot;幹部名稱&quot;/&gt;
         ///    &lt;/Detector&gt;
         ///  &lt;/DuplicateDetection&gt;
         ///  &lt;FieldList&gt;
         ///    &lt;Field Required=&quot;True&quot; Name=&quot;學年度&quot; Description=&quot;學年度/學期/社團名稱為鍵值必填&quot;&gt;
-        ///      &lt;Validate AutoCorrect=&quot;False&quot; Description=&quot;「學年度」不允許空白。&quot; ErrorType=&quot;Error&quot; Validator=&quot;不可空白&quot; When=&quot;&quot;/&gt;
-        ///      &lt;Validate AutoCorr [字串的其餘部分已遭截斷]&quot;; 的當地語系化字串。
+        ///      &lt;Validate AutoCorrect=&quot;False&quot; Description=&quot;「學年度」不允許空白。&quot; ErrorType=&quot;Error&quot; Validator=&quot;不可空白&quot; When=&quot;&quot; [字串的其餘部分已遭截斷]&quot;; 的當地語系化字串。
         /// </summary>
         internal static string ImportClubCadresValRule {
             get {
@@ -358,9 +358,9 @@ namespace K12.Club.Volunteer.Properties {
         /// <summary>
         ///   查詢類型 System.Byte[] 的當地語系化資源。
         /// </summary>
-        internal static byte[] 匯出選社結果_範本 {
+        internal static byte[] 匯出選社結果_範本1 {
             get {
-                object obj = ResourceManager.GetObject("匯出選社結果_範本", resourceCulture);
+                object obj = ResourceManager.GetObject("匯出選社結果_範本1", resourceCulture);
                 return ((byte[])(obj));
             }
         }

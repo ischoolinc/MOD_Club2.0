@@ -46,7 +46,7 @@ namespace K12.Club.Volunteer.Report.匯出選社結果
                     }
                     //建立Excel範本
                     Workbook template = new Workbook();
-                    template.Open(new MemoryStream(Properties.Resources.匯出選社結果_範本), FileFormatType.Excel97To2003);
+                    template.Open(new MemoryStream(Properties.Resources.匯出選社結果_範本1), FileFormatType.Excel97To2003);
 
                     wb.Copy(template);
                     //取得Sheet
