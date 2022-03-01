@@ -109,26 +109,35 @@ namespace K12.Club.Volunteer
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-            if (!BGW.IsBusy)
+            DialogResult dr = MsgBox.Show("是否開始複製到下學期", MessageBoxButtons.YesNo, MessageBoxDefaultButton.Button2);
+
+            if (dr == DialogResult.Yes)
             {
-                btnStart.Enabled = false;
-                intSchoolYear.Enabled = false;
-                intSemester.Enabled = false;
+                if (!BGW.IsBusy)
+                {
+                    btnStart.Enabled = false;
+                    intSchoolYear.Enabled = false;
+                    intSemester.Enabled = false;
 
-                _CopyOtherStudent = checkBoxX1.Checked;
-                _CopyCadresStudent = checkBoxX2.Checked;
-                _CopyPresidentStudent = checkBoxX3.Checked;
+                    _CopyOtherStudent = checkBoxX1.Checked;
+                    _CopyCadresStudent = checkBoxX2.Checked;
+                    _CopyPresidentStudent = checkBoxX3.Checked;
 
-                _SchoolYear = intSchoolYear.Value;
-                _Semester = intSemester.Value;
+                    _SchoolYear = intSchoolYear.Value;
+                    _Semester = intSemester.Value;
 
-                IsNowLock = checkBoxX4.Checked;
+                    IsNowLock = checkBoxX4.Checked;
 
-                BGW.RunWorkerAsync();
+                    BGW.RunWorkerAsync();
+                }
+                else
+                {
+                    MsgBox.Show("忙碌中請稍後再試...");
+                }
             }
             else
             {
-                MsgBox.Show("忙碌中請稍後再試...");
+                MsgBox.Show("已取消操作!!");
             }
         }
 
@@ -459,7 +468,20 @@ namespace K12.Club.Volunteer
             }
 
             ClubEvents.RaiseAssnChanged();
+
             this.Close();
+
+            //如有權限,則可以開啟本畫面
+            if (Permissions.開放選社時間權限)
+            {
+                DialogResult dr = MsgBox.Show("是否開啟 [開放選社時間] 功能?", MessageBoxButtons.YesNo, MessageBoxDefaultButton.Button2);
+                if (dr == DialogResult.Yes)
+                {
+                    OpenClubJoinDateTime insert = new OpenClubJoinDateTime();
+                    insert.ShowDialog();
+                }
+            }
+
 
         }
 

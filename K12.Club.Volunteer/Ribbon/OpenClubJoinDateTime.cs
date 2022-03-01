@@ -165,6 +165,10 @@ namespace K12.Club.Volunteer
 
         private void btnSave_Click(object sender, EventArgs e)
         {
+            MsgBox.Show("溫馨提示：開放社團選社前..\n" +
+                "請務必確認開放 [學年期] 是否正確\n" +
+                "設定錯誤,將會造成學生在 [錯誤的學年期] 加選/退選社團");
+
             if (IsDataValidity())
             {
 

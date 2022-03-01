@@ -180,81 +180,90 @@ namespace K12.Club.Volunteer
 
             RowList.Clear();
 
+
             _logDic = new Dictionary<string, Log_Result>();
 
             //取得社團參與記錄
-            foreach (List<SCJoin> each in GetPoint._SCJoinDic.Values)
+            foreach (StudentRecord student in GetPoint._StudentDic.Values)
             {
-                if (each.Count == 1)
+                if (GetPoint._SCJoinDic.ContainsKey(student.ID))
                 {
-                    #region 只有一筆資料
-                    SCJoin sch = each[0];
-
-                    SCJoinRow scjRow = new SCJoinRow();
-                    scjRow.SCJ = sch;
-                    //學生
-                    if (GetPoint._StudentDic.ContainsKey(sch.RefStudentID))
+                    List<SCJoin> each = GetPoint._SCJoinDic[student.ID];
+                    if (each.Count == 1)
                     {
-                        scjRow.student = GetPoint._StudentDic[sch.RefStudentID];
+                        #region 只有一筆資料
+                        SCJoin sch = each[0];
 
-                        //社團
-                        if (GetPoint._ClubDic.ContainsKey(sch.RefClubID))
+                        SCJoinRow scjRow = new SCJoinRow();
+                        scjRow.SCJ = sch;
+                        //學生
+                        if (GetPoint._StudentDic.ContainsKey(sch.RefStudentID))
                         {
-                            scjRow.club = GetPoint._ClubDic[sch.RefClubID];
+                            scjRow.student = GetPoint._StudentDic[sch.RefStudentID];
 
-                            if (ClubTeacherDic.ContainsKey(GetPoint._ClubDic[sch.RefClubID].RefTeacherID))
+                            //社團
+                            if (GetPoint._ClubDic.ContainsKey(sch.RefClubID))
                             {
-                                scjRow.teacher = ClubTeacherDic[GetPoint._ClubDic[sch.RefClubID].RefTeacherID];
+                                scjRow.club = GetPoint._ClubDic[sch.RefClubID];
+
+                                if (ClubTeacherDic.ContainsKey(GetPoint._ClubDic[sch.RefClubID].RefTeacherID))
+                                {
+                                    scjRow.teacher = ClubTeacherDic[GetPoint._ClubDic[sch.RefClubID].RefTeacherID];
+                                }
                             }
-                        }
 
-                        if (GetPoint._RSRDic.ContainsKey(sch.UID))
-                        {
-                            scjRow.RSR = GetPoint._RSRDic[sch.UID];
-                        }
+                            if (GetPoint._RSRDic.ContainsKey(sch.UID))
+                            {
+                                scjRow.RSR = GetPoint._RSRDic[sch.UID];
+                            }
 
-                        RowList.Add(scjRow);
+                            RowList.Add(scjRow);
+                        }
+                        #endregion
                     }
-                    #endregion
-                }
-                else if (each.Count >= 1)
-                {
-                    #region 有兩筆資料
-                    //錯誤訊息
-                    StudentRecord sr = Student.SelectByID(each[0].RefStudentID);
-                    sb_3.AppendLine("學生[" + sr.Name + "]有2筆以上社團記錄");
-
-                    SCJoin sch = each[0];
-                    SCJoinRow scjRow = new SCJoinRow();
-                    scjRow.SCJ = sch;
-                    //學生
-                    if (GetPoint._StudentDic.ContainsKey(sch.RefStudentID))
+                    else if (each.Count >= 1)
                     {
-                        scjRow.student = GetPoint._StudentDic[sch.RefStudentID];
+                        #region 有兩筆資料
+                        //錯誤訊息
+                        StudentRecord sr = Student.SelectByID(each[0].RefStudentID);
+                        sb_3.AppendLine("學生[" + sr.Name + "]有2筆以上社團記錄");
 
-                        //社團
-                        if (GetPoint._ClubDic.ContainsKey(sch.RefClubID))
+                        SCJoin sch = each[0];
+                        SCJoinRow scjRow = new SCJoinRow();
+                        scjRow.SCJ = sch;
+                        //學生
+                        if (GetPoint._StudentDic.ContainsKey(sch.RefStudentID))
                         {
-                            scjRow.club = GetPoint._ClubDic[sch.RefClubID];
+                            scjRow.student = GetPoint._StudentDic[sch.RefStudentID];
 
-                            if (ClubTeacherDic.ContainsKey(GetPoint._ClubDic[sch.RefClubID].RefTeacherID))
+                            //社團
+                            if (GetPoint._ClubDic.ContainsKey(sch.RefClubID))
                             {
-                                scjRow.teacher = ClubTeacherDic[GetPoint._ClubDic[sch.RefClubID].RefTeacherID];
+                                scjRow.club = GetPoint._ClubDic[sch.RefClubID];
+
+                                if (ClubTeacherDic.ContainsKey(GetPoint._ClubDic[sch.RefClubID].RefTeacherID))
+                                {
+                                    scjRow.teacher = ClubTeacherDic[GetPoint._ClubDic[sch.RefClubID].RefTeacherID];
+                                }
                             }
-                        }
 
-                        if (GetPoint._RSRDic.ContainsKey(sch.UID))
-                        {
-                            scjRow.RSR = GetPoint._RSRDic[sch.UID];
-                        }
+                            if (GetPoint._RSRDic.ContainsKey(sch.UID))
+                            {
+                                scjRow.RSR = GetPoint._RSRDic[sch.UID];
+                            }
 
-                        RowList.Add(scjRow);
+                            RowList.Add(scjRow);
+                        }
+                        #endregion
                     }
-                    #endregion
-                }
-                else
-                {
-                    //沒有記錄繼續
+                    else
+                    {
+                        //沒有記錄繼續
+                    }
+
+
+
+
                 }
             }
 
@@ -307,7 +316,6 @@ namespace K12.Club.Volunteer
                 if (e.Error == null)
                 {
                     dataGridViewX1.AutoGenerateColumns = false;
-                    RowList.Sort(SortSCJ);
                     dataGridViewX1.DataSource = RowList;
 
                     //Log

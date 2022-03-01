@@ -202,6 +202,10 @@ namespace K12.Club.Volunteer
             #region 取得學生
 
             List<StudentRecord> StudentList = Student.SelectByIDs(_SCJoinDic.Keys);
+
+            //2022/3/1 - 排序學生清單
+            StudentList.Sort(SortClassIndex.SortStudentDouble);
+
             foreach (StudentRecord student in StudentList)
             {
                 if (tool.CheckStatus(student))

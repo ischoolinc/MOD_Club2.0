@@ -28,13 +28,17 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgvTimes = new DevComponents.DotNetBar.Controls.DataGridViewX();
+            this.chGradeYear = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.chStage1_Mode = new DevComponents.DotNetBar.Controls.DataGridViewComboBoxExColumn();
+            this.chStartTime1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.chEndTime1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.chStage2_Mode = new DevComponents.DotNetBar.Controls.DataGridViewComboBoxExColumn();
-            this.lblSemester = new DevComponents.DotNetBar.LabelX();
+            this.chStartTime2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.chEndTime2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.btnClose = new DevComponents.DotNetBar.ButtonX();
             this.btnSave = new DevComponents.DotNetBar.ButtonX();
             this.labelX1 = new DevComponents.DotNetBar.LabelX();
@@ -47,11 +51,7 @@
             this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.chGradeYear = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.chStartTime1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.chEndTime1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.chStartTime2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.chEndTime2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.labelX4 = new DevComponents.DotNetBar.LabelX();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTimes)).BeginInit();
             this.SuspendLayout();
             // 
@@ -69,26 +69,34 @@
             this.chStage2_Mode,
             this.chStartTime2,
             this.chEndTime2});
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvTimes.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvTimes.DefaultCellStyle = dataGridViewCellStyle5;
             this.dgvTimes.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(215)))), ((int)(((byte)(229)))));
             this.dgvTimes.Location = new System.Drawing.Point(13, 38);
             this.dgvTimes.Name = "dgvTimes";
             this.dgvTimes.RowTemplate.Height = 24;
             this.dgvTimes.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.dgvTimes.Size = new System.Drawing.Size(943, 148);
+            this.dgvTimes.Size = new System.Drawing.Size(943, 163);
             this.dgvTimes.TabIndex = 1;
             this.dgvTimes.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvTimes_CellClick);
             this.dgvTimes.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvTimes_CellEndEdit);
             this.dgvTimes.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.dgvTimes_CellValidating);
             this.dgvTimes.RowValidated += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvTimes_RowValidated);
             this.dgvTimes.RowValidating += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dgvTimes_RowValidating);
+            // 
+            // chGradeYear
+            // 
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.LightCyan;
+            this.chGradeYear.DefaultCellStyle = dataGridViewCellStyle4;
+            this.chGradeYear.HeaderText = "年級";
+            this.chGradeYear.Name = "chGradeYear";
+            this.chGradeYear.ReadOnly = true;
             // 
             // chStage1_Mode
             // 
@@ -104,6 +112,18 @@
             this.chStage1_Mode.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.chStage1_Mode.RightToLeft = System.Windows.Forms.RightToLeft.No;
             // 
+            // chStartTime1
+            // 
+            this.chStartTime1.HeaderText = "階段1開始時間";
+            this.chStartTime1.Name = "chStartTime1";
+            this.chStartTime1.Width = 150;
+            // 
+            // chEndTime1
+            // 
+            this.chEndTime1.HeaderText = "階段1截止時間";
+            this.chEndTime1.Name = "chEndTime1";
+            this.chEndTime1.Width = 150;
+            // 
             // chStage2_Mode
             // 
             this.chStage2_Mode.DropDownHeight = 106;
@@ -118,22 +138,17 @@
             this.chStage2_Mode.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.chStage2_Mode.RightToLeft = System.Windows.Forms.RightToLeft.No;
             // 
-            // lblSemester
+            // chStartTime2
             // 
-            this.lblSemester.BackColor = System.Drawing.Color.Transparent;
+            this.chStartTime2.HeaderText = "階段2開始時間";
+            this.chStartTime2.Name = "chStartTime2";
+            this.chStartTime2.Width = 150;
             // 
+            // chEndTime2
             // 
-            // 
-            this.lblSemester.BackgroundStyle.Class = "";
-            this.lblSemester.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.lblSemester.Enabled = false;
-            this.lblSemester.Font = new System.Drawing.Font("微軟正黑體", 9.75F);
-            this.lblSemester.Location = new System.Drawing.Point(317, 207);
-            this.lblSemester.Name = "lblSemester";
-            this.lblSemester.Size = new System.Drawing.Size(154, 23);
-            this.lblSemester.TabIndex = 0;
-            this.lblSemester.Text = "97學年度　第１學期";
-            this.lblSemester.Visible = false;
+            this.chEndTime2.HeaderText = "階段2截止時間";
+            this.chEndTime2.Name = "chEndTime2";
+            this.chEndTime2.Width = 150;
             // 
             // btnClose
             // 
@@ -172,7 +187,7 @@
             this.labelX1.BackgroundStyle.Class = "";
             this.labelX1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX1.Font = new System.Drawing.Font("微軟正黑體", 9.75F);
-            this.labelX1.Location = new System.Drawing.Point(12, 207);
+            this.labelX1.Location = new System.Drawing.Point(12, 208);
             this.labelX1.Name = "labelX1";
             this.labelX1.Size = new System.Drawing.Size(299, 39);
             this.labelX1.TabIndex = 2;
@@ -185,7 +200,7 @@
             this.comboBoxEx2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxEx2.FormattingEnabled = true;
             this.comboBoxEx2.ItemHeight = 19;
-            this.comboBoxEx2.Location = new System.Drawing.Point(229, 7);
+            this.comboBoxEx2.Location = new System.Drawing.Point(263, 7);
             this.comboBoxEx2.Name = "comboBoxEx2";
             this.comboBoxEx2.Size = new System.Drawing.Size(78, 25);
             this.comboBoxEx2.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -199,11 +214,11 @@
             // 
             this.labelX2.BackgroundStyle.Class = "";
             this.labelX2.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX2.Location = new System.Drawing.Point(196, 9);
+            this.labelX2.Location = new System.Drawing.Point(194, 8);
             this.labelX2.Name = "labelX2";
             this.labelX2.Size = new System.Drawing.Size(75, 23);
             this.labelX2.TabIndex = 7;
-            this.labelX2.Text = "學期";
+            this.labelX2.Text = "開放學期";
             // 
             // comboBoxEx1
             // 
@@ -212,7 +227,7 @@
             this.comboBoxEx1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxEx1.FormattingEnabled = true;
             this.comboBoxEx1.ItemHeight = 19;
-            this.comboBoxEx1.Location = new System.Drawing.Point(112, 7);
+            this.comboBoxEx1.Location = new System.Drawing.Point(105, 7);
             this.comboBoxEx1.Name = "comboBoxEx1";
             this.comboBoxEx1.Size = new System.Drawing.Size(78, 25);
             this.comboBoxEx1.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -226,16 +241,16 @@
             // 
             this.labelX3.BackgroundStyle.Class = "";
             this.labelX3.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX3.Location = new System.Drawing.Point(64, 9);
+            this.labelX3.Location = new System.Drawing.Point(27, 8);
             this.labelX3.Name = "labelX3";
             this.labelX3.Size = new System.Drawing.Size(75, 23);
             this.labelX3.TabIndex = 5;
-            this.labelX3.Text = "學年度";
+            this.labelX3.Text = "開放學年度";
             // 
             // dataGridViewTextBoxColumn1
             // 
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.LightCyan;
-            this.dataGridViewTextBoxColumn1.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle6.BackColor = System.Drawing.Color.LightCyan;
+            this.dataGridViewTextBoxColumn1.DefaultCellStyle = dataGridViewCellStyle6;
             this.dataGridViewTextBoxColumn1.HeaderText = "年級";
             this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
             this.dataGridViewTextBoxColumn1.ReadOnly = true;
@@ -264,37 +279,22 @@
             this.dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
             this.dataGridViewTextBoxColumn5.Width = 150;
             // 
-            // chGradeYear
+            // labelX4
             // 
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.LightCyan;
-            this.chGradeYear.DefaultCellStyle = dataGridViewCellStyle1;
-            this.chGradeYear.HeaderText = "年級";
-            this.chGradeYear.Name = "chGradeYear";
-            this.chGradeYear.ReadOnly = true;
+            this.labelX4.AutoSize = true;
+            this.labelX4.BackColor = System.Drawing.Color.Transparent;
             // 
-            // chStartTime1
             // 
-            this.chStartTime1.HeaderText = "階段1開始時間";
-            this.chStartTime1.Name = "chStartTime1";
-            this.chStartTime1.Width = 150;
             // 
-            // chEndTime1
-            // 
-            this.chEndTime1.HeaderText = "階段1截止時間";
-            this.chEndTime1.Name = "chEndTime1";
-            this.chEndTime1.Width = 150;
-            // 
-            // chStartTime2
-            // 
-            this.chStartTime2.HeaderText = "階段2開始時間";
-            this.chStartTime2.Name = "chStartTime2";
-            this.chStartTime2.Width = 150;
-            // 
-            // chEndTime2
-            // 
-            this.chEndTime2.HeaderText = "階段2截止時間";
-            this.chEndTime2.Name = "chEndTime2";
-            this.chEndTime2.Width = 150;
+            this.labelX4.BackgroundStyle.Class = "";
+            this.labelX4.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX4.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.labelX4.ForeColor = System.Drawing.Color.Red;
+            this.labelX4.Location = new System.Drawing.Point(369, 9);
+            this.labelX4.Name = "labelX4";
+            this.labelX4.Size = new System.Drawing.Size(307, 21);
+            this.labelX4.TabIndex = 9;
+            this.labelX4.Text = "開放選社時,請確認開放之[學年度/學期]是否正確！";
             // 
             // OpenClubJoinDateTime
             // 
@@ -303,6 +303,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnSave;
             this.ClientSize = new System.Drawing.Size(968, 253);
+            this.Controls.Add(this.labelX4);
             this.Controls.Add(this.comboBoxEx2);
             this.Controls.Add(this.labelX2);
             this.Controls.Add(this.comboBoxEx1);
@@ -311,7 +312,6 @@
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.labelX1);
-            this.Controls.Add(this.lblSemester);
             this.DoubleBuffered = true;
             this.Name = "OpenClubJoinDateTime";
             this.Text = "開放選社時間";
@@ -325,7 +325,6 @@
         #endregion
 
         private DevComponents.DotNetBar.Controls.DataGridViewX dgvTimes;
-        private DevComponents.DotNetBar.LabelX lblSemester;
         private DevComponents.DotNetBar.ButtonX btnClose;
         private DevComponents.DotNetBar.ButtonX btnSave;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
@@ -345,5 +344,6 @@
         private DevComponents.DotNetBar.LabelX labelX2;
         private DevComponents.DotNetBar.Controls.ComboBoxEx comboBoxEx1;
         private DevComponents.DotNetBar.LabelX labelX3;
+        private DevComponents.DotNetBar.LabelX labelX4;
     }
 }
