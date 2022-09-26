@@ -168,6 +168,8 @@ namespace K12.Club.Volunteer
         [Field(Field = "level", Indexed = false)]
         public string Level { get; set; }
 
+        public int RandomIndex { get; set; }
+
         /// <summary>
         /// 淺層複製CLUBRecord
         /// </summary>

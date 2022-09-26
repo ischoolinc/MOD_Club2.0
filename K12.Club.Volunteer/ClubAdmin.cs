@@ -700,11 +700,10 @@ namespace K12.Club.Volunteer
             {
                 //傳入使用者預設所選的學年度 / 學期
                 SetClubList(FilterMenu.Text);
+
+                //依社團名稱排一下
+                //Field1.Column.DataGridView.Sort(Field0.Column, ListSortDirection.Ascending);
             }
-
-            //依社團名稱排一下
-            Field1.Column.DataGridView.Sort(Field0.Column, ListSortDirection.Ascending);
-
         }
 
         /// <summary>

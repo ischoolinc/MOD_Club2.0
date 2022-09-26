@@ -92,12 +92,23 @@ namespace K12.Club.Volunteer
             int x = 0;
             if (int.TryParse("" + Row.GetValue("限制:一年級人數"), out x))
                 club.Grade1Limit = x;
+            else
+                club.Grade1Limit = null;
+
             if (int.TryParse("" + Row.GetValue("限制:二年級人數"), out x))
                 club.Grade2Limit = x;
+            else
+                club.Grade2Limit = null;
+
             if (int.TryParse("" + Row.GetValue("限制:三年級人數"), out x))
                 club.Grade3Limit = x;
+            else
+                club.Grade3Limit = null;
+
             if (int.TryParse("" + Row.GetValue("限制:人數上限"), out x))
                 club.Limit = x;
+            else
+                club.Limit = null;
         }
 
         /// <summary>

@@ -41,7 +41,7 @@ namespace K12.Club.Volunteer
                 Xmle.SetAttribute("Required", "True");
                 Xmle.SetAttribute("Name", "志願" + x);
                 Xmle.SetAttribute("EmptyAlsoValidate", "False");
-                Xmle.SetAttribute("Description", "學生的志願項目");
+                Xmle.SetAttribute("Description", "學生的志願項目(說明:匯入無法清除志願內容)");
             }
 
             StringBuilder Rule = new StringBuilder();

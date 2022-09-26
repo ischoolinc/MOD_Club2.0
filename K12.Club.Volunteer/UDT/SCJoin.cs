@@ -43,6 +43,12 @@ namespace K12.Club.Volunteer
         [Field(Field = "score", Indexed = false)]
         public string Score { get; set; }
 
+        /// <summary>
+        /// 評語 - 2022/5/8(星期日)
+        /// </summary>
+        [Field(Field = "comment", Indexed = false)]
+        public string Comment { get; set; }
+
         ///// <summary>
         ///// 成績_平時活動
         ///// </summary>

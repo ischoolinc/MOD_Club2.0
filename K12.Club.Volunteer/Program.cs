@@ -42,18 +42,20 @@ namespace K12.Club.Volunteer
             //檢查是否為布林
             bool.TryParse(cd[name], out checkClubUDT);
 
+            //New 暫時搬到外面來
+            //增加Comment欄位
+            AccessHelper _accessHelper = new AccessHelper();
+            _accessHelper.Select<SCJoin>("UID = '00000'");
+            _accessHelper.Select<ResultScoreRecord>("UID = '00000'");
+
             if (!checkClubUDT)
             {
-                AccessHelper _accessHelper = new AccessHelper();
                 _accessHelper.Select<CLUBRecord>("UID = '00000'");
                 _accessHelper.Select<SCJoin>("UID = '00000'");
                 _accessHelper.Select<WeightProportion>("UID = '00000'");
                 _accessHelper.Select<CadresRecord>("UID = '00000'");
                 _accessHelper.Select<DTScore>("UID = '00000'");
                 _accessHelper.Select<DTClub>("UID = '00000'");
-                _accessHelper.Select<ResultScoreRecord>("UID = '00000'");
-
-                //new
                 _accessHelper.Select<VolunteerRecord>("UID = '00000'");
                 _accessHelper.Select<ConfigRecord>("UID = '00000'");
 

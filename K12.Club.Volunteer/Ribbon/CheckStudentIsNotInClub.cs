@@ -34,7 +34,7 @@ namespace K12.Club.Volunteer
         List<CLUBRecord> CLUBRecordList = new List<CLUBRecord>();
 
         StringBuilder sb_log = new StringBuilder();
-
+        Random xy01 = new Random();
         /// <summary>
         /// 已選社團學生
         /// 學生ID & 修課紀錄
@@ -366,6 +366,67 @@ ORDER BY class.grade_year,class.class_name,student.seat_no");
             }
         }
 
+        private void 清除指定社團ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            List<DataGridViewRow> list = new List<DataGridViewRow>();
+            foreach (DataGridViewRow row in dataGridViewX1.SelectedRows)
+            {
+                list.Add(row);
+            }
+            ReSetupClub(list);
+        }
+
+        /// <summary>
+        /// 重新整理修課有多少學生
+        /// </summary>
+        private void ReSetupClub(List<DataGridViewRow> rowList)
+        {
+            List<CLUBRecord> clublist = new List<CLUBRecord>();
+            foreach (DataGridViewRow row in rowList)
+            {
+                //取得課程Record
+                CLUBRecord club = (CLUBRecord)row.Cells[colSelectClub.Index].Tag;
+                clublist.Add(club);
+                //該課程目前有多少選課學生
+                int count = 0;
+                if (ScjDic.ContainsKey(club.UID))
+                {
+                    count = ScjDic[club.UID].Count;
+                }
+
+                row.Cells[colSelectClub.Index].Value = null;
+                row.Cells[colSelectClub.Index].Tag = null;
+
+                //統計,此按鈕造成新增多少學生(不重複)
+                if (ClubAddDic.ContainsKey(club.UID))
+                {
+                    //包含此學生,則移除學生
+                    StudRecord stud = (StudRecord)row.Tag;
+                    if (ClubAddDic[club.UID].Contains(stud.id))
+                    {
+                        ClubAddDic[club.UID].Remove(stud.id);
+                    }
+
+                    club.NewCount--;
+                    if (stud.grade_year == "1" || stud.grade_year == "7")
+                    {
+                        club.NewGrade1Limit--;
+                    }
+                    else if (stud.grade_year == "2" || stud.grade_year == "8")
+                    {
+                        club.NewGrade2Limit--;
+                    }
+                    else if (stud.grade_year == "3" || stud.grade_year == "9")
+                    {
+                        club.NewGrade3Limit--;
+                    }
+                }
+
+            }
+
+            RefreshButtonItem(clublist);
+        }
+
         /// <summary>
         /// 重新處理畫面顯示
         /// </summary>
@@ -424,55 +485,6 @@ ORDER BY class.grade_year,class.class_name,student.seat_no");
 
             itmPnlTimeName.ResumeLayout();
             itmPnlTimeName.Refresh();
-        }
-
-        private void 清除指定社團ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-            List<CLUBRecord> clublist = new List<CLUBRecord>();
-            foreach (DataGridViewRow row in dataGridViewX1.SelectedRows)
-            {
-                //取得課程Record
-                CLUBRecord club = (CLUBRecord)row.Cells[colSelectClub.Index].Tag;
-                clublist.Add(club);
-                //該課程目前有多少選課學生
-                int count = 0;
-                if (ScjDic.ContainsKey(club.UID))
-                {
-                    count = ScjDic[club.UID].Count;
-                }
-
-                row.Cells[colSelectClub.Index].Value = null;
-                row.Cells[colSelectClub.Index].Tag = null;
-
-                //統計,此按鈕造成新增多少學生(不重複)
-                if (ClubAddDic.ContainsKey(club.UID))
-                {
-                    //包含此學生,則移除學生
-                    StudRecord stud = (StudRecord)row.Tag;
-                    if (ClubAddDic[club.UID].Contains(stud.id))
-                    {
-                        ClubAddDic[club.UID].Remove(stud.id);
-                    }
-
-                    club.NewCount--;
-                    if (stud.grade_year == "1" || stud.grade_year == "7")
-                    {
-                        club.NewGrade1Limit--;
-                    }
-                    else if (stud.grade_year == "2" || stud.grade_year == "8")
-                    {
-                        club.NewGrade2Limit--;
-                    }
-                    else if (stud.grade_year == "3" || stud.grade_year == "9")
-                    {
-                        club.NewGrade3Limit--;
-                    }
-                }
-
-            }
-
-            RefreshButtonItem(clublist);
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -578,12 +590,24 @@ ORDER BY class.grade_year,class.class_name,student.seat_no");
 
         private void btnStartAuto_Click(object sender, EventArgs e)
         {
-            DialogResult dr = MsgBox.Show("自動分配將會把本畫面中\n未手動指定社團的學生\n進行[依選社條件]亂數分配\n確認開始指定?", MessageBoxButtons.YesNo, MessageBoxDefaultButton.Button2);
+            string ccName = "";
+            if (checkBoxX1.Checked)
+            {
+                ccName = "全數重新分配";
+            }
+            else
+            {
+                ccName = "未指定才分配";
+            }
+
+            DialogResult dr = MsgBox.Show(string.Format("您選擇「{0}」\n本功能將依據「社團選社限制」進行亂數分配\n確認開始?", ccName), MessageBoxButtons.YesNo, MessageBoxDefaultButton.Button2);
             if (dr == DialogResult.No)
             {
                 MsgBox.Show("已取消");
                 return;
             }
+
+
 
             //開始自動分配
             //1.取得系統內的各社團的條件
@@ -608,6 +632,7 @@ ORDER BY class.grade_year,class.class_name,student.seat_no");
 
                 //目前人數
                 club.NewCount = count;
+                club.RandomIndex = xy01.Next(1, 99999);
 
                 //本社團,是否有"人數上限"限制
                 if (club.Limit.HasValue)
@@ -650,28 +675,48 @@ ORDER BY class.grade_year,class.class_name,student.seat_no");
                     }
                 }
             }
+            //社團順序也亂數
+            InsertClubLimit.Sort(SortRandomClub);
 
             //這一段主要是要將學生進行亂數排序
             List<StudRecord> StudList = new List<StudRecord>();
-            Random xy01 = new Random();
             foreach (DataGridViewRow row in dataGridViewX1.Rows)
             {
-                //如果沒有設定過,才進行分配
-                if (row.Cells[colSelectClub.Index].Value == null)
+                if (!checkBoxX1.Checked)
                 {
-                    //學生基本資料
+                    //沒有設定過才進行分配
+                    if (row.Cells[colSelectClub.Index].Value != null)
+                    {
+                        //學生基本資料
+                        StudRecord stud = (StudRecord)row.Tag;
+                        stud.row = row;
+                        stud.RandomIndex = xy01.Next(1, 99999);
+                        StudList.Add(stud);
+                    }
+                }
+                else
+                {
+                    //全部進行分配
                     StudRecord stud = (StudRecord)row.Tag;
                     stud.row = row;
                     stud.RandomIndex = xy01.Next(1, 99999);
                     StudList.Add(stud);
                 }
             }
-            StudList.Sort(SortRandom);
+            StudList.Sort(SortRandomStud);
 
             //開始分配作業
             foreach (StudRecord stud in StudList)
             {
                 DataGridViewRow row = stud.row;
+
+                //重新亂數
+                foreach (CLUBRecord club in InsertClubLimit)
+                {
+                    club.RandomIndex = xy01.Next(1, 99999);
+                }
+                InsertClubLimit.Sort(SortRandomClub);
+
                 //可以分配的社團
                 foreach (CLUBRecord club in InsertClubLimit)
                 {
@@ -753,24 +798,19 @@ ORDER BY class.grade_year,class.class_name,student.seat_no");
                 DataGridViewRow DataGridViewRow1 = (DataGridViewRow)x;
                 DataGridViewRow DataGridViewRow2 = (DataGridViewRow)y;
 
-                if (("" + DataGridViewRow1.Cells[6].Value != "" || ("" + DataGridViewRow2.Cells[6].Value) != ""))
-                {
-                    string name1 = ("" + DataGridViewRow1.Cells[6].Value).PadLeft(20, 'z');
-                    string name2 = ("" + DataGridViewRow2.Cells[6].Value).PadLeft(20, 'z');
-                    return name2.CompareTo(name1);
-                }
-                else
-                {
-                    string name1 = ("" + DataGridViewRow1.Cells[0].Value).PadLeft(20, '0');
-                    string name2 = ("" + DataGridViewRow2.Cells[0].Value).PadLeft(20, '0');
-
-                    name1 += ("" + DataGridViewRow1.Cells[1].Value).PadLeft(20, '0');
-                    name2 += ("" + DataGridViewRow2.Cells[1].Value).PadLeft(20, '0');
-
-                    name1 += ("" + DataGridViewRow1.Cells[2].Value).PadLeft(20, '0');
-                    name2 += ("" + DataGridViewRow2.Cells[2].Value).PadLeft(20, '0');
-                    return name1.CompareTo(name2);
-                }
+                //指定社團名稱
+                string name1 = ("" + DataGridViewRow1.Cells[6].Value).PadLeft(20, 'z');
+                string name2 = ("" + DataGridViewRow2.Cells[6].Value).PadLeft(20, 'z');
+                //年級
+                name1 += ("" + DataGridViewRow1.Cells[0].Value).PadLeft(5, '0');
+                name2 += ("" + DataGridViewRow2.Cells[0].Value).PadLeft(5, '0');
+                //班級
+                name1 += ("" + DataGridViewRow1.Cells[1].Value).PadLeft(10, '0');
+                name2 += ("" + DataGridViewRow2.Cells[1].Value).PadLeft(10, '0');
+                //座號
+                name1 += ("" + DataGridViewRow1.Cells[2].Value).PadLeft(5, '0');
+                name2 += ("" + DataGridViewRow2.Cells[2].Value).PadLeft(5, '0');
+                return name1.CompareTo(name2);
             }
         }
 
@@ -892,7 +932,12 @@ ORDER BY class.grade_year,class.class_name,student.seat_no");
             this.Close();
         }
 
-        private int SortRandom(StudRecord x, StudRecord y)
+        private int SortRandomStud(StudRecord x, StudRecord y)
+        {
+            return x.RandomIndex.CompareTo(y.RandomIndex);
+        }
+
+        private int SortRandomClub(CLUBRecord x, CLUBRecord y)
         {
             return x.RandomIndex.CompareTo(y.RandomIndex);
         }

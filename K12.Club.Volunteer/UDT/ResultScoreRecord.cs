@@ -52,6 +52,12 @@ namespace K12.Club.Volunteer
         public decimal? ResultScore { get; set; }
 
         /// <summary>
+        /// 社團評語 - 2022/5/8(星期日)
+        /// </summary>
+        [Field(Field = "comment", Indexed = false)]
+        public string Comment { get; set; }
+
+        /// <summary>
         /// 幹部名稱
         /// </summary>
         [Field(Field = "cadre_name", Indexed = false)]
