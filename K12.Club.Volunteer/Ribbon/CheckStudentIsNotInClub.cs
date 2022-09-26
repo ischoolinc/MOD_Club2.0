@@ -591,24 +591,14 @@ ORDER BY class.grade_year,class.class_name,student.seat_no");
         private void btnStartAuto_Click(object sender, EventArgs e)
         {
             string ccName = "";
-            if (checkBoxX1.Checked)
-            {
-                ccName = "全數重新分配";
-            }
-            else
-            {
-                ccName = "未指定才分配";
-            }
 
-            DialogResult dr = MsgBox.Show(string.Format("您選擇「{0}」\n本功能將依據「社團選社限制」進行亂數分配\n確認開始?", ccName), MessageBoxButtons.YesNo, MessageBoxDefaultButton.Button2);
+            DialogResult dr = MsgBox.Show(string.Format("「自動分配」僅分配未指定之學生\n依據「社團選社限制」進行亂數分配\n確認開始?", ccName), MessageBoxButtons.YesNo, MessageBoxDefaultButton.Button2);
             if (dr == DialogResult.No)
             {
                 MsgBox.Show("已取消");
                 return;
             }
-
-
-
+            
             //開始自動分配
             //1.取得系統內的各社團的條件
             //a.人數上限(目前社團人數)
@@ -682,10 +672,8 @@ ORDER BY class.grade_year,class.class_name,student.seat_no");
             List<StudRecord> StudList = new List<StudRecord>();
             foreach (DataGridViewRow row in dataGridViewX1.Rows)
             {
-                if (!checkBoxX1.Checked)
-                {
-                    //沒有設定過才進行分配
-                    if (row.Cells[colSelectClub.Index].Value != null)
+                    //沒有指定過社團的才進行分配
+                    if (row.Cells[colSelectClub.Index].Value == null)
                     {
                         //學生基本資料
                         StudRecord stud = (StudRecord)row.Tag;
@@ -693,15 +681,10 @@ ORDER BY class.grade_year,class.class_name,student.seat_no");
                         stud.RandomIndex = xy01.Next(1, 99999);
                         StudList.Add(stud);
                     }
-                }
-                else
-                {
-                    //全部進行分配
-                    StudRecord stud = (StudRecord)row.Tag;
-                    stud.row = row;
-                    stud.RandomIndex = xy01.Next(1, 99999);
-                    StudList.Add(stud);
-                }
+                    else
+                    {
+                        //社團欄位已經有數值
+                    }
             }
             StudList.Sort(SortRandomStud);
 
@@ -817,86 +800,82 @@ ORDER BY class.grade_year,class.class_name,student.seat_no");
 
         private void NowRunRow(DataGridViewRow row, CLUBRecord club, StudRecord stud)
         {
-            //如果沒有設定過,才進行分配
-            if (row.Cells[colSelectClub.Index].Value == null)
+            //當學生是一年級時
+            if (stud.grade_year == "1" || stud.grade_year == "7")
             {
-                //當學生是一年級時
-                if (stud.grade_year == "1" || stud.grade_year == "7")
-                {
 
-                    if (club.Grade1Limit.HasValue)
+                if (club.Grade1Limit.HasValue)
+                {
+                    if (club.Grade1Limit.Value > club.NewGrade1Limit)
                     {
-                        if (club.Grade1Limit.Value > club.NewGrade1Limit)
+                        if (club.GenderRestrict != "")
                         {
-                            if (club.GenderRestrict != "")
-                            {
-                                //性別判斷
-                                if (club.GenderRestrict == stud.gender)
-                                {
-                                    NowSetRow(row, club, stud, "1");
-                                }
-                            }
-                            else
+                            //性別判斷
+                            if (club.GenderRestrict == stud.gender)
                             {
                                 NowSetRow(row, club, stud, "1");
                             }
                         }
-                    }
-                    else
-                    {
-                        NowSetRow(row, club, stud, "1");
+                        else
+                        {
+                            NowSetRow(row, club, stud, "1");
+                        }
                     }
                 }
-                else if (stud.grade_year == "2" || stud.grade_year == "8")
+                else
                 {
-                    if (club.Grade2Limit.HasValue)
+                    NowSetRow(row, club, stud, "1");
+                }
+            }
+            else if (stud.grade_year == "2" || stud.grade_year == "8")
+            {
+                if (club.Grade2Limit.HasValue)
+                {
+                    if (club.Grade2Limit.Value > club.NewGrade2Limit)
                     {
-                        if (club.Grade2Limit.Value > club.NewGrade2Limit)
+                        if (club.GenderRestrict != "")
                         {
-                            if (club.GenderRestrict != "")
-                            {
-                                //性別判斷
-                                if (club.GenderRestrict == stud.gender)
-                                {
-                                    NowSetRow(row, club, stud, "2");
-                                }
-                            }
-                            else
+                            //性別判斷
+                            if (club.GenderRestrict == stud.gender)
                             {
                                 NowSetRow(row, club, stud, "2");
                             }
                         }
-                    }
-                    else
-                    {
-                        NowSetRow(row, club, stud, "2");
+                        else
+                        {
+                            NowSetRow(row, club, stud, "2");
+                        }
                     }
                 }
-                else if (stud.grade_year == "3" || stud.grade_year == "9")
+                else
                 {
-                    if (club.Grade3Limit.HasValue)
+                    NowSetRow(row, club, stud, "2");
+                }
+            }
+            else if (stud.grade_year == "3" || stud.grade_year == "9")
+            {
+                if (club.Grade3Limit.HasValue)
+                {
+                    //三年級人數上限還沒滿
+                    if (club.Grade3Limit.Value > club.NewGrade3Limit)
                     {
-                        //三年級人數上限還沒滿
-                        if (club.Grade3Limit.Value > club.NewGrade3Limit)
+                        if (club.GenderRestrict != "")
                         {
-                            if (club.GenderRestrict != "")
-                            {
-                                //性別判斷
-                                if (club.GenderRestrict == stud.gender)
-                                {
-                                    NowSetRow(row, club, stud, "3");
-                                }
-                            }
-                            else
+                            //性別判斷
+                            if (club.GenderRestrict == stud.gender)
                             {
                                 NowSetRow(row, club, stud, "3");
                             }
                         }
+                        else
+                        {
+                            NowSetRow(row, club, stud, "3");
+                        }
                     }
-                    else
-                    {
-                        NowSetRow(row, club, stud, "3");
-                    }
+                }
+                else
+                {
+                    NowSetRow(row, club, stud, "3");
                 }
             }
         }

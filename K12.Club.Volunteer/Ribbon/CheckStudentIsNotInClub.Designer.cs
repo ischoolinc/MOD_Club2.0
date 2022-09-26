@@ -29,19 +29,19 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle56 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle50 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle51 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle52 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle53 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle54 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle55 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle44 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle38 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle39 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle40 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle41 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle42 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle43 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle32 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle45 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle46 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle47 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle48 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle49 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle57 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle58 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle59 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle60 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle61 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dataGridViewX1 = new DevComponents.DotNetBar.Controls.DataGridViewX();
             this.colGrade_year = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colClass = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -68,8 +68,6 @@
             this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.checkBoxX1 = new DevComponents.DotNetBar.Controls.CheckBoxX();
-            this.checkBoxX2 = new DevComponents.DotNetBar.Controls.CheckBoxX();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewX1)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -93,14 +91,14 @@
             this.colStudentNumber,
             this.colSelectClub});
             this.dataGridViewX1.ContextMenuStrip = this.contextMenuStrip1;
-            dataGridViewCellStyle44.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle44.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle44.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle44.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle44.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle44.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle44.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridViewX1.DefaultCellStyle = dataGridViewCellStyle44;
+            dataGridViewCellStyle56.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle56.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle56.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle56.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle56.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle56.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle56.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewX1.DefaultCellStyle = dataGridViewCellStyle56;
             this.dataGridViewX1.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(215)))), ((int)(((byte)(229)))));
             this.dataGridViewX1.Location = new System.Drawing.Point(12, 50);
             this.dataGridViewX1.Name = "dataGridViewX1";
@@ -112,8 +110,8 @@
             // 
             // colGrade_year
             // 
-            dataGridViewCellStyle38.BackColor = System.Drawing.Color.LightCyan;
-            this.colGrade_year.DefaultCellStyle = dataGridViewCellStyle38;
+            dataGridViewCellStyle50.BackColor = System.Drawing.Color.LightCyan;
+            this.colGrade_year.DefaultCellStyle = dataGridViewCellStyle50;
             this.colGrade_year.HeaderText = "年級";
             this.colGrade_year.Name = "colGrade_year";
             this.colGrade_year.ReadOnly = true;
@@ -121,8 +119,8 @@
             // 
             // colClass
             // 
-            dataGridViewCellStyle39.BackColor = System.Drawing.Color.LightCyan;
-            this.colClass.DefaultCellStyle = dataGridViewCellStyle39;
+            dataGridViewCellStyle51.BackColor = System.Drawing.Color.LightCyan;
+            this.colClass.DefaultCellStyle = dataGridViewCellStyle51;
             this.colClass.HeaderText = "班級";
             this.colClass.Name = "colClass";
             this.colClass.ReadOnly = true;
@@ -130,8 +128,8 @@
             // 
             // colSeat_no
             // 
-            dataGridViewCellStyle40.BackColor = System.Drawing.Color.LightCyan;
-            this.colSeat_no.DefaultCellStyle = dataGridViewCellStyle40;
+            dataGridViewCellStyle52.BackColor = System.Drawing.Color.LightCyan;
+            this.colSeat_no.DefaultCellStyle = dataGridViewCellStyle52;
             this.colSeat_no.HeaderText = "座號";
             this.colSeat_no.Name = "colSeat_no";
             this.colSeat_no.ReadOnly = true;
@@ -139,8 +137,8 @@
             // 
             // colName
             // 
-            dataGridViewCellStyle41.BackColor = System.Drawing.Color.LightCyan;
-            this.colName.DefaultCellStyle = dataGridViewCellStyle41;
+            dataGridViewCellStyle53.BackColor = System.Drawing.Color.LightCyan;
+            this.colName.DefaultCellStyle = dataGridViewCellStyle53;
             this.colName.HeaderText = "姓名";
             this.colName.Name = "colName";
             this.colName.ReadOnly = true;
@@ -148,16 +146,16 @@
             // 
             // colGan
             // 
-            dataGridViewCellStyle42.BackColor = System.Drawing.Color.LightCyan;
-            this.colGan.DefaultCellStyle = dataGridViewCellStyle42;
+            dataGridViewCellStyle54.BackColor = System.Drawing.Color.LightCyan;
+            this.colGan.DefaultCellStyle = dataGridViewCellStyle54;
             this.colGan.HeaderText = "性別";
             this.colGan.Name = "colGan";
             this.colGan.ReadOnly = true;
             // 
             // colStudentNumber
             // 
-            dataGridViewCellStyle43.BackColor = System.Drawing.Color.LightCyan;
-            this.colStudentNumber.DefaultCellStyle = dataGridViewCellStyle43;
+            dataGridViewCellStyle55.BackColor = System.Drawing.Color.LightCyan;
+            this.colStudentNumber.DefaultCellStyle = dataGridViewCellStyle55;
             this.colStudentNumber.HeaderText = "學號";
             this.colStudentNumber.Name = "colStudentNumber";
             this.colStudentNumber.ReadOnly = true;
@@ -321,8 +319,8 @@
             // 
             // dataGridViewTextBoxColumn1
             // 
-            dataGridViewCellStyle32.BackColor = System.Drawing.Color.LightCyan;
-            this.dataGridViewTextBoxColumn1.DefaultCellStyle = dataGridViewCellStyle32;
+            dataGridViewCellStyle44.BackColor = System.Drawing.Color.LightCyan;
+            this.dataGridViewTextBoxColumn1.DefaultCellStyle = dataGridViewCellStyle44;
             this.dataGridViewTextBoxColumn1.HeaderText = "班級";
             this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
             this.dataGridViewTextBoxColumn1.ReadOnly = true;
@@ -330,8 +328,8 @@
             // 
             // dataGridViewTextBoxColumn2
             // 
-            dataGridViewCellStyle45.BackColor = System.Drawing.Color.LightCyan;
-            this.dataGridViewTextBoxColumn2.DefaultCellStyle = dataGridViewCellStyle45;
+            dataGridViewCellStyle57.BackColor = System.Drawing.Color.LightCyan;
+            this.dataGridViewTextBoxColumn2.DefaultCellStyle = dataGridViewCellStyle57;
             this.dataGridViewTextBoxColumn2.HeaderText = "座號";
             this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
             this.dataGridViewTextBoxColumn2.ReadOnly = true;
@@ -339,8 +337,8 @@
             // 
             // dataGridViewTextBoxColumn3
             // 
-            dataGridViewCellStyle46.BackColor = System.Drawing.Color.LightCyan;
-            this.dataGridViewTextBoxColumn3.DefaultCellStyle = dataGridViewCellStyle46;
+            dataGridViewCellStyle58.BackColor = System.Drawing.Color.LightCyan;
+            this.dataGridViewTextBoxColumn3.DefaultCellStyle = dataGridViewCellStyle58;
             this.dataGridViewTextBoxColumn3.HeaderText = "姓名";
             this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
             this.dataGridViewTextBoxColumn3.ReadOnly = true;
@@ -348,8 +346,8 @@
             // 
             // dataGridViewTextBoxColumn4
             // 
-            dataGridViewCellStyle47.BackColor = System.Drawing.Color.LightCyan;
-            this.dataGridViewTextBoxColumn4.DefaultCellStyle = dataGridViewCellStyle47;
+            dataGridViewCellStyle59.BackColor = System.Drawing.Color.LightCyan;
+            this.dataGridViewTextBoxColumn4.DefaultCellStyle = dataGridViewCellStyle59;
             this.dataGridViewTextBoxColumn4.HeaderText = "學號";
             this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
             this.dataGridViewTextBoxColumn4.ReadOnly = true;
@@ -357,8 +355,8 @@
             // 
             // dataGridViewTextBoxColumn5
             // 
-            dataGridViewCellStyle48.BackColor = System.Drawing.Color.LightCyan;
-            this.dataGridViewTextBoxColumn5.DefaultCellStyle = dataGridViewCellStyle48;
+            dataGridViewCellStyle60.BackColor = System.Drawing.Color.LightCyan;
+            this.dataGridViewTextBoxColumn5.DefaultCellStyle = dataGridViewCellStyle60;
             this.dataGridViewTextBoxColumn5.HeaderText = "指定社團";
             this.dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
             this.dataGridViewTextBoxColumn5.ReadOnly = true;
@@ -366,8 +364,8 @@
             // 
             // dataGridViewTextBoxColumn6
             // 
-            dataGridViewCellStyle49.BackColor = System.Drawing.Color.LightCyan;
-            this.dataGridViewTextBoxColumn6.DefaultCellStyle = dataGridViewCellStyle49;
+            dataGridViewCellStyle61.BackColor = System.Drawing.Color.LightCyan;
+            this.dataGridViewTextBoxColumn6.DefaultCellStyle = dataGridViewCellStyle61;
             this.dataGridViewTextBoxColumn6.HeaderText = "指定社團";
             this.dataGridViewTextBoxColumn6.Name = "dataGridViewTextBoxColumn6";
             this.dataGridViewTextBoxColumn6.ReadOnly = true;
@@ -380,50 +378,11 @@
             this.dataGridViewTextBoxColumn7.ReadOnly = true;
             this.dataGridViewTextBoxColumn7.Width = 120;
             // 
-            // checkBoxX1
-            // 
-            this.checkBoxX1.AutoSize = true;
-            this.checkBoxX1.BackColor = System.Drawing.Color.Transparent;
-            // 
-            // 
-            // 
-            this.checkBoxX1.BackgroundStyle.Class = "";
-            this.checkBoxX1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.checkBoxX1.CheckBoxStyle = DevComponents.DotNetBar.eCheckBoxStyle.RadioButton;
-            this.checkBoxX1.Checked = true;
-            this.checkBoxX1.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxX1.CheckValue = "Y";
-            this.checkBoxX1.Location = new System.Drawing.Point(281, 459);
-            this.checkBoxX1.Name = "checkBoxX1";
-            this.checkBoxX1.Size = new System.Drawing.Size(107, 21);
-            this.checkBoxX1.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
-            this.checkBoxX1.TabIndex = 10;
-            this.checkBoxX1.Text = "全數重新分配";
-            // 
-            // checkBoxX2
-            // 
-            this.checkBoxX2.AutoSize = true;
-            this.checkBoxX2.BackColor = System.Drawing.Color.Transparent;
-            // 
-            // 
-            // 
-            this.checkBoxX2.BackgroundStyle.Class = "";
-            this.checkBoxX2.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.checkBoxX2.CheckBoxStyle = DevComponents.DotNetBar.eCheckBoxStyle.RadioButton;
-            this.checkBoxX2.Location = new System.Drawing.Point(394, 459);
-            this.checkBoxX2.Name = "checkBoxX2";
-            this.checkBoxX2.Size = new System.Drawing.Size(107, 21);
-            this.checkBoxX2.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
-            this.checkBoxX2.TabIndex = 11;
-            this.checkBoxX2.Text = "未指定才分配";
-            // 
             // CheckStudentIsNotInClub
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(850, 491);
-            this.Controls.Add(this.checkBoxX2);
-            this.Controls.Add(this.checkBoxX1);
             this.Controls.Add(this.btnStartAuto);
             this.Controls.Add(this.itmPnlTimeName);
             this.Controls.Add(this.btnOutPut);
@@ -472,7 +431,5 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colStudentNumber;
         private System.Windows.Forms.DataGridViewTextBoxColumn colSelectClub;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn7;
-        private DevComponents.DotNetBar.Controls.CheckBoxX checkBoxX1;
-        private DevComponents.DotNetBar.Controls.CheckBoxX checkBoxX2;
     }
 }
