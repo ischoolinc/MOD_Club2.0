@@ -15,6 +15,7 @@ using System.Windows.Forms;
 using System.Xml;
 using Aspose.Words.Tables;
 using Aspose.Words.Reporting;
+using Campus.Report2014;
 
 namespace Across.Report
 {
@@ -55,14 +56,14 @@ namespace Across.Report
             #region 範本
 
             //整理取得報表範本
-            Campus.Report.ReportConfiguration ConfigurationInCadre = new Campus.Report.ReportConfiguration(CadreConfig);
+            ReportConfiguration ConfigurationInCadre = new ReportConfiguration(CadreConfig);
             Aspose.Words.Document Template;
 
             if (ConfigurationInCadre.Template == null)
             {
                 //如果範本為空,則建立一個預設範本
-                Campus.Report.ReportConfiguration ConfigurationInCadre_1 = new Campus.Report.ReportConfiguration(CadreConfig);
-                ConfigurationInCadre_1.Template = new Campus.Report.ReportTemplate(Properties.Resources.社團參與證明單_英文_範本, Campus.Report.TemplateType.Word);
+                ReportConfiguration ConfigurationInCadre_1 = new ReportConfiguration(CadreConfig);
+                ConfigurationInCadre_1.Template = new ReportTemplate(Properties.Resources.社團參與證明單_英文_範本, TemplateType.docx);
               
                 Template = new Document(ConfigurationInCadre_1.Template.GetStream());
             }
@@ -411,17 +412,17 @@ namespace Across.Report
     private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
     {
         //取得設定檔
-        Campus.Report.ReportConfiguration ConfigurationInCadre = new Campus.Report.ReportConfiguration(CadreConfig);
+        ReportConfiguration ConfigurationInCadre = new ReportConfiguration(CadreConfig);
         //畫面內容(範本內容,預設樣式
-        Campus.Report.TemplateSettingForm TemplateForm;
+        TemplateSettingForm TemplateForm;
         if (ConfigurationInCadre.Template != null)
         {
-            TemplateForm = new Campus.Report.TemplateSettingForm(ConfigurationInCadre.Template, new Campus.Report.ReportTemplate(Properties.Resources.社團參與證明單_英文_範本, Campus.Report.TemplateType.Word));
+            TemplateForm = new TemplateSettingForm(ConfigurationInCadre.Template, new ReportTemplate(Properties.Resources.社團參與證明單_英文_範本, TemplateType.docx));
         }
         else
         {
-            ConfigurationInCadre.Template = new Campus.Report.ReportTemplate(Properties.Resources.社團參與證明單_英文_範本, Campus.Report.TemplateType.Word);
-            TemplateForm = new Campus.Report.TemplateSettingForm(ConfigurationInCadre.Template, new Campus.Report.ReportTemplate(Properties.Resources.社團參與證明單_英文_範本, Campus.Report.TemplateType.Word));
+            ConfigurationInCadre.Template = new ReportTemplate(Properties.Resources.社團參與證明單_英文_範本, TemplateType.docx);
+            TemplateForm = new TemplateSettingForm(ConfigurationInCadre.Template, new ReportTemplate(Properties.Resources.社團參與證明單_英文_範本, TemplateType.docx));
         }
 
         //預設名稱

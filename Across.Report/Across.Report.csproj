@@ -33,14 +33,16 @@
   <ItemGroup>
     <Reference Include="Aspose.Words_201402">
       <HintPath>Library\Aspose.Words_201402.dll</HintPath>
+      <Private>False</Private>
     </Reference>
-    <Reference Include="Campus.Report, Version=1.0.0.13, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Library\Campus.Report.dll</HintPath>
+    <Reference Include="Campus.Report2014">
+      <HintPath>..\K12.Club.Volunteer\Library\Campus.Report2014.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="DevComponents.DotNetBar2, Version=9.5.0.1, Culture=neutral, PublicKeyToken=7eb7c3a35b91de04, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Library\DevComponents.DotNetBar2.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="FISCA, Version=2.5.0.1, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -155,9 +157,6 @@
     <None Include="Resources\copy_refresh_64.png" />
     <None Include="Resources\社團參與證明單_英文_合併欄位總表.docx" />
     <None Include="Resources\社團參與證明單_英文_範本.docx" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\社團參與證明單_英文_合併欄位總表.doc" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
