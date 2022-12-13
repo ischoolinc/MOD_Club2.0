@@ -45,7 +45,7 @@ namespace K12.Club.Volunteer
         {
             try
             {
-                _workbook.Save(path, SaveFormat.Excel97To2003);
+                _workbook.Save(path);
 
             }
             catch (Exception ex)

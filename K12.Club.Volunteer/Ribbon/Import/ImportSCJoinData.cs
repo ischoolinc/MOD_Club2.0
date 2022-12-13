@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Campus.DocumentValidator;
-using Campus.Import;
 using FISCA.Data;
 using System.Data;
-using Campus.Validator;
 using FISCA.UDT;
 using FISCA.Presentation.Controls;
 using FISCA.Presentation;
 using System.Windows.Forms;
 using System.ComponentModel;
+using Campus.Validator;
+using Campus.Import2014;
 
 namespace K12.Club.Volunteer
 {
@@ -184,7 +184,7 @@ FROM
 
                 if (clubs.Where(y => (y["school_year"] + "").Trim() == schoolYear).Where(y => (y["semester"] + "").Trim() == semester).Where(y => (y["club_name"] + "").Trim() == clubName).Count() == 0)
                 {
-                    Messages[x.Position].MessageItems.Add(new MessageItem(Campus.Validator.ErrorType.Error, Campus.Validator.ValidatorType.Row, "此學年度、學期、社團名稱不存在系統。"));
+                    Messages[x.Position].MessageItems.Add(new Campus.Validator.MessageItem(Campus.Validator.ErrorType.Error, Campus.Validator.ValidatorType.Row, "此學年度、學期、社團名稱不存在系統。"));
                 }
             });
         }

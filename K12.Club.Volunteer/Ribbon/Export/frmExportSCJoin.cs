@@ -151,15 +151,15 @@ WHERE
 
             SaveFileDialog saveFileDialog = new SaveFileDialog();
             saveFileDialog.Title = "匯出社團參與學生";
-            saveFileDialog.FileName = "匯出社團參與學生.xls";
-            saveFileDialog.Filter = "Excel (*.xls)|*.xls|所有檔案 (*.*)|*.*";
+            saveFileDialog.FileName = "匯出社團參與學生.xlsx";
+            saveFileDialog.Filter = "Excel (*.xlsx)|*.xlsx|所有檔案 (*.*)|*.*";
 
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
                 DialogResult result = new DialogResult();
                 try
                 {
-                    wb.Save(saveFileDialog.FileName, SaveFormat.Excel97To2003);
+                    wb.Save(saveFileDialog.FileName);
                     result = MsgBox.Show("檔案儲存完成，是否開啟檔案?", "是否開啟", MessageBoxButtons.YesNo);
                 }
                 catch (Exception ex)

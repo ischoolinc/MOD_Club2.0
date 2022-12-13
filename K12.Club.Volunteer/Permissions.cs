@@ -348,5 +348,14 @@ namespace K12.Club.Volunteer
                 return FISCA.Permission.UserAcl.Current[匯入社團幹部清單].Executable;
             }
         }
+
+        public static string 社團評語代碼表 { get { return "K12.Club.Universal.CommentForm.cs"; } }
+        public static bool 社團評語代碼表權限
+        {
+            get
+            {
+                return FISCA.Permission.UserAcl.Current[社團評語代碼表].Executable;
+            }
+        }
     }
 }

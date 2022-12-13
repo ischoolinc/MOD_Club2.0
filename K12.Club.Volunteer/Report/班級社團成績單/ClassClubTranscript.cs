@@ -90,7 +90,7 @@ namespace K12.Club.Volunteer
             #region 建立範本
 
             Workbook template = new Workbook();
-            template.Open(new MemoryStream(Properties.Resources.班級社團成績單_範本), FileFormatType.Excel97To2003);
+            template.Open(new MemoryStream(Properties.Resources.班級社團成績單_範本));
             if (PrintLost) //不及格確認單
             {
                 PriontName = "班級社團成績不及格(確認單)";
@@ -322,7 +322,7 @@ namespace K12.Club.Volunteer
                 if (e.Error == null)
                 {
                     SaveFileDialog SaveFileDialog1 = new SaveFileDialog();
-                    SaveFileDialog1.Filter = "Excel (*.xls)|*.xls|所有檔案 (*.*)|*.*";
+                    SaveFileDialog1.Filter = "Excel (*.xlsx)|*.xlsx|所有檔案 (*.*)|*.*";
                     SaveFileDialog1.FileName = PriontName;
 
                     //資料
@@ -331,7 +331,7 @@ namespace K12.Club.Volunteer
                         if (SaveFileDialog1.ShowDialog() == DialogResult.OK)
                         {
                             Workbook inResult = (Workbook)e.Result;
-                            inResult.Save(SaveFileDialog1.FileName, SaveFormat.Excel97To2003);
+                            inResult.Save(SaveFileDialog1.FileName);
                             Process.Start(SaveFileDialog1.FileName);
                             MotherForm.SetStatusBarMessage(PriontName + "列印完成!!");
                         }

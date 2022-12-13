@@ -756,7 +756,7 @@ namespace K12.Club.Volunteer
         {
             SaveFileDialog saveFileDialog1 = new SaveFileDialog();
             saveFileDialog1.FileName = "匯出成績輸入";
-            saveFileDialog1.Filter = "Excel (*.xls)|*.xls";
+            saveFileDialog1.Filter = "Excel (*.xlsx)|*.xlsx";
             if (saveFileDialog1.ShowDialog() != DialogResult.OK) return;
 
             DataGridViewExport export = new DataGridViewExport(dataGridViewX1);

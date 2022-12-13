@@ -62,9 +62,9 @@
       <HintPath>Library\Campus.DocumentValidator.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Campus.Import, Version=1.0.9.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Campus.Import2014, Version=1.0.9.1, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>Library\Campus.Import.dll</HintPath>
+      <HintPath>Library\Campus.Import2014.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Campus.IRewrite.Interface, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -77,9 +77,9 @@
       <HintPath>Library\Campus.Report2014.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Campus.Validator, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Campus.Validator2014, Version=1.0.5.1, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>Library\Campus.Validator.dll</HintPath>
+      <HintPath>Library\Campus.Validator2014.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Campus.Windows, Version=1.0.4.0, Culture=neutral, processorArchitecture=MSIL">
@@ -181,6 +181,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -328,6 +329,12 @@
     </Compile>
     <Compile Include="Report\社團點名單_套表列印\ClubPointsListForm.Designer.cs">
       <DependentUpon>ClubPointsListForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Ribbon\CommentForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ribbon\CommentForm.designer.cs">
+      <DependentUpon>CommentForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Ribbon\CopyClubRecord.cs" />
     <Compile Include="Ribbon\Export\frmExportSCJoin.cs">
@@ -505,6 +512,7 @@
     <Compile Include="tools\成績取得器.cs" />
     <Compile Include="tools\社團幹部obj.cs" />
     <Compile Include="UDT\CadresRecord.cs" />
+    <Compile Include="UDT\ClubComment.cs" />
     <Compile Include="UDT\CLUBRecord.cs" />
     <Compile Include="UDT\ConfigRecord.cs" />
     <Compile Include="tools\GetVolunteerData.cs" />
@@ -583,6 +591,9 @@
     <EmbeddedResource Include="Ribbon\CheckStudentIsNotInClub.resx">
       <DependentUpon>CheckStudentIsNotInClub.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Ribbon\CommentForm.resx">
+      <DependentUpon>CommentForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Ribbon\Export\frmExportSCJoin.resx">
       <DependentUpon>frmExportSCJoin.cs</DependentUpon>
     </EmbeddedResource>
@@ -649,7 +660,6 @@
     <Content Include="Library\Aspose.Cells_201402.xml">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Library\Aspose.Words.dll" />
     <Content Include="Library\Aspose.Words.xml">
       <SubType>Designer</SubType>
     </Content>
@@ -662,15 +672,16 @@
     <Content Include="Library\Campus.DocumentValidator.dll" />
     <Content Include="Library\Campus.DocumentValidator.pdb" />
     <Content Include="Library\Campus.DocumentValidator.xml" />
-    <Content Include="Library\Campus.Import.dll" />
     <Content Include="Library\Campus.Import.pdb" />
     <Content Include="Library\Campus.Import.xml" />
+    <Content Include="Library\Campus.Import2014.dll" />
+    <Content Include="Library\Campus.Import2014.pdb" />
     <Content Include="Library\Campus.IRewrite.Interface.dll" />
     <Content Include="Library\Campus.IRewrite.Interface.pdb" />
     <Content Include="Library\Campus.Report2014.dll" />
     <Content Include="Library\Campus.Report2014.pdb" />
-    <Content Include="Library\Campus.Validator.dll" />
-    <Content Include="Library\Campus.Validator.pdb" />
+    <Content Include="Library\Campus.Validator2014.dll" />
+    <Content Include="Library\Campus.Validator2014.pdb" />
     <Content Include="Library\Campus.Windows.dll" />
     <Content Include="Library\Campus.Windows.pdb" />
     <Content Include="Library\Campus.Windows.xml" />
@@ -738,18 +749,19 @@
     <None Include="Resources\ImportVolunteerRecordValRule.xml">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Resources\匯出選社結果_範本.xls" />
+    <None Include="Resources\匯出缺曠記錄.xlsx" />
+    <None Include="Resources\匯出選社結果_範本.xlsx" />
+    <None Include="Resources\班級社團成績單_範本.xlsx" />
+    <None Include="Resources\社團成績單_範本.xlsx" />
     <None Include="Resources\社團點名單_套表列印.docx" />
+    <None Include="Resources\社團點名單_範本.xlsx" />
     <None Include="Resources\社團點名表_合併欄位總表.docx" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\health_and_leisure_add_64.png" />
     <None Include="Resources\班級學生選社_範本.docx" />
-    <None Include="Resources\班級社團成績單_範本.xls" />
     <None Include="Resources\社團幹部證明單.docx" />
-    <None Include="Resources\社團成績單_範本.xls" />
     <None Include="Resources\社團概況表_範本.docx" />
-    <None Include="Resources\社團點名單_範本.xls" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\architecture_zoom_64.png" />

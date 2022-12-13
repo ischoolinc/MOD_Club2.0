@@ -12,7 +12,7 @@ using K12.Data;
 using K12.Data.Configuration;
 using Campus.DocumentValidator;
 using Campus.IRewrite.Interface;
-using Campus.Import;
+using Campus.Import2014;
 using System.Net;
 
 namespace K12.Club.Volunteer
@@ -28,36 +28,34 @@ namespace K12.Club.Volunteer
             //FISCA.RTOut.WriteLine("註冊Gadget - 社團(老師)：" + WebPackage.RegisterGadget("Teacher", "6080a7c0-60e7-443c-bad7-ecccb3a86bcf", "社團(老師)").Item2);
 
             #region 處理UDT Table沒有的問題
-
+            
+            //如果尚無設定值,預設
             ConfigData cd = K12.Data.School.Configuration["通用社團UDT載入設定"];
-            bool checkClubUDT = false;
-
             string name = "社團UDT是否已載入_20210912";
-            //如果尚無設定值,預設為
             if (string.IsNullOrEmpty(cd[name]))
             {
                 cd[name] = "false";
             }
 
             //檢查是否為布林
+            bool checkClubUDT = false;
             bool.TryParse(cd[name], out checkClubUDT);
 
-            //New 暫時搬到外面來
-            //增加Comment欄位
-            AccessHelper _accessHelper = new AccessHelper();
-            _accessHelper.Select<SCJoin>("UID = '00000'");
-            _accessHelper.Select<ResultScoreRecord>("UID = '00000'");
+            //增加Comment / 評語
+            tool._A.Select<ClubComment>("UID = '00000'");
 
             if (!checkClubUDT)
             {
-                _accessHelper.Select<CLUBRecord>("UID = '00000'");
-                _accessHelper.Select<SCJoin>("UID = '00000'");
-                _accessHelper.Select<WeightProportion>("UID = '00000'");
-                _accessHelper.Select<CadresRecord>("UID = '00000'");
-                _accessHelper.Select<DTScore>("UID = '00000'");
-                _accessHelper.Select<DTClub>("UID = '00000'");
-                _accessHelper.Select<VolunteerRecord>("UID = '00000'");
-                _accessHelper.Select<ConfigRecord>("UID = '00000'");
+                tool._A.Select<SCJoin>("UID = '00000'");
+                tool._A.Select<ResultScoreRecord>("UID = '00000'");
+                tool._A.Select<CLUBRecord>("UID = '00000'");
+                tool._A.Select<SCJoin>("UID = '00000'");
+                tool._A.Select<WeightProportion>("UID = '00000'");
+                tool._A.Select<CadresRecord>("UID = '00000'");
+                tool._A.Select<DTScore>("UID = '00000'");
+                tool._A.Select<DTClub>("UID = '00000'");
+                tool._A.Select<VolunteerRecord>("UID = '00000'");
+                tool._A.Select<ConfigRecord>("UID = '00000'");
 
                 cd[name] = "true";
                 cd.Save();
@@ -482,6 +480,16 @@ namespace K12.Club.Volunteer
             }
             #endregion
 
+            //
+            RibbonBarItem setup = ClubAdmin.Instance.RibbonBarItems["設定"];
+            //setup["評語代碼表"].Size = RibbonBarButton.MenuButtonSize.Large;
+            //setup["評語代碼表"].Image = Properties.Resources.Export_Image;
+            setup["社團評語代碼表"].Enable = Permissions.社團評語代碼表權限;
+            setup["社團評語代碼表"].Click += delegate
+            {
+                CommentForm form = new CommentForm();
+                form.ShowDialog();
+            };
             #region 右鍵選單
             ClubAdmin.Instance.NavPaneContexMenu["重新整理"].Click += delegate
                 {
@@ -589,6 +597,8 @@ namespace K12.Club.Volunteer
             detail1.Add(new RibbonFeature(Permissions.成績輸入時間, "成績輸入時間"));
             detail1.Add(new RibbonFeature(Permissions.重覆選社檢查, "重覆選社檢查"));
             detail1.Add(new RibbonFeature(Permissions.轉入課程, "轉入課程"));
+            detail1.Add(new RibbonFeature(Permissions.社團評語代碼表, "社團評語代碼表"));
+
             //志願序獨有
             detail1.Add(new RibbonFeature(Permissions.學生選社志願設定, "學生選社志願設定"));
             detail1.Add(new RibbonFeature(Permissions.學生社團分配, "學生社團分配"));

@@ -45,7 +45,7 @@ namespace K12.Club.Volunteer
             #region 建立範本
 
             Workbook template = new Workbook();
-            template.Open(new MemoryStream(Properties.Resources.社團成績單_範本), FileFormatType.Excel97To2003);
+            template.Open(new MemoryStream(Properties.Resources.社團成績單_範本));
             //Style sy = template.Worksheets[0].Cells[3, 0].Style;
             //每一張
             Workbook prototype = new Workbook();
@@ -257,7 +257,7 @@ namespace K12.Club.Volunteer
                 if (e.Error == null)
                 {
                     SaveFileDialog SaveFileDialog1 = new SaveFileDialog();
-                    SaveFileDialog1.Filter = "Excel (*.xls)|*.xls|所有檔案 (*.*)|*.*";
+                    SaveFileDialog1.Filter = "Excel (*.xlsx)|*.xlsx|所有檔案 (*.*)|*.*";
                     SaveFileDialog1.FileName = "社團成績單";
 
                     //資料
@@ -266,7 +266,7 @@ namespace K12.Club.Volunteer
                         if (SaveFileDialog1.ShowDialog() == DialogResult.OK)
                         {
                             Workbook inResult = (Workbook)e.Result;
-                            inResult.Save(SaveFileDialog1.FileName, SaveFormat.Excel97To2003);
+                            inResult.Save(SaveFileDialog1.FileName);
                             Process.Start(SaveFileDialog1.FileName);
                             MotherForm.SetStatusBarMessage("社團成績單,列印完成!!");
                         }

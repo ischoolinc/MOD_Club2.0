@@ -267,14 +267,21 @@ namespace K12.Club.Volunteer
             {
                 table.Columns.Add(string.Format("性別_{0}", x));
             }
-
+            
+            int PrintCount = 0;
             foreach (string each in crM.CLUBRecordDic.Keys)
             {
                 //社團資料
                 CLUBRecord cr = crM.CLUBRecordDic[each];
 
+                if (crM.ClubByStudentList[each].Count == 0)
+                {
+                    continue;
+                }
+                PrintCount++;
+
                 #region row 各種基本資料
-                DataRow row = table.NewRow();
+                    DataRow row = table.NewRow();
                 row["學校名稱"] = K12.Data.School.ChineseName;
                 row["社團名稱"] = cr.ClubName;
                 row["學年度"] = cr.SchoolYear;
@@ -370,6 +377,9 @@ namespace K12.Club.Volunteer
 
             }
 
+            if (PrintCount == 0)
+                e.Cancel = true;
+
             Document PageOne = (Document)Template.Clone(true);
             PageOne.MailMerge.Execute(table);
             e.Result = PageOne;
@@ -383,7 +393,7 @@ namespace K12.Club.Volunteer
 
             if (e.Cancelled)
             {
-                MsgBox.Show("作業已被中止!!");
+                MsgBox.Show("未列印出任何資料!!");
             }
             else
             {

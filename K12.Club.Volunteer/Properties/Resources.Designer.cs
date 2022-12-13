@@ -358,6 +358,16 @@ namespace K12.Club.Volunteer.Properties {
         /// <summary>
         ///   查詢類型 System.Byte[] 的當地語系化資源。
         /// </summary>
+        internal static byte[] 匯出缺曠記錄 {
+            get {
+                object obj = ResourceManager.GetObject("匯出缺曠記錄", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類型 System.Byte[] 的當地語系化資源。
+        /// </summary>
         internal static byte[] 匯出選社結果_範本1 {
             get {
                 object obj = ResourceManager.GetObject("匯出選社結果_範本1", resourceCulture);

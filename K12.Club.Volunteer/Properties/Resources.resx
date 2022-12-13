@@ -157,9 +157,6 @@
   <data name="health_and_leisure_remove_64" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\health_and_leisure_remove_64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="社團點名單_範本" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\社團點名單_範本.xls;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="meeting_64" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\meeting_64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -168,12 +165,6 @@
   </data>
   <data name="brand_write_64" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\brand_write_64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="社團成績單_範本" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\社團成績單_範本.xls;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="班級社團成績單_範本" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\班級社團成績單_範本.xls;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="presentation_a_config_64" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\presentation_a_config_64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -217,7 +208,19 @@
   <data name="ImportClubCadresValRule" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ImportClubCadresValRule.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
+  <data name="匯出缺曠記錄" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\匯出缺曠記錄.xlsx;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="匯出選社結果_範本1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\匯出選社結果_範本.xls;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\匯出選社結果_範本.xlsx;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="班級社團成績單_範本" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\班級社團成績單_範本.xlsx;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="社團成績單_範本" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\社團成績單_範本.xlsx;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="社團點名單_範本" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\社團點名單_範本.xlsx;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

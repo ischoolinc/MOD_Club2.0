@@ -577,7 +577,7 @@ ORDER BY class.grade_year,class.class_name,student.seat_no");
             #region 匯出
             SaveFileDialog saveFileDialog1 = new SaveFileDialog();
             saveFileDialog1.FileName = "匯出未選社團學生清單";
-            saveFileDialog1.Filter = "Excel (*.xls)|*.xls";
+            saveFileDialog1.Filter = "Excel (*.xlsx)|*.xlsx";
             if (saveFileDialog1.ShowDialog() != DialogResult.OK) return;
 
             DataGridViewExport export = new DataGridViewExport(dataGridViewX1);
