@@ -38,8 +38,8 @@ namespace K12.Club.Volunteer
             _sch = sch;
             foreach (string each in list)
             {
-                _OldItemDic.Add(each, "");
-                _NewItemDic.Add(each, "");
+                _OldItemDic.Add(each, _sch.Comment);
+                _NewItemDic.Add(each, _sch.Comment);
             }
 
             if (!string.IsNullOrEmpty(sch.Score))

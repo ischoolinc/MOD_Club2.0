@@ -463,6 +463,15 @@ namespace K12.Club.Volunteer
                     ResultsInputDateTime insert = new ResultsInputDateTime();
                     insert.ShowDialog();
                 };
+
+                Results["社團評語代碼表"].Size = RibbonBarButton.MenuButtonSize.Medium;
+                Results["社團評語代碼表"].Image = Properties.Resources.admissions_ok_64;
+                Results["社團評語代碼表"].Enable = Permissions.社團評語代碼表權限;
+                Results["社團評語代碼表"].Click += delegate
+                {
+                    CommentForm form = new CommentForm();
+                    form.ShowDialog();
+                };
             }
             #endregion
             #region 課程
@@ -479,17 +488,7 @@ namespace K12.Club.Volunteer
 
             }
             #endregion
-
-            //
-            RibbonBarItem setup = ClubAdmin.Instance.RibbonBarItems["設定"];
-            //setup["評語代碼表"].Size = RibbonBarButton.MenuButtonSize.Large;
-            //setup["評語代碼表"].Image = Properties.Resources.Export_Image;
-            setup["社團評語代碼表"].Enable = Permissions.社團評語代碼表權限;
-            setup["社團評語代碼表"].Click += delegate
-            {
-                CommentForm form = new CommentForm();
-                form.ShowDialog();
-            };
+            
             #region 右鍵選單
             ClubAdmin.Instance.NavPaneContexMenu["重新整理"].Click += delegate
                 {

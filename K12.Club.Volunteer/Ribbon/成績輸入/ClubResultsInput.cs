@@ -35,6 +35,10 @@ namespace K12.Club.Volunteer
         Dictionary<string, int> ColumnDic = new Dictionary<string, int>();
         //位置反推成績名稱
         Dictionary<int, string> _ColumnDic = new Dictionary<int, string>();
+
+        //評語碼表
+        Dictionary<string, string> CommentDic = new Dictionary<string, string>();
+
         //記錄比例
         Dictionary<string, int> ProportionDic = new Dictionary<string, int>();
 
@@ -89,11 +93,17 @@ namespace K12.Club.Volunteer
         /// </summary>
         private void AddColumns()
         {
+            DataGridViewTextBoxColumn dgvR = new DataGridViewTextBoxColumn();
+            dgvR.HeaderText = "評語";
+            dgvR.Name = "colComment";
+            int Columnindex = dataGridViewX1.Columns.Add(dgvR);
+            //記錄位置
+            ColumnDic.Add("評語", Columnindex);
+
             if (GetPoint._wp != null)
             {
                 if (!string.IsNullOrEmpty(GetPoint._wp.Proportion))
                 {
-                    int Columnindex;
                     XmlElement xml = DSXmlHelper.LoadXml(GetPoint._wp.Proportion);
                     foreach (XmlElement xml2 in xml.SelectNodes("Item"))
                     {
@@ -144,6 +154,15 @@ namespace K12.Club.Volunteer
             GetPoint = new 成績取得器();
             GetPoint.SetWeightProportion();
             GetPoint.GetSCJoinByClubIDList(ClubAdmin.Instance.SelectedSource);
+
+            //取得評語對照表
+            foreach (ClubComment each in tool._A.Select<ClubComment>())
+            {
+                if (!CommentDic.ContainsKey(each.code))
+                {
+                    CommentDic.Add(each.code, each.Comment);
+                }
+            }
 
             #region 社團老師資訊
 
@@ -339,6 +358,9 @@ namespace K12.Club.Volunteer
                     foreach (DataGridViewRow row in dataGridViewX1.Rows)
                     {
                         SCJoinRow scjRow = (SCJoinRow)row.DataBoundItem;
+
+                        row.Cells[ColumnDic["評語"]].Value = scjRow.SCJ.Comment;
+
                         if (scjRow.RSR != null)
                         {
                             if (scjRow.RSR.ResultScore.HasValue)
@@ -405,6 +427,10 @@ namespace K12.Club.Volunteer
             List<decimal?> list = new List<decimal?>();
             foreach (string each in ColumnDic.Keys)
             {
+                //2022/12/16 - 新增評語,但是試算不予處理
+                if (each == "評語")
+                    continue;
+
                 decimal? 成績 = ParseValue(row.Cells[ColumnDic[each]]);
                 int 比例 = ProportionDic[each];
 
@@ -466,9 +492,17 @@ namespace K12.Club.Volunteer
                 foreach (DataGridViewRow row in dataGridViewX1.Rows)
                 {
                     SCJoinRow scjRow = (SCJoinRow)row.DataBoundItem;
+                    Log_Result Set_Log = _logDic[scjRow.SCJoinID];
 
                     //Log
-                    Log_Result Set_Log = _logDic[scjRow.SCJoinID];
+                    if (scjRow.SCJ.Comment != "" + row.Cells[ColumnDic["評語"]].Value)
+                    {
+                        scjRow.SCJ.Comment = "" + row.Cells[ColumnDic["評語"]].Value;
+                        if (Set_Log._NewItemDic.ContainsKey("評語"))
+                        {
+                            Set_Log._NewItemDic["評語"] = scjRow.SCJ.Comment;
+                        }
+                    }
 
                     if (scjRow.HasChange)
                     {
@@ -512,8 +546,8 @@ namespace K12.Club.Volunteer
                 }
                 //修改儲存
 
-
-                _AccessHelper.UpdateValues(list);
+                if (list.Count > 0)
+                    _AccessHelper.UpdateValues(list);
 
                 //Log
                 FISCA.LogAgent.ApplicationLog.Log("社團", "成績輸入", GetLostConn());
@@ -570,6 +604,10 @@ namespace K12.Club.Volunteer
             //如果小於學號欄位,則離開
             if (cell.ColumnIndex <= ColStudentNumber.Index)
                 return false;
+
+            if (cell.ColumnIndex == ColumnDic["評語"])
+                return true;
+
             //如果大於/等於學期成績試算欄位
             if (cell.ColumnIndex >= dataGridViewX1.Columns["colSResults"].Index)
                 return false;
@@ -659,6 +697,24 @@ namespace K12.Club.Volunteer
                 _logDic[scjRow.SCJoinID].IsChange = true;
             }
 
+            //如果是評語欄位,則替換代碼
+            if (cell.ColumnIndex == ColumnDic["評語"])
+            {
+                //以逗號","分割為多組字串
+                string cellValue = "" + cell.Value;
+                List<string> nameList = cellValue.Split(',').ToList();
+                //變更後的內容
+                List<string> changeValue = new List<string>();
+                foreach (string each in nameList)
+                {
+                    if (CommentDic.ContainsKey(each))
+                        changeValue.Add(CommentDic[each]);
+                    else
+                        changeValue.Add(each);
+                }
+                cell.Value = string.Join(",", changeValue);
+            }
+
             //資料錯誤則離開
             if (!CheckCellValue(dataGridViewX1.CurrentCell))
             {
@@ -700,9 +756,11 @@ namespace K12.Club.Volunteer
         {
 
             if (string.IsNullOrEmpty("" + cell.Value))
-            {
                 return true;
-            }
+
+            if (cell.ColumnIndex == ColumnDic["評語"])
+                return true;
+
 
             if (!ParseDec("" + cell.Value))
             {
@@ -788,6 +846,19 @@ namespace K12.Club.Volunteer
             {
                 dataGridViewX1.ImeMode = ImeMode.OnHalf;
                 dataGridViewX1.ImeMode = ImeMode.Off;
+            }
+        }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            if (Permissions.社團評語代碼表權限)
+            {
+                CommentForm form = new CommentForm();
+                form.ShowDialog();
+            }
+            else
+            {
+                MsgBox.Show("請開啟權限");
             }
         }
     }

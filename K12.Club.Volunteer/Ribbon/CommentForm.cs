@@ -30,15 +30,9 @@ namespace K12.Club.Volunteer
             InitializeComponent();
 
             Campus.Windows.DataGridViewImeDecorator dec = new Campus.Windows.DataGridViewImeDecorator(this.dataGridViewX1);
+
             _commentList = tool._A.Select<ClubComment>();
-            foreach (ClubComment each in _commentList)
-            {
-                if (!_commentDic.ContainsKey(each.code))
-                {
-                    _commentDic.Add(each.code, each);
-                }
-            }
-            _commentDic = new Dictionary<string, ClubComment>();
+            FillGrid(_commentList);
         }
 
         /// <summary>
@@ -47,15 +41,25 @@ namespace K12.Club.Volunteer
         private void FillGrid(List<ClubComment> list)
         {
             dataGridViewX1.Rows.Clear();
+            _commentDic = new Dictionary<string, ClubComment>();
             foreach (ClubComment code in list)
             {
                 DataGridViewRow row = new DataGridViewRow();
+                row.CreateCells(dataGridViewX1);
                 row.Cells[colCode.Index].Value = code.code;
                 row.Cells[colComment.Index].Value = code.Comment;
                 dataGridViewX1.Rows.Add(row);
+
+                if (!_commentDic.ContainsKey(code.code))
+                {
+                    _commentDic.Add(code.code, code);
+                }
             }
         }
 
+        /// <summary>
+        /// 儲存畫面資料
+        /// </summary>
         private void btnSave_Click(object sender, EventArgs e)
         {
             //如果可以儲存
@@ -64,32 +68,63 @@ namespace K12.Club.Volunteer
                 List<ClubComment> InsertCommentList = new List<ClubComment>();
                 foreach (DataGridViewRow row in dataGridViewX1.Rows)
                 {
+                    if (row.IsNewRow)
+                        continue;
+
                     ClubComment comment = new ClubComment();
                     comment.code = "" + row.Cells[colCode.Index].Value;
                     comment.Comment = "" + row.Cells[colComment.Index].Value;
+
                     InsertCommentList.Add(comment);
                 }
 
-                if (InsertCommentList.Count > 0)
-                {
-                    try
-                    {
-                        //刪除資料
+                bool check = SaveComment(InsertCommentList);
 
-                        //新增資料
+                MsgBox.Show("儲存成功。");
+                this.DialogResult = DialogResult.OK;
 
-                        //新增Log
-                        ApplicationLog.Log("社團評語代碼表", "修改", "「社團評語代碼表」已被修改。");
-                    }
-                    catch (Exception ex)
-                    {
-                        MsgBox.Show("儲存失敗。\n" + ex.Message);
-                    }
-
-                    MsgBox.Show("儲存成功。");
-                    this.DialogResult = DialogResult.OK;
-                }
             }
+            else
+            {
+                MsgBox.Show("無法儲存,請檢視相關錯誤。");
+            }
+        }
+
+        private bool SaveComment(List<ClubComment> InsertCommentList)
+        {
+            if (InsertCommentList.Count > 0)
+            {
+                StringBuilder sb_log = new StringBuilder();
+                sb_log.AppendLine("新增或修改社團評語代碼表");
+
+                foreach (ClubComment comment in InsertCommentList)
+                {
+                    sb_log.Append(string.Format("代碼「{0}」", comment.code));
+                    sb_log.AppendLine(string.Format("評語「{0}」", comment.Comment));
+                }
+
+                try
+                {
+                    //刪除資料
+                    _commentList = tool._A.Select<ClubComment>();
+                    if (_commentList.Count > 0)
+                        tool._A.DeletedValues(_commentList);
+
+                    //新增資料
+                    if (InsertCommentList.Count > 0)
+                        tool._A.InsertValues(InsertCommentList);
+
+                    //新增Log
+                    ApplicationLog.Log("社團評語代碼表", "修改", sb_log.ToString());
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    MsgBox.Show("儲存失敗。\n" + ex.Message);
+                }
+                return false;
+            }
+            return false;
         }
 
         private void DisciplineForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -137,7 +172,8 @@ namespace K12.Club.Volunteer
                 try
                 {
                     wb.Save(sfd.FileName);
-                    FISCA.Presentation.Controls.MsgBox.Show("匯出完成。");
+                    if (new CompleteForm().ShowDialog() == DialogResult.Yes)
+                        System.Diagnostics.Process.Start(sfd.FileName);
                 }
                 catch
                 {
@@ -151,76 +187,87 @@ namespace K12.Club.Volunteer
 
         private void btnImport_Click(object sender, EventArgs e)
         {
-            #region 匯入
-            Workbook wb = new Workbook();
-            Dictionary<string, string> importMeritList = new Dictionary<string, string>();
+            DialogResult dr = MsgBox.Show("匯入覆蓋」是將「檔案內容」取代目前「代碼表內容」\n\n如果要在代碼表新增更多內容\n請先「匯出代碼表」編輯後再進行匯入\n確認要繼續?", MessageBoxButtons.YesNo, MessageBoxDefaultButton.Button2);
 
-            OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Title = "選擇要匯入的事由代碼表";
-            ofd.Filter = "Excel檔案 (*.xlsx)|*.xlsx";
-            if (ofd.ShowDialog() == DialogResult.OK)
+            if (dr == DialogResult.Yes)
             {
-                try
+                #region 匯入
+                Workbook wb = new Workbook();
+                Dictionary<string, string> importMeritList = new Dictionary<string, string>();
+
+                OpenFileDialog ofd = new OpenFileDialog();
+                ofd.Title = "選擇要匯入的事由代碼表";
+                ofd.Filter = "Excel檔案 (*.xlsx)|*.xlsx";
+                if (ofd.ShowDialog() == DialogResult.OK)
                 {
-                    wb = new Workbook(ofd.FileName);
+                    try
+                    {
+                        wb = new Workbook(ofd.FileName);
+                    }
+                    catch
+                    {
+                        FISCA.Presentation.Controls.MsgBox.Show("指定路徑無法存取。", "開啟檔案失敗", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
                 }
-                catch
+                else
+                    return;
+
+                List<string> requiredHeaders = new List<string>(new string[] { "代碼", "評語" });
+                Dictionary<string, int> headerIndexes = new Dictionary<string, int>();
+                Worksheet ws = wb.Worksheets[0];
+                for (int i = 0; i <= ws.Cells.MaxDataColumn; i++)
                 {
-                    FISCA.Presentation.Controls.MsgBox.Show("指定路徑無法存取。", "開啟檔案失敗", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    string header = ws.Cells[0, i].StringValue;
+                    if (requiredHeaders.Contains(header))
+                        headerIndexes.Add(header, i);
+                }
+                if (headerIndexes.Count != requiredHeaders.Count)
+                {
+                    StringBuilder builder = new StringBuilder("");
+                    builder.AppendLine("匯入格式不符合。");
+                    builder.AppendLine("匯入資料標題必須包含：");
+                    builder.AppendLine(string.Join(",", requiredHeaders.ToArray()));
+                    FISCA.Presentation.Controls.MsgBox.Show(builder.ToString());
                     return;
                 }
+
+                int rowIndex = 1;
+
+                List<ClubComment> InsertCommentList = new List<ClubComment>();
+                StringBuilder sb_log = new StringBuilder();
+                sb_log.AppendLine("匯入覆蓋評語代碼表：");
+                while (!string.IsNullOrEmpty(ws.Cells[rowIndex, 0].StringValue))
+                {
+                    ClubComment commentRecord = new ClubComment();
+                    commentRecord.code = "" + ws.Cells[rowIndex, headerIndexes["代碼"]].Value;
+                    commentRecord.Comment = "" + ws.Cells[rowIndex, headerIndexes["評語"]].Value;
+                    sb_log.Append(string.Format("代碼「{0}」", commentRecord.code));
+                    sb_log.Append(string.Format("評語「{0}」", commentRecord.Comment));
+                    InsertCommentList.Add(commentRecord);
+                    rowIndex++;
+                }
+
+                bool check = SaveComment(InsertCommentList);
+
+                if (check)
+                {
+                    FillGrid(InsertCommentList);
+
+                    ApplicationLog.Log("社團評語代碼表", "匯入", sb_log.ToString());
+
+                    MsgBox.Show("匯入成功。");
+                }
+                else
+                {
+                    MsgBox.Show("匯入失敗。");
+                }
+                #endregion
             }
             else
-                return;
-
-            List<string> requiredHeaders = new List<string>(new string[] { "代碼", "評語" });
-            Dictionary<string, int> headerIndexes = new Dictionary<string, int>();
-            Worksheet ws = wb.Worksheets[0];
-            for (int i = 0; i <= ws.Cells.MaxDataColumn; i++)
             {
-                string header = ws.Cells[0, i].StringValue;
-                if (requiredHeaders.Contains(header))
-                    headerIndexes.Add(header, i);
+                MsgBox.Show("已取消操作。");
             }
-            if (headerIndexes.Count != requiredHeaders.Count)
-            {
-                StringBuilder builder = new StringBuilder("");
-                builder.AppendLine("匯入格式不符合。");
-                builder.AppendLine("匯入資料標題必須包含：");
-                builder.AppendLine(string.Join(",", requiredHeaders.ToArray()));
-                FISCA.Presentation.Controls.MsgBox.Show(builder.ToString());
-                return;
-            }
-
-            int rowIndex = 1;
-
-            List<ClubComment> ClubCommentList = new List<ClubComment>();
-            while (!string.IsNullOrEmpty(ws.Cells[rowIndex, 0].StringValue))
-            {
-                string codeString = ws.Cells[rowIndex, headerIndexes["代碼"]].StringValue;
-                string commentString = ws.Cells[rowIndex, headerIndexes["評語"]].StringValue;
-
-                ClubComment commentRecord = new ClubComment();
-                commentRecord.code = codeString;
-                commentRecord.Comment = commentString;
-                ClubCommentList.Add(commentRecord);
-                rowIndex++;
-            }
-
-            FillGrid(ClubCommentList);
-
-            ApplicationLog.Log("社團評語代碼表", "匯入", "「社團評語代碼表」已被匯入並新增。");
-            #endregion
-
-            FISCA.Presentation.Controls.MsgBox.Show("已匯入完成!\n請點選儲存後離開。");
-        }
-
-        /// <summary>
-        /// 資料變更驗證
-        /// </summary>
-        private void dataGridViewX1_CellValidated(object sender, DataGridViewCellEventArgs e)
-        {
-            ValidateList();
         }
 
         /// <summary>
@@ -228,7 +275,7 @@ namespace K12.Club.Volunteer
         /// </summary>
         private void dataGridViewX1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
-            ValidateList();
+            _commentCanSave = ValidateList();
         }
 
         /// <summary>
@@ -239,9 +286,6 @@ namespace K12.Club.Volunteer
             dataGridViewX1.EndEdit();
             bool isValid = true;
 
-            //修改過資料
-            _commentCanSave = false;
-
             List<string> codeList = new List<string>(); //代碼
             List<string> commentList = new List<string>(); //事由
 
@@ -249,7 +293,7 @@ namespace K12.Club.Volunteer
             {
                 if (row.IsNewRow) continue;
 
-                string code = "" + row.Cells[colCode.Index].Value.ToString();
+                string code = "" + row.Cells[colCode.Index].Value;
                 if (string.IsNullOrEmpty(code))
                 {
                     row.Cells[colCode.Index].ErrorText = "代碼不能為空白";
@@ -271,7 +315,7 @@ namespace K12.Club.Volunteer
                     break;
                 }
 
-                string comment = "" + row.Cells[colComment.Index].Value.ToString();
+                string comment = "" + row.Cells[colComment.Index].Value;
                 if (string.IsNullOrEmpty(code))
                 {
                     row.Cells[colComment.Index].ErrorText = "事由不能為空白";
