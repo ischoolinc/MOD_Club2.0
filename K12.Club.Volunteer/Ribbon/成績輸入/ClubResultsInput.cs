@@ -855,6 +855,15 @@ namespace K12.Club.Volunteer
             {
                 CommentForm form = new CommentForm();
                 form.ShowDialog();
+
+                CommentDic.Clear();
+                foreach (ClubComment each in tool._A.Select<ClubComment>())
+                {
+                    if (!CommentDic.ContainsKey(each.code))
+                    {
+                        CommentDic.Add(each.code, each.Comment);
+                    }
+                }
             }
             else
             {
