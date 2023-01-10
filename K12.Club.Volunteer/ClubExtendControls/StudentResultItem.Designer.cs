@@ -30,13 +30,14 @@
         {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dataGridViewX1 = new DevComponents.DotNetBar.Controls.DataGridViewX();
+            this.labelX1 = new DevComponents.DotNetBar.LabelX();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colComment = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.labelX1 = new DevComponents.DotNetBar.LabelX();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewX1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -50,6 +51,7 @@
             this.Column2,
             this.Column3,
             this.Column4,
+            this.colComment,
             this.Column5,
             this.Column6});
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
@@ -68,6 +70,20 @@
             this.dataGridViewX1.TabIndex = 0;
             this.dataGridViewX1.CurrentCellDirtyStateChanged += new System.EventHandler(this.dataGridViewX1_CurrentCellDirtyStateChanged);
             this.dataGridViewX1.UserDeletedRow += new System.Windows.Forms.DataGridViewRowEventHandler(this.dataGridViewX1_UserDeletedRow);
+            // 
+            // labelX1
+            // 
+            this.labelX1.AutoSize = true;
+            // 
+            // 
+            // 
+            this.labelX1.BackgroundStyle.Class = "";
+            this.labelX1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX1.Location = new System.Drawing.Point(13, 201);
+            this.labelX1.Name = "labelX1";
+            this.labelX1.Size = new System.Drawing.Size(270, 39);
+            this.labelX1.TabIndex = 1;
+            this.labelX1.Text = "*.有顏色的行，是社團結算功能產生之資料。\r\n*.經由社團結算的資料才會有社團評等。";
             // 
             // Column1
             // 
@@ -91,6 +107,11 @@
             this.Column4.HeaderText = "學期成績";
             this.Column4.Name = "Column4";
             // 
+            // colComment
+            // 
+            this.colComment.HeaderText = "評語";
+            this.colComment.Name = "colComment";
+            // 
             // Column5
             // 
             this.Column5.HeaderText = "幹部名稱";
@@ -100,20 +121,6 @@
             // 
             this.Column6.HeaderText = "社團評等";
             this.Column6.Name = "Column6";
-            // 
-            // labelX1
-            // 
-            this.labelX1.AutoSize = true;
-            // 
-            // 
-            // 
-            this.labelX1.BackgroundStyle.Class = "";
-            this.labelX1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX1.Location = new System.Drawing.Point(13, 201);
-            this.labelX1.Name = "labelX1";
-            this.labelX1.Size = new System.Drawing.Size(270, 39);
-            this.labelX1.TabIndex = 1;
-            this.labelX1.Text = "*.有顏色的行，是社團結算功能產生之資料。\r\n*.經由社團結算的資料才會有社團評等。";
             // 
             // StudentResultItem
             // 
@@ -137,6 +144,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colComment;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column5;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column6;
     }

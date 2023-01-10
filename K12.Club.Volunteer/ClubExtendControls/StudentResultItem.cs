@@ -26,6 +26,8 @@ namespace K12.Club.Volunteer
         List<ResultScoreRecord> RSRList = new List<ResultScoreRecord>();
 
         List<ResultScoreRecord> deleteList = new List<ResultScoreRecord>();
+        //評語碼表
+        Dictionary<string, string> CommentDic = new Dictionary<string, string>();
 
         //權限
         internal static FeatureAce UserPermission;
@@ -60,6 +62,16 @@ namespace K12.Club.Volunteer
         {
             //取得學生
             _Studentecord = Student.SelectByID(this.PrimaryKey);
+
+            //取得評語對照表
+            foreach (ClubComment each in tool._A.Select<ClubComment>())
+            {
+                if (!CommentDic.ContainsKey(each.code))
+                {
+                    CommentDic.Add(each.code, each.Comment);
+                }
+            }
+
 
             //取得本名學生的社團成績記錄 string.Format("ref_student_id = '{0}'", this.PrimaryKey)
             RSRList = _AccessHelper.Select<ResultScoreRecord>(string.Format("ref_student_id = '{0}'", this.PrimaryKey));
@@ -124,8 +136,9 @@ namespace K12.Club.Volunteer
                     row.Cells[1].Value = each.Semester.ToString();
                     row.Cells[2].Value = each.ClubName;
                     row.Cells[3].Value = each.ResultScore.HasValue ? each.ResultScore.Value.ToString() : "";
-                    row.Cells[4].Value = each.CadreName;
-                    row.Cells[5].Value = each.ClubLevel;
+                    row.Cells[4].Value = each.Comment;
+                    row.Cells[5].Value = each.CadreName;
+                    row.Cells[6].Value = each.ClubLevel;
                     row.Tag = each;
                 }
                 else
@@ -134,8 +147,9 @@ namespace K12.Club.Volunteer
                     row.Cells[1].Value = each.Semester.ToString();
                     row.Cells[2].Value = each.ClubName;
                     row.Cells[3].Value = each.ResultScore.HasValue ? each.ResultScore.Value.ToString() : "";
-                    row.Cells[4].Value = each.CadreName;
-                    row.Cells[5].Value = each.ClubLevel;
+                    row.Cells[4].Value = each.Comment;
+                    row.Cells[5].Value = each.CadreName;
+                    row.Cells[6].Value = each.ClubLevel;
                     row.Tag = each;
 
                     foreach (DataGridViewCell cell in row.Cells)
@@ -195,7 +209,9 @@ namespace K12.Club.Volunteer
                     {
                         rsr.ResultScore = xy; //成績              
                     }
-                    rsr.CadreName = "" + row.Cells[4].Value; //幹部
+                    rsr.Comment = "" + row.Cells[4].Value; //評語
+                    rsr.CadreName = "" + row.Cells[5].Value; //幹部
+                    rsr.ClubLevel = "" + row.Cells[6].Value; //社團評等
                     InsertList.Add(rsr);
                 }
                 else
@@ -221,8 +237,9 @@ namespace K12.Club.Volunteer
                     {
                         rsr.ResultScore = null;
                     }
-                    rsr.CadreName = "" + row.Cells[4].Value; //幹部
-                    rsr.ClubLevel = "" + row.Cells[5].Value; //社團評等
+                    rsr.Comment = "" + row.Cells[4].Value; //評語
+                    rsr.CadreName = "" + row.Cells[5].Value; //幹部
+                    rsr.ClubLevel = "" + row.Cells[6].Value; //社團評等
                     updateList.Add(rsr);
                 }
 
@@ -365,6 +382,23 @@ namespace K12.Club.Volunteer
                 }
             }
 
+            //如果是評語欄位,則替換代碼
+            if (CurrentCell.ColumnIndex == colComment.Index)
+            {
+                //以逗號","分割為多組字串
+                string cellValue = "" + CurrentCell.Value;
+                List<string> nameList = cellValue.Split(',').ToList();
+                //變更後的內容
+                List<string> changeValue = new List<string>();
+                foreach (string each in nameList)
+                {
+                    if (CommentDic.ContainsKey(each))
+                        changeValue.Add(CommentDic[each]);
+                    else
+                        changeValue.Add(each);
+                }
+                CurrentCell.Value = string.Join(",", changeValue);
+            }
 
 
         }

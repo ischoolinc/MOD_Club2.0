@@ -334,6 +334,10 @@ WITH data_row AS(
                                 }
                                 #endregion
 
+                                #region 評語
+                                update_rsr.Comment = scj.Comment;
+                                #endregion
+
                                 UPDateScoreList.Add(update_rsr);
                             }
                         }
@@ -380,17 +384,25 @@ WITH data_row AS(
                 {
                     if (tool._StudentDic.ContainsKey(each.RefStudentID))
                     {
-                        if (string.IsNullOrEmpty(each.CadreName))
+                        StudentRecord sr = tool._StudentDic[each.RefStudentID];
+                        string de = each.ResultScore.HasValue ? each.ResultScore.Value.ToString() : "";
+
+                        // 只有社團成績
+                        if (string.IsNullOrEmpty(each.CadreName) && string.IsNullOrEmpty(each.Comment))
                         {
-                            StudentRecord sr = tool._StudentDic[each.RefStudentID];
-                            string de = each.ResultScore.HasValue ? each.ResultScore.Value.ToString() : "";
                             _sbLog.AppendLine(string.Format("學生新增「{0}」社團成績「{1}」", sr.Name, de));
+                        }
+                        else if (!string.IsNullOrEmpty(each.CadreName) && string.IsNullOrEmpty(each.Comment))
+                        {
+                            _sbLog.AppendLine(string.Format("學生新增「{0}」社團成績「{1}」幹部記錄「{2}」", sr.Name, de, each.CadreName));
+                        }
+                        else if (string.IsNullOrEmpty(each.CadreName) && !string.IsNullOrEmpty(each.Comment))
+                        {
+                            _sbLog.AppendLine(string.Format("學生新增「{0}」社團成績「{1}」社團評語「{2}」", sr.Name, de, each.Comment));
                         }
                         else
                         {
-                            StudentRecord sr = tool._StudentDic[each.RefStudentID];
-                            string de = each.ResultScore.HasValue ? each.ResultScore.Value.ToString() : "";
-                            _sbLog.AppendLine(string.Format("學生新增「{0}」社團成績「{1}」幹部記錄「{2}」", sr.Name, de, each.CadreName));
+                            _sbLog.AppendLine(string.Format("學生新增「{0}」社團成績「{1}」幹部記錄「{2}」社團評語「{3}」", sr.Name, de, each.CadreName, each.Comment));
                         }
                     }
                 }
@@ -403,17 +415,24 @@ WITH data_row AS(
                 {
                     if (tool._StudentDic.ContainsKey(each.RefStudentID))
                     {
-                        if (string.IsNullOrEmpty(each.CadreName))
+                        StudentRecord sr = tool._StudentDic[each.RefStudentID];
+                        string de = each.ResultScore.HasValue ? each.ResultScore.Value.ToString() : "";
+
+                        if (string.IsNullOrEmpty(each.CadreName) && string.IsNullOrEmpty(each.Comment))
                         {
-                            StudentRecord sr = tool._StudentDic[each.RefStudentID];
-                            string de = each.ResultScore.HasValue ? each.ResultScore.Value.ToString() : "";
-                            _sbLog.AppendLine(string.Format("學生更新「{0}」社團成績「{1}」", sr.Name, de));
+                            _sbLog.AppendLine(string.Format("學生 更新「{0}」社團成績「{1}」", sr.Name, de));
+                        }
+                        else if (!string.IsNullOrEmpty(each.CadreName) && string.IsNullOrEmpty(each.Comment))
+                        {
+                            _sbLog.AppendLine(string.Format("學生 更新「{0}」社團成績「{1}」幹部記錄「{2}」", sr.Name, de, each.CadreName));
+                        }
+                        else if (string.IsNullOrEmpty(each.CadreName) && !string.IsNullOrEmpty(each.Comment))
+                        {
+                            _sbLog.AppendLine(string.Format("學生 更新「{0}」社團成績「{1}」社團評語「{2}」", sr.Name, de, each.Comment));
                         }
                         else
                         {
-                            StudentRecord sr = tool._StudentDic[each.RefStudentID];
-                            string de = each.ResultScore.HasValue ? each.ResultScore.Value.ToString() : "";
-                            _sbLog.AppendLine(string.Format("學生更新「{0}」社團成績「{1}」幹部記錄「{2}」", sr.Name, de, each.CadreName));
+                            _sbLog.AppendLine(string.Format("學生 更新「{0}」社團成績「{1}」幹部記錄「{2}」社團評語「{3}」", sr.Name, de, each.CadreName, each.Comment));
                         }
                     }
 
