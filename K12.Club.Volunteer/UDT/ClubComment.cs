@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace K12.Club.Volunteer
 {
+    /// <summary>
+    /// 評語代碼表
+    /// </summary>
     [TableName("K12.ClubComment.Universal")]
     class ClubComment : ActiveRecord
     {
@@ -17,7 +20,7 @@ namespace K12.Club.Volunteer
         public string code { get; set; }
 
         /// <summary>
-        /// 代碼
+        /// 內容
         /// </summary>
         [Field(Field = "comment", Indexed = true)]
         public string Comment { get; set; }
