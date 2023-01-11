@@ -29,6 +29,7 @@
 		  <Validate AutoCorrect="False" Description="「學期成績」不允許空白。" ErrorType="Error" Validator="不可空白" When=""/>
 		  <Validate AutoCorrect="False" Description="「學期成績」必須是數字。" ErrorType="Error" Validator="Integer極限" When=""/>
     </Field>
+    <Field Required="False" Name="評語" EmptyAlsoValidate="False" Description="" />
     <Field Required="False" Name="幹部名稱" EmptyAlsoValidate="False" Description="" />
     <Field Required="False" Name="社團評等" EmptyAlsoValidate="False" Description="社團評等" />
   </FieldList>

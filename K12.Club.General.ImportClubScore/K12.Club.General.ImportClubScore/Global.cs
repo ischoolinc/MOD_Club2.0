@@ -45,7 +45,12 @@ namespace K12.Club.General.ImportClubScore
         /// 社團評等
         /// </summary>
         public static readonly string _ColClubLevel = "社團評等";
-        
+
+        /// <summary>
+        /// 評語
+        /// </summary>
+        public static readonly string _ColComment = "評語";
+
         #endregion
 
         /// <summary>

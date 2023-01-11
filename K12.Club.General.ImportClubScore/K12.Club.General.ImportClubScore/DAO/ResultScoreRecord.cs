@@ -63,5 +63,10 @@ namespace K12.Club.General.ImportClubScore.DAO
         [Field(Field = "club_level", Indexed = false)]
         public string ClubLevel { get; set; }
 
+        /// <summary>
+        /// 社團評語 - 2022/5/8(星期日)
+        /// </summary>
+        [Field(Field = "comment", Indexed = false)]
+        public string Comment { get; set; }
     }
 }

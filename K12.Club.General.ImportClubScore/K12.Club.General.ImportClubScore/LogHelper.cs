@@ -73,6 +73,8 @@ namespace K12.Club.General.ImportClubScore
             }
 
             sb.Append(Global._ColCadreName).Append("「").Append(rec.CadreName).Append("」");
+            // 評語
+            sb.Append(Global._ColComment).Append("「").Append(rec.Comment).Append("」");
             sb.Append(Global.NewLine);
 
             return sb.ToString();
@@ -92,6 +94,8 @@ namespace K12.Club.General.ImportClubScore
             sb.Append(Global._ColScholYear).Append("「").Append(pair._NewRec.SchoolYear).Append("」");
             sb.Append(Global._ColSemester).Append("「").Append(pair._NewRec.Semester).Append("」");
             sb.Append(Global._ColClubName).Append("「").Append(pair._NewRec.ClubName).Append("」");
+            //評語
+            sb.Append(Global._ColComment).Append("「").Append(pair._NewRec.Comment).Append("」");
             sb.Append(Global.NewLine);
 
             sb.Append(Global._ColStudentNumber).Append("「").Append(studentNumber).Append("」");
@@ -103,7 +107,11 @@ namespace K12.Club.General.ImportClubScore
 
             if (pair._OldRec.CadreName != pair._NewRec.CadreName)
                 sb.AppendLine(ByOne(Global._ColCadreName, pair._OldRec.CadreName, pair._NewRec.CadreName));
-            
+
+            // 評語
+            if (pair._OldRec.Comment != pair._NewRec.Comment)
+                sb.AppendLine(ByOne(Global._ColComment, pair._OldRec.Comment, pair._NewRec.Comment));
+
             return sb.ToString();
             
         }

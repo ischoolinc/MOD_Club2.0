@@ -124,6 +124,7 @@ namespace K12.Club.General.ImportClubScore
             newRec.ResultScore = rec.ResultScore;
             newRec.SchoolYear = rec.SchoolYear;
             newRec.Semester = rec.Semester;
+            newRec.Comment = rec.Comment;
             // newRec.UID = rec.UID;
 
             return newRec;
