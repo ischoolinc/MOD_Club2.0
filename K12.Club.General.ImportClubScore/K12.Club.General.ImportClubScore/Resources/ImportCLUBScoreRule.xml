@@ -25,8 +25,7 @@
     <Field Required="True" Name="社團名稱" Description="學號/學年度/學期/社團名稱為鍵值必填">
 		  <Validate AutoCorrect="False" Description="「社團名稱」不允許空白。" ErrorType="Error" Validator="不可空白" When=""/>
     </Field>
-    <Field Required="False" Name="學期成績" Description="請輸入數字">
-		  <Validate AutoCorrect="False" Description="「學期成績」不允許空白。" ErrorType="Error" Validator="不可空白" When=""/>
+    <Field Required="False" Name="學期成績" EmptyAlsoValidate="False" Description="請輸入數字">		  
 		  <Validate AutoCorrect="False" Description="「學期成績」必須是數字。" ErrorType="Error" Validator="Integer極限" When=""/>
     </Field>
     <Field Required="False" Name="評語" EmptyAlsoValidate="False" Description="" />
