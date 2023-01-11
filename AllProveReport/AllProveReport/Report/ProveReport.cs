@@ -422,6 +422,15 @@ namespace AllProveReport.Report
                             list.Add(obj.ResultScore.HasValue ? obj.ResultScore.Value.ToString() : ""); //社團學期成績
                         }
 
+                        // 當樣板使用顯示成績樣板，但是畫面有勾不顯示成績，需要補一格
+                        if (顯示成績 == "False" && row.Cells.Count == 7)
+                        {
+                            list.Add("");
+                        }
+
+                        // 評語
+                        list.Add(obj.Comment);
+
                         foreach (string listEach in list)
                         {
                             Write(cell, listEach);
