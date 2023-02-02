@@ -37,10 +37,6 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Aspose.Cells">
-      <HintPath>..\..\..\..\..\..\..\..\ischool desktop\modules\Campus\Aspose.Cells.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="Campus.DocumentValidator">
       <HintPath>..\..\..\..\..\..\..\..\ischool desktop\modules\Campus\Campus.DocumentValidator.dll</HintPath>
       <Private>False</Private>
