@@ -43,7 +43,6 @@
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.檢視學生選填明細ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.labelX1 = new DevComponents.DotNetBar.LabelX();
-            this.labelX2 = new DevComponents.DotNetBar.LabelX();
             this.labelX3 = new DevComponents.DotNetBar.LabelX();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -53,6 +52,7 @@
             this.dataGridViewTextBoxColumn6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.btnSendClubAll = new DevComponents.DotNetBar.ButtonX();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewX1)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -63,7 +63,7 @@
             this.btnRunStart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnRunStart.BackColor = System.Drawing.Color.Transparent;
             this.btnRunStart.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnRunStart.Location = new System.Drawing.Point(477, 491);
+            this.btnRunStart.Location = new System.Drawing.Point(474, 491);
             this.btnRunStart.Name = "btnRunStart";
             this.btnRunStart.Size = new System.Drawing.Size(143, 25);
             this.btnRunStart.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -194,6 +194,7 @@
             // labelX1
             // 
             this.labelX1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.labelX1.AutoSize = true;
             this.labelX1.BackColor = System.Drawing.Color.Transparent;
             // 
             // 
@@ -202,25 +203,9 @@
             this.labelX1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX1.Location = new System.Drawing.Point(12, 479);
             this.labelX1.Name = "labelX1";
-            this.labelX1.Size = new System.Drawing.Size(304, 48);
+            this.labelX1.Size = new System.Drawing.Size(230, 39);
             this.labelX1.TabIndex = 3;
-            this.labelX1.Text = "說明：(*)滑鼠右鍵可檢視學生選填明細與狀況  \r\n　　　(*)分配社團志願請選擇班級後開始       ";
-            // 
-            // labelX2
-            // 
-            this.labelX2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelX2.AutoSize = true;
-            this.labelX2.BackColor = System.Drawing.Color.Transparent;
-            // 
-            // 
-            // 
-            this.labelX2.BackgroundStyle.Class = "";
-            this.labelX2.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX2.Location = new System.Drawing.Point(372, 493);
-            this.labelX2.Name = "labelX2";
-            this.labelX2.Size = new System.Drawing.Size(82, 21);
-            this.labelX2.TabIndex = 4;
-            this.labelX2.Text = "選擇班級：0";
+            this.labelX1.Text = "*.滑鼠右鍵可檢視學生選填明細與狀況  \r\n*.分配社團志願請選擇班級後開始       ";
             // 
             // labelX3
             // 
@@ -297,14 +282,28 @@
             this.dataGridViewTextBoxColumn8.Name = "dataGridViewTextBoxColumn8";
             this.dataGridViewTextBoxColumn8.Width = 110;
             // 
+            // btnSendClubAll
+            // 
+            this.btnSendClubAll.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
+            this.btnSendClubAll.BackColor = System.Drawing.Color.Transparent;
+            this.btnSendClubAll.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
+            this.btnSendClubAll.ForeColor = System.Drawing.Color.Red;
+            this.btnSendClubAll.Location = new System.Drawing.Point(322, 491);
+            this.btnSendClubAll.Name = "btnSendClubAll";
+            this.btnSendClubAll.Size = new System.Drawing.Size(145, 25);
+            this.btnSendClubAll.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
+            this.btnSendClubAll.TabIndex = 6;
+            this.btnSendClubAll.Text = "入選社團通知";
+            this.btnSendClubAll.Click += new System.EventHandler(this.btnSendClubAll_Click);
+            // 
             // VolunteerClassForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(713, 527);
+            this.Controls.Add(this.btnSendClubAll);
             this.Controls.Add(this.labelX3);
             this.Controls.Add(this.btnExit);
-            this.Controls.Add(this.labelX2);
             this.Controls.Add(this.labelX1);
             this.Controls.Add(this.dataGridViewX1);
             this.Controls.Add(this.btnRunStart);
@@ -343,7 +342,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colLock;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn8;
         private DevComponents.DotNetBar.LabelX labelX1;
-        private DevComponents.DotNetBar.LabelX labelX2;
         private DevComponents.DotNetBar.LabelX labelX3;
+        private DevComponents.DotNetBar.ButtonX btnSendClubAll;
     }
 }

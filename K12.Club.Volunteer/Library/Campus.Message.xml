@@ -1,0 +1,366 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Campus.Message</name>
+    </assembly>
+    <members>
+        <member name="T:Campus.Message.AlertCustom">
+            <summary>
+            Summary description for AlertCustom.
+            </summary>
+        </member>
+        <member name="F:Campus.Message.AlertCustom.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="F:Campus.Message.AlertCustom.timer">
+            <summary>
+            計數器
+            </summary>
+        </member>
+        <member name="P:Campus.Message.AlertCustom.timer_End">
+            <summary>
+            到數時間
+            </summary>
+        </member>
+        <member name="P:Campus.Message.AlertCustom.IsShow">
+            <summary>
+            是否已經顯示於畫面上
+            </summary>
+        </member>
+        <member name="M:Campus.Message.AlertCustom.#ctor(System.Collections.Generic.List{Campus.Message.CustomRecord})">
+            <summary>
+            傳入CustomRecord 的 List,以建立訊息清單畫面
+            </summary>
+            <param name="CustList">訊息清單</param>
+            <param name="CloseTimeOut">畫面關閉單位為每秒</param>
+        </member>
+        <member name="M:Campus.Message.AlertCustom.AddMessage(Campus.Message.CustomRecord)">
+            <summary>
+            加入一個新訊息
+            </summary>
+        </member>
+        <member name="M:Campus.Message.AlertCustom.ShowMessage(System.Int32)">
+            <summary>
+            顯示畫面,並且開始計數
+            </summary>
+            <param name="CloseTimeOut"></param>
+        </member>
+        <member name="M:Campus.Message.AlertCustom.ReSize">
+            <summary>
+            重置畫面大小
+            </summary>
+        </member>
+        <member name="M:Campus.Message.AlertCustom.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+        </member>
+        <member name="M:Campus.Message.AlertCustom.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="T:Campus.Message.CrType.Type">
+            <summary>
+            最新消息 / 公告 / 訊息 / 預警 / 錯誤
+            </summary>
+        </member>
+        <member name="T:Campus.Message.CustomRecord">
+            <summary>
+            訊息物件
+            </summary>
+        </member>
+        <member name="P:Campus.Message.CustomRecord.Type">
+            <summary>
+            此訊息是 最新消息 還是 預警內容
+            </summary>
+        </member>
+        <member name="P:Campus.Message.CustomRecord.Title">
+            <summary>
+            訊息標題
+            </summary>
+        </member>
+        <member name="P:Campus.Message.CustomRecord.Content">
+            <summary>
+            訊息內容
+            </summary>
+        </member>
+        <member name="P:Campus.Message.CustomRecord.OtherMore">
+            <summary>
+            訊息所帶有的更多內容
+            </summary>
+        </member>
+        <member name="T:Campus.Message.MessageRobot">
+            <summary>
+            系統載入後,統一顯示的訊息內容
+            </summary>
+        </member>
+        <member name="M:Campus.Message.MessageRobot.AddMessage(Campus.Message.CustomRecord)">
+            <summary>
+            於系統載入時使用
+            加入訊息顯示
+            </summary>
+        </member>
+        <member name="P:Campus.Message.MessageRobot.IsShow">
+            <summary>
+            最新消息視窗是否已顯示
+            </summary>
+        </member>
+        <member name="M:Campus.Message.MessageRobot.ShowMessage(Campus.Message.CustomRecord)">
+            <summary>
+            顯示訊息內容
+            </summary>
+        </member>
+        <member name="T:Campus.Message.UserControl1">
+            <summary>
+            一個訊息畫面
+            </summary>
+        </member>
+        <member name="M:Campus.Message.UserControl1.#ctor(Campus.Message.CustomRecord)">
+            <summary>
+            顯示一個訊息
+            </summary>
+        </member>
+        <member name="M:Campus.Message.UserControl1.SetImage(Campus.Message.CustomRecord)">
+            <summary>
+            設定本訊息的畫面圖樣
+            </summary>
+        </member>
+        <member name="F:Campus.Message.UserControl1.components">
+            <summary> 
+            設計工具所需的變數。
+            </summary>
+        </member>
+        <member name="M:Campus.Message.UserControl1.Dispose(System.Boolean)">
+            <summary> 
+            清除任何使用中的資源。
+            </summary>
+            <param name="disposing">如果應該處置 Managed 資源則為 true，否則為 false。</param>
+        </member>
+        <member name="M:Campus.Message.UserControl1.InitializeComponent">
+            <summary> 
+            此為設計工具支援所需的方法 - 請勿使用程式碼編輯器
+            修改這個方法的內容。
+            </summary>
+        </member>
+        <member name="P:Campus.Message.KeyBoStudent.SA_login_name">
+            <summary>
+            登入帳號
+            </summary>
+        </member>
+        <member name="P:Campus.Message.KeyBoStudent.Name">
+            <summary>
+            姓名
+            </summary>
+        </member>
+        <member name="P:Campus.Message.KeyBoStudent.ID">
+            <summary>
+            學生系統編號
+            </summary>
+        </member>
+        <member name="P:Campus.Message.KeyBoStudent.StudentNumber">
+            <summary>
+            學號
+            </summary>
+        </member>
+        <member name="P:Campus.Message.KeyBoStudent.SeatNo">
+            <summary>
+            座號
+            </summary>
+        </member>
+        <member name="P:Campus.Message.KeyBoStudent.ClassID">
+            <summary>
+            班級系統編號
+            </summary>
+        </member>
+        <member name="P:Campus.Message.KeyBoStudent.ClassName">
+            <summary>
+            班級名稱
+            </summary>
+        </member>
+        <member name="P:Campus.Message.KeyBoTeacher.ID">
+            <summary>
+            系統編號
+            </summary>
+        </member>
+        <member name="P:Campus.Message.KeyBoTeacher.TeacherName">
+            <summary>
+            教師姓名
+            </summary>
+        </member>
+        <member name="P:Campus.Message.KeyBoTeacher.NickName">
+            <summary>
+            暱稱
+            </summary>
+        </member>
+        <member name="P:Campus.Message.KeyBoTeacher.STLoginName">
+            <summary>
+            登入帳號
+            </summary>
+        </member>
+        <member name="P:Campus.Message.MessageForm._DisplaySender">
+            <summary>
+            發送者
+            </summary>
+        </member>
+        <member name="P:Campus.Message.MessageForm._Title">
+            <summary>
+            標題
+            </summary>
+        </member>
+        <member name="P:Campus.Message.MessageForm._Message">
+            <summary>
+            內容
+            </summary>
+        </member>
+        <member name="F:Campus.Message.MessageForm.SendMode">
+            <summary>
+            發送模式
+            </summary>
+        </member>
+        <member name="M:Campus.Message.MessageForm.#ctor(System.Collections.Generic.List{System.String},Campus.Message.SendMessage.UserType,System.String)">
+            <summary>
+            以代碼進行發送
+            可不定義 發送者/標題/內容
+            </summary>
+            <param name="tagIDList"> 傳送對象</param>
+            <param name="Type">傳送類型(影響顯示欄位)</param>
+            <param name="Code">可定義一個不重複的代碼</param>
+        </member>
+        <member name="M:Campus.Message.MessageForm.#ctor(System.Collections.Generic.List{System.String},Campus.Message.SendMessage.UserType,System.String,System.String,System.String)">
+            <summary>
+            自訂發送者/標題/內容
+            </summary>
+            <param name="tagIDList">傳送對象</param>
+            <param name="Type">傳送類型</param>
+            <param name="DisplaySender">發送者</param>
+            <param name="Title">標題</param>
+            <param name="Message">內容</param>
+        </member>
+        <member name="F:Campus.Message.MessageForm.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:Campus.Message.MessageForm.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:Campus.Message.MessageForm.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="T:Campus.Message.SendMessage">
+            <summary>
+            傳送推播
+            </summary>
+        </member>
+        <member name="F:Campus.Message.SendMessage.SendNow">
+            <summary>
+            確認可以發送
+            </summary>
+        </member>
+        <member name="T:Campus.Message.SendMessage.UserType">
+            <summary>
+            類型(老師,學生,家長,家長與學生)
+            </summary>
+        </member>
+        <member name="F:Campus.Message.SendMessage.UserType.Teacher">
+            <summary>
+            老師
+            </summary>
+        </member>
+        <member name="F:Campus.Message.SendMessage.UserType.Student">
+            <summary>
+            學生
+            </summary>
+        </member>
+        <member name="F:Campus.Message.SendMessage.UserType.Parent">
+            <summary>
+            家長
+            </summary>
+        </member>
+        <member name="F:Campus.Message.SendMessage.UserType.StudentAndParent">
+            <summary>
+            家長與學生
+            </summary>
+        </member>
+        <member name="M:Campus.Message.SendMessage.#ctor(System.Collections.Generic.List{System.String},Campus.Message.SendMessage.UserType,System.String)">
+            <summary>
+            傳送推播通知
+            </summary>
+            <param name="tagIDList">對象ID</param>
+            <param name="type">推播類型</param>
+             <param name="code">發送代碼</param>
+        </member>
+        <member name="M:Campus.Message.SendMessage.#ctor(System.Collections.Generic.List{System.String},Campus.Message.SendMessage.UserType,System.String,System.String,System.String)">
+            <summary>
+            傳送推播通知
+            </summary>
+            <param name="tagIDList">對象ID</param>
+            <param name="type">推播類型</param>
+             <param name="display_sender">發送單位</param>
+            <param name="title">推播標題</param>
+            <param name="message">訊息內容</param>
+        </member>
+        <member name="M:Campus.Message.SendMessage.Run">
+            <summary>
+            開始傳送
+            </summary>
+        </member>
+        <member name="M:Campus.Message.SendMessage.BatchPushNotice">
+            <summary>
+            發送推播
+            </summary>
+            <returns>發生錯誤則回傳錯誤,如果沒發送成功則Null</returns>
+        </member>
+        <member name="T:Campus.Message.Properties.Resources">
+            <summary>
+              用於查詢當地語系化字串等的強類型資源類別。
+            </summary>
+        </member>
+        <member name="P:Campus.Message.Properties.Resources.ResourceManager">
+            <summary>
+              傳回這個類別使用的快取的 ResourceManager 執行個體。
+            </summary>
+        </member>
+        <member name="P:Campus.Message.Properties.Resources.Culture">
+            <summary>
+              覆寫目前執行緒的 CurrentUICulture 屬性，對象是所有
+              使用這個強類型資源類別的資源查閱。
+            </summary>
+        </member>
+        <member name="P:Campus.Message.Properties.Resources.delete_64">
+            <summary>
+              查詢類型 System.Drawing.Bitmap 的當地語系化資源。
+            </summary>
+        </member>
+        <member name="P:Campus.Message.Properties.Resources.info_64">
+            <summary>
+              查詢類型 System.Drawing.Bitmap 的當地語系化資源。
+            </summary>
+        </member>
+        <member name="P:Campus.Message.Properties.Resources.info_64_2">
+            <summary>
+              查詢類型 System.Drawing.Bitmap 的當地語系化資源。
+            </summary>
+        </member>
+        <member name="P:Campus.Message.Properties.Resources.speech_balloon_64">
+            <summary>
+              查詢類型 System.Drawing.Bitmap 的當地語系化資源。
+            </summary>
+        </member>
+        <member name="P:Campus.Message.Properties.Resources.star_64">
+            <summary>
+              查詢類型 System.Drawing.Bitmap 的當地語系化資源。
+            </summary>
+        </member>
+    </members>
+</doc>

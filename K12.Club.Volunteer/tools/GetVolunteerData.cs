@@ -156,7 +156,8 @@ namespace K12.Club.Volunteer
         {
             List<一名學生> StudentList = new List<一名學生>();
             StringBuilder sb = new StringBuilder();
-            sb.Append("select student.id as student_id,student.status,student.name as student_name,student.seat_no,student.gender,");
+            sb.Append("select student.id as student_id,student.status,student.name as student_name,");
+            sb.Append("student.seat_no,student.gender,student.student_number,");
             sb.Append("class.id as class_id,class.class_name,class.grade_year,class.display_order,");
             sb.Append("teacher.id as teacher_id,teacher.teacher_name,teacher.nickname,");
             sb.Append("dept.name as dept_name ");

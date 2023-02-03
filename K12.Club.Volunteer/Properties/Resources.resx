@@ -223,4 +223,10 @@
   <data name="社團點名單_範本" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\社團點名單_範本.xlsx;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="社團選社結果通知_功能變數總表" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\社團選社結果通知_功能變數總表.docx;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="社團選社結果通知範本" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\社團選社結果通知範本.docx;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>

@@ -428,6 +428,26 @@ namespace K12.Club.Volunteer.Properties {
         /// <summary>
         ///   查詢類型 System.Byte[] 的當地語系化資源。
         /// </summary>
+        internal static byte[] 社團選社結果通知_功能變數總表 {
+            get {
+                object obj = ResourceManager.GetObject("社團選社結果通知_功能變數總表", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類型 System.Byte[] 的當地語系化資源。
+        /// </summary>
+        internal static byte[] 社團選社結果通知範本 {
+            get {
+                object obj = ResourceManager.GetObject("社團選社結果通知範本", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類型 System.Byte[] 的當地語系化資源。
+        /// </summary>
         internal static byte[] 社團點名單_套表列印1 {
             get {
                 object obj = ResourceManager.GetObject("社團點名單_套表列印1", resourceCulture);

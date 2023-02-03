@@ -38,12 +38,18 @@ namespace K12.Club.Volunteer
         Dictionary<string, SCJoin> SCJLockDic { get; set; }
 
         Dictionary<string, CLUBRecord> CLUBDic { get; set; }
-
+        Dictionary<string, VolunteerRecord> VolDic { get; set; }
         Dictionary<string, 一個社團檢查> CLUBCheckDic { get; set; }
 
         List<SCJoin> DeleteList = new List<SCJoin>();
         List<SCJoin> InsertList1 = new List<SCJoin>();
         List<SCJoin> InsertList2 = new List<SCJoin>();
+
+        //人為設定選社學年
+        string seting_school_year = "";
+
+        //人為設定選社學期
+        string seting_school_semester = "";
 
         StringBuilder sb_Log;
 
@@ -52,6 +58,21 @@ namespace K12.Club.Volunteer
         public VolunteerClassForm()
         {
             InitializeComponent();
+        }
+
+        public bool SetForm
+        {
+            set
+            {
+                if (value)
+                    this.Text = "志願分配作業";
+                else
+                    this.Text = "志願分配作業(作業中)";
+
+                dataGridViewX1.Enabled = value;
+                btnRunStart.Enabled = value;
+                btnSendClubAll.Enabled = value;
+            }
         }
 
         private void VolunteerClassForm_Load(object sender, EventArgs e)
@@ -66,19 +87,13 @@ namespace K12.Club.Volunteer
             BGW_Save.DoWork += new DoWorkEventHandler(BGW_Save_DoWork);
             BGW_Save.WorkerReportsProgress = true;
 
-            btnRunStart.Enabled = false;
+            SetForm = false;
 
             #region 因應需要支援跨學期選社，在這邊做檢查，防止使用者沒有設定 選社學年、學期
             AccessHelper _AccessHelper = new AccessHelper();
             List<UDT.OpenSchoolYearSemester> opensemester = new List<UDT.OpenSchoolYearSemester>();
 
             opensemester = _AccessHelper.Select<UDT.OpenSchoolYearSemester>();
-
-            //人為設定選社學年
-            string seting_school_year = "";
-
-            //人為設定選社學期
-            string seting_school_semester = "";
 
             //填入之前的紀錄
             if (opensemester.Count > 0)
@@ -87,7 +102,6 @@ namespace K12.Club.Volunteer
                 seting_school_semester = opensemester[0].Semester;
 
                 labelX3.Text = string.Format("選社學年度  {0}學年度　第{1}學期", seting_school_year, seting_school_semester);
-                this.Text = "社團志願分配(資料取得中)";
                 BGW.RunWorkerAsync();
             }
             else
@@ -96,8 +110,8 @@ namespace K12.Club.Volunteer
 
                 this.Close();
                 return;
-            }  
-            #endregion           
+            }
+            #endregion
         }
 
         void BGW_DoWork(object sender, DoWorkEventArgs e)
@@ -116,7 +130,7 @@ namespace K12.Club.Volunteer
 
             //取得學生選社物件
             BGW.ReportProgress(35, "取得學生志願資料...");
-            Dictionary<string, VolunteerRecord> VolDic = GetVolunteerData.GetVolunteerDic();
+            VolDic = GetVolunteerData.GetVolunteerDic();
 
             //本學年度學期的社團清單
             BGW.ReportProgress(45, "取得本期社團資料...");
@@ -209,8 +223,7 @@ namespace K12.Club.Volunteer
 
         void BGW_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            btnRunStart.Enabled = true;
-            btnExit.Enabled = true;
+            SetForm = true;
             this.Text = "社團志願分配";
             if (e.Error == null)
             {
@@ -239,11 +252,8 @@ namespace K12.Club.Volunteer
             if (!BGW_Save.IsBusy)
             {
                 sb_Log = new StringBuilder();
-                btnRunStart.Enabled = false;
-                btnExit.Enabled = false;
-                btnRunStart.Text = "開始分配(執行中)";
+                SetForm = false;
                 BGW_Save.RunWorkerAsync();
-                Is社團已分配 = true;
             }
             else
             {
@@ -935,7 +945,9 @@ namespace K12.Club.Volunteer
             {
                 if (e.Error == null)
                 {
-                    this.Text = "社團志願分配(畫面資料更新中)";
+                    SetForm = true;
+                    Is社團已分配 = true;
+
                     btnRunStart.Text = "開始分配(已完成)";
                     BGW.RunWorkerAsync();
                     MsgBox.Show("志願分配作業,已完成!!");
@@ -1065,12 +1077,42 @@ namespace K12.Club.Volunteer
 
         private void dataGridViewX1_SelectionChanged(object sender, EventArgs e)
         {
-            labelX2.Text = string.Format("選擇：{0}", "" + dataGridViewX1.SelectedRows.Count);
+            btnRunStart.Text = string.Format("開始分配({0})", +dataGridViewX1.SelectedRows.Count);
+            btnSendClubAll.Text = string.Format("入選社團電子報表({0})", +dataGridViewX1.SelectedRows.Count);
         }
 
         private void exportBtn_Click(object sender, EventArgs e)
         {
             Workbook template = new Workbook();
+        }
+
+        private void btnSendClubAll_Click(object sender, EventArgs e)
+        {
+            StringBuilder sb_tipc = new StringBuilder();
+            sb_tipc.AppendLine("本功能將會對所選「{0}」個班級中");
+            sb_tipc.AppendLine("有成功加入社團之學生");
+            sb_tipc.AppendLine("發送「入選社團」結果電子報表");
+
+            DialogResult dr = MsgBox.Show(string.Format(sb_tipc.ToString(), dataGridViewX1.SelectedRows.Count), MessageBoxButtons.YesNo, MessageBoxDefaultButton.Button2);
+            if (dr == DialogResult.Yes)
+            {
+
+                List<社團志願分配的Row> ClasssList = new List<社團志願分配的Row>();
+                foreach (DataGridViewRow row in dataGridViewX1.SelectedRows)
+                {
+                    if (row.DataBoundItem is 社團志願分配的Row)
+                    {
+                        社團志願分配的Row each = (社團志願分配的Row)row.DataBoundItem;
+                        ClasssList.Add(each);
+                    }
+                }
+
+                //電子報表介面
+                ReportTeacherForm rtForm = new ReportTeacherForm(ClasssList, seting_school_year, seting_school_semester, By_V);
+                rtForm.ShowDialog();
+
+
+            }
         }
     }
 }

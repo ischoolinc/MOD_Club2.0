@@ -62,6 +62,11 @@
       <HintPath>Library\Campus.DocumentValidator.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Campus.ePaperCloud, Version=1.0.0.8, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Library\Campus.ePaperCloud.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Campus.Import2014, Version=1.0.9.1, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Library\Campus.Import2014.dll</HintPath>
@@ -70,6 +75,11 @@
     <Reference Include="Campus.IRewrite.Interface, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Library\Campus.IRewrite.Interface.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Campus.Message, Version=1.0.0.15, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Library\Campus.Message.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Campus.Report2014, Version=1.0.0.3, Culture=neutral, processorArchitecture=MSIL">
@@ -354,6 +364,12 @@
     <Compile Include="Ribbon\Import\ValidationRule\CheckStudentNumberInIschool.cs" />
     <Compile Include="Ribbon\志願_其它功能\GetVolunteer.cs" />
     <Compile Include="Ribbon\志願_其它功能\StudentMergeClub.cs" />
+    <Compile Include="Ribbon\志願_選填狀況檢查\ReportTeacherForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ribbon\志願_選填狀況檢查\ReportTeacherForm.designer.cs">
+      <DependentUpon>ReportTeacherForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Ribbon\志願_選填狀況檢查\VolunteerLog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -600,6 +616,9 @@
     <EmbeddedResource Include="Ribbon\ImportToCourse\frmImportToCourse.resx">
       <DependentUpon>frmImportToCourse.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Ribbon\志願_選填狀況檢查\ReportTeacherForm.resx">
+      <DependentUpon>ReportTeacherForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Ribbon\志願_選填狀況檢查\VolunteerClassForm.resx">
       <DependentUpon>VolunteerClassForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -672,12 +691,17 @@
     <Content Include="Library\Campus.DocumentValidator.dll" />
     <Content Include="Library\Campus.DocumentValidator.pdb" />
     <Content Include="Library\Campus.DocumentValidator.xml" />
+    <Content Include="Library\Campus.ePaperCloud.dll" />
+    <Content Include="Library\Campus.ePaperCloud.pdb" />
     <Content Include="Library\Campus.Import.pdb" />
     <Content Include="Library\Campus.Import.xml" />
     <Content Include="Library\Campus.Import2014.dll" />
     <Content Include="Library\Campus.Import2014.pdb" />
     <Content Include="Library\Campus.IRewrite.Interface.dll" />
     <Content Include="Library\Campus.IRewrite.Interface.pdb" />
+    <Content Include="Library\Campus.Message.dll" />
+    <Content Include="Library\Campus.Message.pdb" />
+    <Content Include="Library\Campus.Message.xml" />
     <Content Include="Library\Campus.Report2014.dll" />
     <Content Include="Library\Campus.Report2014.pdb" />
     <Content Include="Library\Campus.Validator2014.dll" />
@@ -753,6 +777,8 @@
     <None Include="Resources\匯出選社結果_範本.xlsx" />
     <None Include="Resources\班級社團成績單_範本.xlsx" />
     <None Include="Resources\社團成績單_範本.xlsx" />
+    <None Include="Resources\社團選社結果通知_功能變數總表.docx" />
+    <None Include="Resources\社團選社結果通知範本.docx" />
     <None Include="Resources\社團點名單_套表列印.docx" />
     <None Include="Resources\社團點名單_範本.xlsx" />
     <None Include="Resources\社團點名表_合併欄位總表.docx" />

@@ -12,6 +12,7 @@ namespace K12.Club.Volunteer
         public string student_id { get; set; }
         public string status { get; set; }
         public string student_name { get; set; }
+        public string student_number { get; set; }
         public int? seat_no { get; set; }
         public GetVolunteerData.男女 gender { get; set; }
         //班級
@@ -34,6 +35,7 @@ namespace K12.Club.Volunteer
             student_id = "" + row["student_id"];
             status = "" + row["status"];
             student_name = "" + row["student_name"];
+            student_number = "" + row["student_number"];
 
             #region 性別
             if ("" + row["gender"] == "1")

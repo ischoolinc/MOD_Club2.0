@@ -921,6 +921,44 @@ ORDER BY class.grade_year,class.class_name,student.seat_no");
         {
             return x.RandomIndex.CompareTo(y.RandomIndex);
         }
+
+        private void btnSendMessageStud_Click(object sender, EventArgs e)
+        {
+            DialogResult dr = MsgBox.Show(string.Format("請確認要對所選「{0}」名學生,\n推播未選社團訊息?", dataGridViewX1.SelectedRows.Count), MessageBoxButtons.YesNo, MessageBoxDefaultButton.Button2);
+            if (dr == DialogResult.Yes)
+            {
+                List<string> StudentIDList = new List<string>();
+                StringBuilder sb_log = new StringBuilder();
+                sb_log.AppendLine("已發送未選社團推播");
+                sb_log.AppendLine("");
+                sb_log.AppendLine("所選學生清單:");
+                foreach (DataGridViewRow row in dataGridViewX1.SelectedRows)
+                {
+                    StudRecord stud = (StudRecord)row.Tag;
+                    StudentIDList.Add(stud.id);
+
+                    sb_log.AppendLine("學生「" + stud.name + "」");
+                }
+
+                Campus.Message.SendMessage sm = new Campus.Message.SendMessage(StudentIDList, Campus.Message.SendMessage.UserType.StudentAndParent, "SendMessage.K12.Club.Volunteer.Club_v2.0");
+                if (sm.SendNow)
+                {
+                    sm.Run();
+
+                    FISCA.LogAgent.ApplicationLog.Log("未選社團學生", "訊息", sb_log.ToString());
+                }
+                else
+                {
+                    //不予發送
+                }
+
+            }
+        }
+
+        private void dataGridViewX1_SelectionChanged(object sender, EventArgs e)
+        {
+            btnSendMessageStud.Text = string.Format("未選社團推播({0})", dataGridViewX1.SelectedRows.Count);
+        }
     }
 
     public class StudRecord
