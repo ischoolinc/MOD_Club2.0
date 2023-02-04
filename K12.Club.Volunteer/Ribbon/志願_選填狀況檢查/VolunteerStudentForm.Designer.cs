@@ -29,12 +29,15 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dataGridViewX1 = new DevComponents.DotNetBar.Controls.DataGridViewX();
+            this.ColSeatNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColStudentName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colGender = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.未選社學生加入待處理ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.清空學生待處理ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -43,9 +46,7 @@
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColSeatNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColStudentName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colGender = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.btnSendClubAll = new DevComponents.DotNetBar.ButtonX();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewX1)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -65,21 +66,43 @@
             this.ColStudentName,
             this.colGender});
             this.dataGridViewX1.ContextMenuStrip = this.contextMenuStrip1;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridViewX1.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle8.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewX1.DefaultCellStyle = dataGridViewCellStyle8;
             this.dataGridViewX1.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(215)))), ((int)(((byte)(229)))));
-            this.dataGridViewX1.Location = new System.Drawing.Point(12, 12);
+            this.dataGridViewX1.Location = new System.Drawing.Point(12, 36);
             this.dataGridViewX1.Name = "dataGridViewX1";
             this.dataGridViewX1.RowTemplate.Height = 24;
             this.dataGridViewX1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewX1.Size = new System.Drawing.Size(700, 375);
+            this.dataGridViewX1.Size = new System.Drawing.Size(700, 354);
             this.dataGridViewX1.TabIndex = 3;
+            // 
+            // ColSeatNo
+            // 
+            dataGridViewCellStyle6.BackColor = System.Drawing.Color.LightCyan;
+            this.ColSeatNo.DefaultCellStyle = dataGridViewCellStyle6;
+            this.ColSeatNo.HeaderText = "座號";
+            this.ColSeatNo.Name = "ColSeatNo";
+            this.ColSeatNo.Width = 65;
+            // 
+            // ColStudentName
+            // 
+            dataGridViewCellStyle7.BackColor = System.Drawing.Color.LightCyan;
+            this.ColStudentName.DefaultCellStyle = dataGridViewCellStyle7;
+            this.ColStudentName.HeaderText = "姓名";
+            this.ColStudentName.Name = "ColStudentName";
+            this.ColStudentName.Width = 150;
+            // 
+            // colGender
+            // 
+            this.colGender.HeaderText = "性別";
+            this.colGender.Name = "colGender";
+            this.colGender.Width = 80;
             // 
             // contextMenuStrip1
             // 
@@ -87,19 +110,19 @@
             this.未選社學生加入待處理ToolStripMenuItem,
             this.清空學生待處理ToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(191, 48);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(195, 48);
             // 
             // 未選社學生加入待處理ToolStripMenuItem
             // 
             this.未選社學生加入待處理ToolStripMenuItem.Name = "未選社學生加入待處理ToolStripMenuItem";
-            this.未選社學生加入待處理ToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
+            this.未選社學生加入待處理ToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
             this.未選社學生加入待處理ToolStripMenuItem.Text = "未選社學生加入待處理";
             this.未選社學生加入待處理ToolStripMenuItem.Click += new System.EventHandler(this.未選社學生加入待處理ToolStripMenuItem_Click);
             // 
             // 清空學生待處理ToolStripMenuItem
             // 
             this.清空學生待處理ToolStripMenuItem.Name = "清空學生待處理ToolStripMenuItem";
-            this.清空學生待處理ToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
+            this.清空學生待處理ToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
             this.清空學生待處理ToolStripMenuItem.Text = "清空學生待處理";
             this.清空學生待處理ToolStripMenuItem.Click += new System.EventHandler(this.清空學生待處理ToolStripMenuItem_Click);
             // 
@@ -128,25 +151,25 @@
             // 
             this.txtHelp1.BackgroundStyle.Class = "";
             this.txtHelp1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.txtHelp1.Location = new System.Drawing.Point(12, 400);
+            this.txtHelp1.Location = new System.Drawing.Point(12, 12);
             this.txtHelp1.Name = "txtHelp1";
-            this.txtHelp1.Size = new System.Drawing.Size(494, 20);
+            this.txtHelp1.Size = new System.Drawing.Size(351, 20);
             this.txtHelp1.TabIndex = 4;
             this.txtHelp1.Text = "說明：<font color=\"#22B14C\">●</font>綠色標示為鎖定之學生，<font color=\"#FFF200\">●</font>黃色為已參與社" +
-    "團之學生，滑鼠右鍵有待處理功能";
+    "團之學生";
             // 
             // dataGridViewTextBoxColumn1
             // 
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.LightCyan;
-            this.dataGridViewTextBoxColumn1.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.LightCyan;
+            this.dataGridViewTextBoxColumn1.DefaultCellStyle = dataGridViewCellStyle3;
             this.dataGridViewTextBoxColumn1.HeaderText = "座號";
             this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
             this.dataGridViewTextBoxColumn1.Width = 65;
             // 
             // dataGridViewTextBoxColumn2
             // 
-            dataGridViewCellStyle5.BackColor = System.Drawing.Color.LightCyan;
-            this.dataGridViewTextBoxColumn2.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle9.BackColor = System.Drawing.Color.LightCyan;
+            this.dataGridViewTextBoxColumn2.DefaultCellStyle = dataGridViewCellStyle9;
             this.dataGridViewTextBoxColumn2.HeaderText = "姓名";
             this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
             // 
@@ -155,36 +178,30 @@
             this.dataGridViewTextBoxColumn3.HeaderText = "性別";
             this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
             // 
-            // ColSeatNo
+            // btnSendClubAll
             // 
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.LightCyan;
-            this.ColSeatNo.DefaultCellStyle = dataGridViewCellStyle1;
-            this.ColSeatNo.HeaderText = "座號";
-            this.ColSeatNo.Name = "ColSeatNo";
-            this.ColSeatNo.Width = 65;
-            // 
-            // ColStudentName
-            // 
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.LightCyan;
-            this.ColStudentName.DefaultCellStyle = dataGridViewCellStyle2;
-            this.ColStudentName.HeaderText = "姓名";
-            this.ColStudentName.Name = "ColStudentName";
-            this.ColStudentName.Width = 150;
-            // 
-            // colGender
-            // 
-            this.colGender.HeaderText = "性別";
-            this.colGender.Name = "colGender";
-            this.colGender.Width = 80;
+            this.btnSendClubAll.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
+            this.btnSendClubAll.BackColor = System.Drawing.Color.Transparent;
+            this.btnSendClubAll.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
+            this.btnSendClubAll.ForeColor = System.Drawing.Color.Red;
+            this.btnSendClubAll.Location = new System.Drawing.Point(477, 398);
+            this.btnSendClubAll.Name = "btnSendClubAll";
+            this.btnSendClubAll.Size = new System.Drawing.Size(145, 25);
+            this.btnSendClubAll.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
+            this.btnSendClubAll.TabIndex = 7;
+            this.btnSendClubAll.Text = "入選社團通知";
+            this.btnSendClubAll.Click += new System.EventHandler(this.btnSendClubAll_Click);
             // 
             // VolunteerStudentForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(724, 431);
+            this.Controls.Add(this.btnSendClubAll);
             this.Controls.Add(this.txtHelp1);
             this.Controls.Add(this.dataGridViewX1);
             this.Controls.Add(this.btnExit);
+            this.DoubleBuffered = true;
             this.MaximizeBox = true;
             this.Name = "VolunteerStudentForm";
             this.Text = "學生選填明細";
@@ -210,5 +227,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn ColSeatNo;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColStudentName;
         private System.Windows.Forms.DataGridViewTextBoxColumn colGender;
+        private DevComponents.DotNetBar.ButtonX btnSendClubAll;
     }
 }

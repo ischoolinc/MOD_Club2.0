@@ -992,7 +992,7 @@ namespace K12.Club.Volunteer
         {
             社團志願分配的Row VolRow = (社團志願分配的Row)dataGridViewRow.DataBoundItem;
 
-            VolunteerStudentForm f = new VolunteerStudentForm(VolRow, By_V);
+            VolunteerStudentForm f = new VolunteerStudentForm(VolRow, seting_school_year, seting_school_semester, By_V);
             f.ShowDialog();
         }
 
@@ -1078,7 +1078,7 @@ namespace K12.Club.Volunteer
         private void dataGridViewX1_SelectionChanged(object sender, EventArgs e)
         {
             btnRunStart.Text = string.Format("開始分配({0})", +dataGridViewX1.SelectedRows.Count);
-            btnSendClubAll.Text = string.Format("入選社團電子報表({0})", +dataGridViewX1.SelectedRows.Count);
+            btnSendClubAll.Text = string.Format("入選社團通知({0})", +dataGridViewX1.SelectedRows.Count);
         }
 
         private void exportBtn_Click(object sender, EventArgs e)

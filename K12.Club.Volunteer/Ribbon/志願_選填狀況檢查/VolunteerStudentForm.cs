@@ -27,11 +27,16 @@ namespace K12.Club.Volunteer
         List<string> StudentIDList = new List<string>();
 
         Setup_ByV _By_V { get; set; }
+        //人為設定選社學年
+        string _seting_school_year = "";
 
-        public VolunteerStudentForm(社團志願分配的Row VolRow, Setup_ByV By_V)
+        //人為設定選社學期
+        string _seting_school_semester = "";
+        public VolunteerStudentForm(社團志願分配的Row VolRow, string seting_school_year, string seting_school_semester, Setup_ByV By_V)
         {
             InitializeComponent();
-
+            _seting_school_year = seting_school_year;
+            _seting_school_semester = seting_school_semester;
             _VolRow = VolRow;
             _By_V = By_V;
         }
@@ -221,6 +226,22 @@ namespace K12.Club.Volunteer
         private void 清空學生待處理ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             K12.Presentation.NLDPanels.Student.RemoveFromTemp(K12.Presentation.NLDPanels.Student.TempSource);
+        }
+
+        private void btnSendClubAll_Click(object sender, EventArgs e)
+        {
+            StringBuilder sb_tipc = new StringBuilder();
+            sb_tipc.AppendLine("本功能將會對班級中");
+            sb_tipc.AppendLine("有成功加入社團之學生");
+            sb_tipc.AppendLine("發送「入選社團」結果電子報表");
+
+            DialogResult dr = MsgBox.Show(string.Format(sb_tipc.ToString(), dataGridViewX1.SelectedRows.Count), MessageBoxButtons.YesNo, MessageBoxDefaultButton.Button2);
+            if (dr == DialogResult.Yes)
+            {
+                //電子報表介面
+                ReportTeacherForm rtForm = new ReportTeacherForm(new List<社團志願分配的Row>() { _VolRow }, _seting_school_year, _seting_school_semester, _By_V);
+                rtForm.ShowDialog();
+            }
         }
     }
 }

@@ -93,10 +93,10 @@
             this.linkLabel2.BackColor = System.Drawing.Color.Transparent;
             this.linkLabel2.Location = new System.Drawing.Point(75, 479);
             this.linkLabel2.Name = "linkLabel2";
-            this.linkLabel2.Size = new System.Drawing.Size(99, 17);
+            this.linkLabel2.Size = new System.Drawing.Size(86, 17);
             this.linkLabel2.TabIndex = 6;
             this.linkLabel2.TabStop = true;
-            this.linkLabel2.Text = "下載欄位總位表";
+            this.linkLabel2.Text = "功能變數總表";
             this.linkLabel2.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel2_LinkClicked);
             // 
             // linkLabel1
@@ -115,7 +115,7 @@
             // 
             this.linkLabel3.AutoSize = true;
             this.linkLabel3.BackColor = System.Drawing.Color.Transparent;
-            this.linkLabel3.Location = new System.Drawing.Point(286, 200);
+            this.linkLabel3.Location = new System.Drawing.Point(268, 200);
             this.linkLabel3.Name = "linkLabel3";
             this.linkLabel3.Size = new System.Drawing.Size(86, 17);
             this.linkLabel3.TabIndex = 9;
@@ -479,7 +479,7 @@
             this.dataGridViewX1.Location = new System.Drawing.Point(12, 226);
             this.dataGridViewX1.Name = "dataGridViewX1";
             this.dataGridViewX1.RowTemplate.Height = 24;
-            this.dataGridViewX1.Size = new System.Drawing.Size(360, 239);
+            this.dataGridViewX1.Size = new System.Drawing.Size(360, 223);
             this.dataGridViewX1.TabIndex = 10;
             // 
             // Column1
@@ -526,6 +526,7 @@
             this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.btnExit);
             this.Controls.Add(this.btnSave);
+            this.DoubleBuffered = true;
             this.Name = "ClubPointsListForm";
             this.Text = "社團點名單(套表列印)";
             this.Load += new System.EventHandler(this.ClubPointsListForm_Load);
