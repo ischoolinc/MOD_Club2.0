@@ -481,10 +481,10 @@
     <Compile Include="Ribbon\AddressNameList.designer.cs">
       <DependentUpon>AddressNameList.cs</DependentUpon>
     </Compile>
-    <Compile Include="Ribbon\CheckStudentIsNotInClub.cs">
+    <Compile Include="Ribbon\未選社團檢查\CheckStudentIsNotInClub.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ribbon\CheckStudentIsNotInClub.Designer.cs">
+    <Compile Include="Ribbon\未選社團檢查\CheckStudentIsNotInClub.Designer.cs">
       <DependentUpon>CheckStudentIsNotInClub.cs</DependentUpon>
     </Compile>
     <Compile Include="Ribbon\GradingProjectConfig.cs">
@@ -604,7 +604,7 @@
     <EmbeddedResource Include="Ribbon\AddressNameList.resx">
       <DependentUpon>AddressNameList.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ribbon\CheckStudentIsNotInClub.resx">
+    <EmbeddedResource Include="Ribbon\未選社團檢查\CheckStudentIsNotInClub.resx">
       <DependentUpon>CheckStudentIsNotInClub.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Ribbon\CommentForm.resx">

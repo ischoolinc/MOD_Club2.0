@@ -940,7 +940,7 @@ ORDER BY class.grade_year,class.class_name,student.seat_no");
                     sb_log.AppendLine("學生「" + stud.name + "」");
                 }
 
-                Campus.Message.SendMessage sm = new Campus.Message.SendMessage(StudentIDList, Campus.Message.SendMessage.UserType.StudentAndParent, "SendMessage.K12.Club.Volunteer.Club_v2.0");
+                Campus.Message.SendMessage sm = new Campus.Message.SendMessage(StudentIDList, Campus.Message.SendMessage.UserType.StudentAndParent, "SendMessage.K12.Club20.Volunteer.CheckStudentIsNotInClub");
                 if (sm.SendNow)
                 {
                     sm.Run();
