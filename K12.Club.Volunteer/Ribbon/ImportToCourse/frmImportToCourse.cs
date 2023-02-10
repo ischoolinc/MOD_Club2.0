@@ -473,6 +473,8 @@ SELECT
     , {5}::INTEGER AS score_calc_flag
     , {6}::BIT(1) AS not_included_in_credit
     , {7}::BIT(1) AS not_included_in_calc
+    , {8}::INTEGER AS credit
+    , {9}::INTEGER AS period
                                 ", clubName.Replace("'", "''")
                                     , this._dicClubRecordByName[clubName].TeacherID1 == "" ? "null" : this._dicClubRecordByName[clubName].TeacherID1
                                     , cbxSchoolYear.SelectedItem.ToString()
@@ -481,6 +483,8 @@ SELECT
                                     , "2"
                                     , "1"
                                     , "1"
+                                    , "0"
+                                    , "0"
         );
                                     listCourseData.Add(data);
                                 }
@@ -510,6 +514,8 @@ WITH data_row AS(
         , score_calc_flag
         , not_included_in_credit
         , not_included_in_calc
+        ,credit
+        ,period
     )
     SELECT
         course_name
@@ -520,6 +526,8 @@ WITH data_row AS(
         , score_calc_flag
         , not_included_in_credit
         , not_included_in_calc
+        ,credit
+        ,period
     FROM
         data_row
     RETURNING * 
