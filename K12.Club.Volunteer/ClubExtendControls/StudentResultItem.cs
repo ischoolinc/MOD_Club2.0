@@ -402,5 +402,20 @@ namespace K12.Club.Volunteer
 
 
         }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            //指定學生的志願序
+            志願輸入內容 move = new 志願輸入內容(new List<string>() { this.PrimaryKey });
+            move.ShowDialog();
+        }
+
+        private void StudentResultItem_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (Control.ModifierKeys == Keys.Shift)
+            {
+                linkLabel1.Visible = !linkLabel1.Visible;
+            }
+        }
     }
 }

@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>K12.Club.Volunteer</RootNamespace>
     <AssemblyName>K12.Club.Volunteer</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>
     </SccProjectName>
@@ -340,6 +340,18 @@
     <Compile Include="Report\社團點名單_套表列印\ClubPointsListForm.Designer.cs">
       <DependentUpon>ClubPointsListForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Ribbon\Beta_指定學生志願序\志願輸入內容.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ribbon\Beta_指定學生志願序\志願輸入內容.designer.cs">
+      <DependentUpon>志願輸入內容.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Ribbon\Beta_社團開發功能\批次志願功能.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ribbon\Beta_社團開發功能\批次志願功能.designer.cs">
+      <DependentUpon>批次志願功能.cs</DependentUpon>
+    </Compile>
     <Compile Include="Ribbon\CommentForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -364,39 +376,39 @@
     <Compile Include="Ribbon\Import\ValidationRule\CheckStudentNumberInIschool.cs" />
     <Compile Include="Ribbon\志願_其它功能\GetVolunteer.cs" />
     <Compile Include="Ribbon\志願_其它功能\StudentMergeClub.cs" />
-    <Compile Include="Ribbon\志願_選填狀況檢查\ReportTeacherForm.cs">
+    <Compile Include="Ribbon\志願_分配功能\ReportTeacherForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ribbon\志願_選填狀況檢查\ReportTeacherForm.designer.cs">
+    <Compile Include="Ribbon\志願_分配功能\ReportTeacherForm.designer.cs">
       <DependentUpon>ReportTeacherForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Ribbon\志願_選填狀況檢查\VolunteerLog.cs">
+    <Compile Include="Ribbon\志願_分配功能\VolunteerLog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ribbon\志願_選填狀況檢查\VolunteerLog.designer.cs">
+    <Compile Include="Ribbon\志願_分配功能\VolunteerLog.designer.cs">
       <DependentUpon>VolunteerLog.cs</DependentUpon>
     </Compile>
-    <Compile Include="Ribbon\志願_選填狀況檢查\一個社團檢查.cs" />
-    <Compile Include="Ribbon\志願_選填狀況檢查\獎懲換算機制.cs" />
-    <Compile Include="Ribbon\志願_選填狀況檢查\學生選社亂數檔.cs" />
-    <Compile Include="Ribbon\志願_選填狀況檢查\VolunteerClassForm.cs">
+    <Compile Include="Ribbon\志願_分配功能\一個社團檢查.cs" />
+    <Compile Include="Ribbon\志願_分配功能\獎懲換算機制.cs" />
+    <Compile Include="Ribbon\志願_分配功能\學生選社亂數檔.cs" />
+    <Compile Include="Ribbon\志願_分配功能\VolunteerClassForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ribbon\志願_選填狀況檢查\VolunteerClassForm.Designer.cs">
+    <Compile Include="Ribbon\志願_分配功能\VolunteerClassForm.Designer.cs">
       <DependentUpon>VolunteerClassForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Ribbon\志願_選填狀況檢查\一名學生.cs" />
-    <Compile Include="Ribbon\志願_選填狀況檢查\社團志願分配的Row.cs" />
+    <Compile Include="Ribbon\志願_分配功能\一名學生.cs" />
+    <Compile Include="Ribbon\志願_分配功能\社團志願分配的Row.cs" />
     <Compile Include="Ribbon\志願_其它功能\VolunteerForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ribbon\志願_其它功能\VolunteerForm.Designer.cs">
       <DependentUpon>VolunteerForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Ribbon\志願_選填狀況檢查\VolunteerStudentForm.cs">
+    <Compile Include="Ribbon\志願_分配功能\VolunteerStudentForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ribbon\志願_選填狀況檢查\VolunteerStudentForm.Designer.cs">
+    <Compile Include="Ribbon\志願_分配功能\VolunteerStudentForm.Designer.cs">
       <DependentUpon>VolunteerStudentForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Ribbon\志願_選社志願設定\Setup_ByV.cs" />
@@ -413,12 +425,6 @@
     </Compile>
     <Compile Include="Ribbon\檢查_批次社團鎖社\MutipleLockForm.Designer.cs">
       <DependentUpon>MutipleLockForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Ribbon\社團參與記錄清空\SCJReMove.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Ribbon\社團參與記錄清空\SCJReMove.Designer.cs">
-      <DependentUpon>SCJReMove.cs</DependentUpon>
     </Compile>
     <Compile Include="Ribbon\重覆選社檢查\RepeatForm.cs">
       <SubType>Form</SubType>
@@ -481,10 +487,10 @@
     <Compile Include="Ribbon\AddressNameList.designer.cs">
       <DependentUpon>AddressNameList.cs</DependentUpon>
     </Compile>
-    <Compile Include="Ribbon\未選社團檢查\CheckStudentIsNotInClub.cs">
+    <Compile Include="Ribbon\未參與社團檢查\CheckStudentIsNotInClub.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ribbon\未選社團檢查\CheckStudentIsNotInClub.Designer.cs">
+    <Compile Include="Ribbon\未參與社團檢查\CheckStudentIsNotInClub.Designer.cs">
       <DependentUpon>CheckStudentIsNotInClub.cs</DependentUpon>
     </Compile>
     <Compile Include="Ribbon\GradingProjectConfig.cs">
@@ -604,7 +610,13 @@
     <EmbeddedResource Include="Ribbon\AddressNameList.resx">
       <DependentUpon>AddressNameList.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ribbon\未選社團檢查\CheckStudentIsNotInClub.resx">
+    <EmbeddedResource Include="Ribbon\Beta_指定學生志願序\志願輸入內容.resx">
+      <DependentUpon>志願輸入內容.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ribbon\Beta_社團開發功能\批次志願功能.resx">
+      <DependentUpon>批次志願功能.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ribbon\未參與社團檢查\CheckStudentIsNotInClub.resx">
       <DependentUpon>CheckStudentIsNotInClub.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Ribbon\CommentForm.resx">
@@ -616,19 +628,19 @@
     <EmbeddedResource Include="Ribbon\ImportToCourse\frmImportToCourse.resx">
       <DependentUpon>frmImportToCourse.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ribbon\志願_選填狀況檢查\ReportTeacherForm.resx">
+    <EmbeddedResource Include="Ribbon\志願_分配功能\ReportTeacherForm.resx">
       <DependentUpon>ReportTeacherForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ribbon\志願_選填狀況檢查\VolunteerClassForm.resx">
+    <EmbeddedResource Include="Ribbon\志願_分配功能\VolunteerClassForm.resx">
       <DependentUpon>VolunteerClassForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Ribbon\志願_其它功能\VolunteerForm.resx">
       <DependentUpon>VolunteerForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ribbon\志願_選填狀況檢查\VolunteerLog.resx">
+    <EmbeddedResource Include="Ribbon\志願_分配功能\VolunteerLog.resx">
       <DependentUpon>VolunteerLog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ribbon\志願_選填狀況檢查\VolunteerStudentForm.resx">
+    <EmbeddedResource Include="Ribbon\志願_分配功能\VolunteerStudentForm.resx">
       <DependentUpon>VolunteerStudentForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Ribbon\志願_選社志願設定\V_Config.resx">
@@ -636,9 +648,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Ribbon\檢查_批次社團鎖社\MutipleLockForm.resx">
       <DependentUpon>MutipleLockForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Ribbon\社團參與記錄清空\SCJReMove.resx">
-      <DependentUpon>SCJReMove.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Ribbon\重覆選社檢查\RepeatForm.resx">
       <DependentUpon>RepeatForm.cs</DependentUpon>

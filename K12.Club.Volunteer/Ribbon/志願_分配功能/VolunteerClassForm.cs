@@ -315,7 +315,7 @@ namespace K12.Club.Volunteer
                 BGW_Save.ReportProgress(20, "取得資料模型...");
                 Dictionary<string, int> StudentMeritDic = m.GetMerit(StudentList);
 
-                BGW_Save.ReportProgress(20, "取得資料模型...");
+                BGW_Save.ReportProgress(30, "取得資料模型...");
 
                 List<社團志願分配的Row> IsRowList = new List<社團志願分配的Row>();
                 foreach (DataGridViewRow row in dataGridViewX1.SelectedRows)
@@ -325,6 +325,7 @@ namespace K12.Club.Volunteer
                         IsRowList.Add((社團志願分配的Row)row.DataBoundItem);
                     }
                 }
+
                 foreach (社團志願分配的Row each in IsRowList)
                 {
                     foreach (VolunteerRecord vol in each._Volunteer.Values)
@@ -354,6 +355,7 @@ namespace K12.Club.Volunteer
                         IsRowList.Add((社團志願分配的Row)row.DataBoundItem);
                     }
                 }
+                BGW_Save.ReportProgress(30, "取得資料模型...");
                 foreach (社團志願分配的Row each in IsRowList)
                 {
                     foreach (VolunteerRecord vol in each._Volunteer.Values)
@@ -365,7 +367,7 @@ namespace K12.Club.Volunteer
                 #endregion
             }
 
-            BGW_Save.ReportProgress(30, "資料排序作業...");
+            BGW_Save.ReportProgress(40, "資料排序作業...");
             RunList.Sort(SortRandom);
 
             int _index = 1;

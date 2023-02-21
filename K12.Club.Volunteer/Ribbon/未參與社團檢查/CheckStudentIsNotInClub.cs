@@ -924,12 +924,12 @@ ORDER BY class.grade_year,class.class_name,student.seat_no");
 
         private void btnSendMessageStud_Click(object sender, EventArgs e)
         {
-            DialogResult dr = MsgBox.Show(string.Format("請確認要對所選「{0}」名學生,\n推播未選社團訊息?", dataGridViewX1.SelectedRows.Count), MessageBoxButtons.YesNo, MessageBoxDefaultButton.Button2);
+            DialogResult dr = MsgBox.Show(string.Format("請確認要對所選「{0}」名學生,\n推播未參與社團訊息?", dataGridViewX1.SelectedRows.Count), MessageBoxButtons.YesNo, MessageBoxDefaultButton.Button2);
             if (dr == DialogResult.Yes)
             {
                 List<string> StudentIDList = new List<string>();
                 StringBuilder sb_log = new StringBuilder();
-                sb_log.AppendLine("已發送未選社團推播");
+                sb_log.AppendLine("已發送未參與社團推播");
                 sb_log.AppendLine("");
                 sb_log.AppendLine("所選學生清單:");
                 foreach (DataGridViewRow row in dataGridViewX1.SelectedRows)
@@ -945,7 +945,7 @@ ORDER BY class.grade_year,class.class_name,student.seat_no");
                 {
                     sm.Run();
 
-                    FISCA.LogAgent.ApplicationLog.Log("未選社團學生", "訊息", sb_log.ToString());
+                    FISCA.LogAgent.ApplicationLog.Log("未參與社團學生", "訊息", sb_log.ToString());
                 }
                 else
                 {

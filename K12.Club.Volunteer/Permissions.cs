@@ -70,12 +70,12 @@ namespace K12.Club.Volunteer
             }
         }
 
-        public static string 未選社團學生 { get { return "K12.Club.Universal.CheckStudentIsNotInClub.cs"; } }
-        public static bool 未選社團學生權限
+        public static string 未參與社團學生 { get { return "K12.Club.Universal.CheckStudentIsNotInClub.cs"; } }
+        public static bool 未參與社團學生權限
         {
             get
             {
-                return FISCA.Permission.UserAcl.Current[未選社團學生].Executable;
+                return FISCA.Permission.UserAcl.Current[未參與社團學生].Executable;
             }
         }
         

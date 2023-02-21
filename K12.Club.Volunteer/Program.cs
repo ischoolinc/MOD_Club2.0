@@ -328,8 +328,11 @@ namespace K12.Club.Volunteer
                     if (FISCA.RTContext.IsDiagMode && FISCA.Authentication.DSAServices.IsSysAdmin && Control.ModifierKeys == Keys.Shift)
                     {
                         //一個社團選社資料清空功能
-                        SCJReMove move = new SCJReMove();
-                        move.ShowDialog();
+                        //SCJReMove move = new SCJReMove();
+                        //move.ShowDialog();
+
+                        批次志願功能 betaForm = new 批次志願功能();
+                        betaForm.ShowDialog();
                     }
                     else
                     {
@@ -347,10 +350,10 @@ namespace K12.Club.Volunteer
             #region 檢查
             {
                 RibbonBarItem check = ClubAdmin.Instance.RibbonBarItems["檢查"];
-                check["未選社團檢查"].Size = RibbonBarButton.MenuButtonSize.Medium;
-                check["未選社團檢查"].Image = Properties.Resources.group_help_64;
-                check["未選社團檢查"].Enable = Permissions.未選社團學生權限;
-                check["未選社團檢查"].Click += delegate
+                check["未參與社團檢查"].Size = RibbonBarButton.MenuButtonSize.Medium;
+                check["未參與社團檢查"].Image = Properties.Resources.group_help_64;
+                check["未參與社團檢查"].Enable = Permissions.未參與社團學生權限;
+                check["未參與社團檢查"].Click += delegate
                 {
                     CheckStudentIsNotInClub insert = new CheckStudentIsNotInClub();
                     insert.ShowDialog();
@@ -589,7 +592,7 @@ namespace K12.Club.Volunteer
             detail1.Add(new RibbonFeature(Permissions.成績輸入, "成績輸入"));
             detail1.Add(new RibbonFeature(Permissions.評量項目, "評量比例"));
             detail1.Add(new RibbonFeature(Permissions.學期結算, "學期結算"));
-            detail1.Add(new RibbonFeature(Permissions.未選社團學生, "未選社團學生"));
+            detail1.Add(new RibbonFeature(Permissions.未參與社團學生, "未參與社團學生"));
             detail1.Add(new RibbonFeature(Permissions.調整社團學生, "調整社團學生"));
             detail1.Add(new RibbonFeature(Permissions.檢查批次社團鎖社, "檢查/批次社團鎖社"));
             detail1.Add(new RibbonFeature(Permissions.開放選社時間, "開放選社時間"));
