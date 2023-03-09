@@ -70,7 +70,7 @@
             // 
             this.txtAbout.Border.Class = "TextBoxBorder";
             this.txtAbout.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.txtAbout.Location = new System.Drawing.Point(67, 204);
+            this.txtAbout.Location = new System.Drawing.Point(67, 195);
             this.txtAbout.Margin = new System.Windows.Forms.Padding(4);
             this.txtAbout.Multiline = true;
             this.txtAbout.Name = "txtAbout";
@@ -154,7 +154,7 @@
             // 
             this.lbAbout.BackgroundStyle.Class = "";
             this.lbAbout.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.lbAbout.Location = new System.Drawing.Point(28, 216);
+            this.lbAbout.Location = new System.Drawing.Point(28, 207);
             this.lbAbout.Name = "lbAbout";
             this.lbAbout.Size = new System.Drawing.Size(34, 21);
             this.lbAbout.TabIndex = 15;

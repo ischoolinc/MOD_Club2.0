@@ -412,7 +412,7 @@ namespace K12.Club.Volunteer
 
         private void StudentResultItem_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            if (Control.ModifierKeys == Keys.Shift)
+            if (FISCA.RTContext.IsDiagMode && FISCA.Authentication.DSAServices.IsSysAdmin && Control.ModifierKeys == Keys.Shift)
             {
                 linkLabel1.Visible = !linkLabel1.Visible;
             }
