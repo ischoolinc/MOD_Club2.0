@@ -179,7 +179,7 @@ namespace K12.Club.Volunteer
             }
 
             _RowList = VolClassRowDic.Values.ToList();
-            _RowList.Sort(SortClass);
+            _RowList.Sort(tool.SortClass);
             BGW.ReportProgress(100, "學生志願檢查完成!");
         }
 
@@ -1049,22 +1049,6 @@ namespace K12.Club.Volunteer
             FISCA.Presentation.MotherForm.SetStatusBarMessage(e.UserState.ToString(), e.ProgressPercentage);
         }
 
-        /// <summary>
-        /// 排序
-        /// </summary>
-        private int SortClass(社團志願分配的Row row1, 社團志願分配的Row row2)
-        {
-            string Grat1 = row1._GradeYear.PadLeft(1, '0');
-            Grat1 += row1._Class_display_order.PadLeft(3, '9');
-            Grat1 += row1._Class.PadLeft(10, '0');
-
-            string Grat2 = row2._GradeYear.PadLeft(1, '0');
-            Grat2 += row2._Class_display_order.PadLeft(3, '9');
-            Grat2 += row2._Class.PadLeft(10, '0');
-
-            return Grat1.CompareTo(Grat2);
-        }
-
         private void btnExit_Click(object sender, EventArgs e)
         {
             if (Is社團已分配)
@@ -1080,7 +1064,7 @@ namespace K12.Club.Volunteer
         private void dataGridViewX1_SelectionChanged(object sender, EventArgs e)
         {
             btnRunStart.Text = string.Format("開始分配({0})", +dataGridViewX1.SelectedRows.Count);
-            btnSendClubAll.Text = string.Format("入選社團通知({0})", +dataGridViewX1.SelectedRows.Count);
+            btnSendClubAll.Text = string.Format("選社結果通知({0})", +dataGridViewX1.SelectedRows.Count);
         }
 
         private void exportBtn_Click(object sender, EventArgs e)
@@ -1093,7 +1077,7 @@ namespace K12.Club.Volunteer
             StringBuilder sb_tipc = new StringBuilder();
             sb_tipc.AppendLine("本功能將會對所選「{0}」個班級中");
             sb_tipc.AppendLine("有成功加入社團之學生");
-            sb_tipc.AppendLine("發送「入選社團」結果電子報表");
+            sb_tipc.AppendLine("發送「選社結果通知」電子報表");
 
             DialogResult dr = MsgBox.Show(string.Format(sb_tipc.ToString(), dataGridViewX1.SelectedRows.Count), MessageBoxButtons.YesNo, MessageBoxDefaultButton.Button2);
             if (dr == DialogResult.Yes)

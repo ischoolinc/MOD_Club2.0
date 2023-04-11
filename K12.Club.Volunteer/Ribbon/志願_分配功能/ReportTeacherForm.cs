@@ -1,5 +1,6 @@
 ﻿
 using Aspose.Words;
+using Aspose.Words.Lists;
 using Campus.ePaperCloud;
 using FISCA.Presentation.Controls;
 using K12.Data;
@@ -14,6 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace K12.Club.Volunteer
 {
@@ -80,10 +82,16 @@ namespace K12.Club.Volunteer
                     ClubDic.Add(club.UID, club);
             }
 
+            _ClasssList.Sort(tool.SortClass);
             //處理列印資料狀態
             foreach (社團志願分配的Row _VolRow in _ClasssList)
             {
-                foreach (一名學生 studPage in _VolRow._StudentDic.Values)
+
+                List<一名學生> listStudent = _VolRow._StudentDic.Values.ToList();
+
+                listStudent.Sort(tool.SortMergeList);
+
+                foreach (一名學生 studPage in listStudent)
                 {
                     //當此學生有社團參與記錄時
                     if (_VolRow._SCJDic.ContainsKey(studPage.student_id))
@@ -108,6 +116,8 @@ namespace K12.Club.Volunteer
                         mapping.Add("姓名", studPage.student_name);
                         mapping.Add("座號", studPage.seat_no);
                         mapping.Add("學號", studPage.student_number);
+
+                        mapping.Add("日期", DateTime.Now.ToString("yyyy/MM/dd HH:mm"));
 
 
                         SCJoin scj = _VolRow._SCJDic[studPage.student_id];

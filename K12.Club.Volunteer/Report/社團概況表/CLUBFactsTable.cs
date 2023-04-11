@@ -16,6 +16,8 @@ using System.Diagnostics;
 using System.Xml;
 using FISCA.DSAUtil;
 using Aspose.Words.Tables;
+using Campus.Report2014;
+using System.Web.UI;
 
 namespace K12.Club.Volunteer
 {
@@ -24,10 +26,10 @@ namespace K12.Club.Volunteer
         //背景模式
         BackgroundWorker BGW = new BackgroundWorker();
 
-        AccessHelper _accessHelper = new AccessHelper();
-
-        QueryHelper _queryHelper = new QueryHelper();
-
+        /// <summary>
+        /// 樣版
+        /// </summary>
+        string CLUBFactsTable_Config_1 = "K12.Club.Volunteer.CLUBFactsTable.20230320";
 
         Document _doc = new Document(); //主文件
         Run _run; //移動使用
@@ -71,9 +73,22 @@ namespace K12.Club.Volunteer
         {
             //社團ID : 社團特殊物件
             Dictionary<string, List<FactsObj_big>> DoWorkDic = GetClubData(); //分類
-
-            Document _template = new Document(new MemoryStream(Properties.Resources.社團概況表_範本1));
             _doc.Sections.Clear();
+            //範本設定
+            ReportConfiguration ConfigurationInCadre = new ReportConfiguration(CLUBFactsTable_Config_1);
+            Aspose.Words.Document _template;
+            if (ConfigurationInCadre.Template == null)
+            {
+                //如果範本為空,則建立一個預設範本
+                ReportConfiguration ConfigurationInCadre_1 = new ReportConfiguration(CLUBFactsTable_Config_1);
+                ConfigurationInCadre_1.Template = new ReportTemplate(Properties.Resources.社團概況表_範本1, TemplateType.docx);
+                _template = new Document(ConfigurationInCadre_1.Template.GetStream());
+            }
+            else
+            {
+                //如果已有範本,則取得樣板
+                _template = new Document(ConfigurationInCadre.Template.GetStream());
+            }
 
             //取得範本樣式
             Document PageOne = (Document)_template.Clone(true);
@@ -215,7 +230,7 @@ namespace K12.Club.Volunteer
                     SaveFileDialog SaveFileDialog1 = new SaveFileDialog();
 
                     SaveFileDialog1.Filter = "Word (*.docx)|*.docx|所有檔案 (*.*)|*.*";
-                    SaveFileDialog1.FileName = "社團概況表";
+                    SaveFileDialog1.FileName = string.Format("社團概況表_{0}學年度_第{1}學期", _SchoolYear, _Semester);
 
                     if (SaveFileDialog1.ShowDialog() == DialogResult.OK)
                     {
@@ -260,7 +275,7 @@ namespace K12.Club.Volunteer
             Dictionary<string, List<FactsObj_big>> dic_Sort = new Dictionary<string, List<FactsObj_big>>();
 
             //取得本學年度的社團清單
-            List<CLUBRecord> CLUBRecordList = _accessHelper.Select<CLUBRecord>(string.Format("school_year={0} and semester={1}", _SchoolYear, _Semester));
+            List<CLUBRecord> CLUBRecordList = tool._A.Select<CLUBRecord>(string.Format("school_year={0} and semester={1}", _SchoolYear, _Semester));
 
             #region 取得學生用
 
@@ -271,7 +286,7 @@ namespace K12.Club.Volunteer
                 CLUBIDList.Add(each.UID);
             }
 
-            List<SCJoin> SCJoinList = _accessHelper.Select<SCJoin>("ref_club_id in ('" + string.Join("','", CLUBIDList) + "')");
+            List<SCJoin> SCJoinList = tool._A.Select<SCJoin>("ref_club_id in ('" + string.Join("','", CLUBIDList) + "')");
 
             List<string> StudentIDList = new List<string>();
 
@@ -383,7 +398,7 @@ namespace K12.Club.Volunteer
         {
             Dictionary<string, TeacherCrk> dic = new Dictionary<string, TeacherCrk>();
             string teacherUyery = "select id,teacher_name,nickname from teacher where status='1'";
-            DataTable dt = _queryHelper.Select(teacherUyery);
+            DataTable dt = tool._Q.Select(teacherUyery);
             foreach (DataRow row in dt.Rows)
             {
                 TeacherCrk obj = new TeacherCrk(row);
@@ -412,7 +427,7 @@ namespace K12.Club.Volunteer
             cell.FirstParagraph.Runs.Clear();
             _run.Text = text;
             _run.Font.Size = 8;
-            _run.Font.Name = "標楷體";
+            _run.Font.Name = "微軟正黑體";
             cell.FirstParagraph.Runs.Add(_run.Clone(true));
         }
 
@@ -438,5 +453,33 @@ namespace K12.Club.Volunteer
             }
         }
 
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            //取得設定檔
+            ReportConfiguration ConfigurationInCadre = new ReportConfiguration(CLUBFactsTable_Config_1);
+            TemplateSettingForm TemplateForm;
+            //畫面內容(範本內容,預設樣式
+            if (ConfigurationInCadre.Template != null)
+            {
+                TemplateForm = new TemplateSettingForm(ConfigurationInCadre.Template, new ReportTemplate(Properties.Resources.社團概況表_範本1, TemplateType.docx));
+            }
+            else
+            {
+                ConfigurationInCadre.Template = new ReportTemplate(Properties.Resources.社團概況表_範本1, TemplateType.docx);
+                TemplateForm = new TemplateSettingForm(ConfigurationInCadre.Template, new ReportTemplate(Properties.Resources.社團概況表_範本1, TemplateType.docx));
+            }
+
+            //預設名稱
+            TemplateForm.DefaultFileName = "社團概況表(範本)";
+
+            //如果回傳為OK
+            if (TemplateForm.ShowDialog() == DialogResult.OK)
+            {
+                //設定後樣試,回傳
+                ConfigurationInCadre.Template = TemplateForm.Template;
+                //儲存
+                ConfigurationInCadre.Save();
+            }
+        }
     }
 }

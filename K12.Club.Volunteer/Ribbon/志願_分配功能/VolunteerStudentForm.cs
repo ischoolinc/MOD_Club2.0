@@ -93,7 +93,7 @@ namespace K12.Club.Volunteer
                     //取得該班級的學生基本資料
                     List<一名學生> list = _VolRow._StudentDic.Values.ToList();
                     //依座號排序
-                    list.Sort(SortMergeList);
+                    list.Sort(tool.SortMergeList);
 
                     foreach (一名學生 each in list)
                     {
@@ -206,13 +206,6 @@ namespace K12.Club.Volunteer
             }
         }
 
-        private int SortMergeList(一名學生 s1, 一名學生 s2)
-        {
-            string ss1 = s1.seat_no.HasValue ? s1.seat_no.Value.ToString().PadLeft(3, '0') : "999";
-            string ss2 = s2.seat_no.HasValue ? s2.seat_no.Value.ToString().PadLeft(3, '0') : "999";
-            return ss1.CompareTo(ss2);
-        }
-
         private void btnExit_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -233,7 +226,7 @@ namespace K12.Club.Volunteer
             StringBuilder sb_tipc = new StringBuilder();
             sb_tipc.AppendLine("本功能將會對班級中");
             sb_tipc.AppendLine("有成功加入社團之學生");
-            sb_tipc.AppendLine("發送「入選社團」結果電子報表");
+            sb_tipc.AppendLine("發送「選社結果通知」結果電子報表");
 
             DialogResult dr = MsgBox.Show(string.Format(sb_tipc.ToString(), dataGridViewX1.SelectedRows.Count), MessageBoxButtons.YesNo, MessageBoxDefaultButton.Button2);
             if (dr == DialogResult.Yes)

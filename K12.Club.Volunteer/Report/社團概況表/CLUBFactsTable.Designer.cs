@@ -35,6 +35,7 @@
             this.intSemester = new DevComponents.Editors.IntegerInput();
             this.btnSave = new DevComponents.DotNetBar.ButtonX();
             this.btnExit = new DevComponents.DotNetBar.ButtonX();
+            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             ((System.ComponentModel.ISupportInitialize)(this.intSchoolYear)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.intSemester)).BeginInit();
             this.SuspendLayout();
@@ -131,7 +132,7 @@
             this.btnSave.Size = new System.Drawing.Size(75, 25);
             this.btnSave.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.btnSave.TabIndex = 5;
-            this.btnSave.Text = "儲存";
+            this.btnSave.Text = "列印";
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // btnExit
@@ -148,11 +149,24 @@
             this.btnExit.Text = "離開";
             this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
             // 
+            // linkLabel1
+            // 
+            this.linkLabel1.AutoSize = true;
+            this.linkLabel1.BackColor = System.Drawing.Color.Transparent;
+            this.linkLabel1.Location = new System.Drawing.Point(12, 106);
+            this.linkLabel1.Name = "linkLabel1";
+            this.linkLabel1.Size = new System.Drawing.Size(60, 17);
+            this.linkLabel1.TabIndex = 7;
+            this.linkLabel1.TabStop = true;
+            this.linkLabel1.Text = "設定樣版";
+            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
+            // 
             // CLUBFactsTable
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(335, 137);
+            this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.btnExit);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.intSemester);
@@ -160,6 +174,7 @@
             this.Controls.Add(this.lbSemester);
             this.Controls.Add(this.lbSchoolYear);
             this.Controls.Add(this.lbHelp1);
+            this.DoubleBuffered = true;
             this.Name = "CLUBFactsTable";
             this.Text = "社團概況表";
             this.Load += new System.EventHandler(this.CLUBFactsTable_Load);
@@ -179,5 +194,6 @@
         private DevComponents.Editors.IntegerInput intSemester;
         private DevComponents.DotNetBar.ButtonX btnSave;
         private DevComponents.DotNetBar.ButtonX btnExit;
+        private System.Windows.Forms.LinkLabel linkLabel1;
     }
 }

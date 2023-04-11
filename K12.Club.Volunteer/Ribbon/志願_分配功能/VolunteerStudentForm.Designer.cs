@@ -181,6 +181,7 @@
             // btnSendClubAll
             // 
             this.btnSendClubAll.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
+            this.btnSendClubAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSendClubAll.BackColor = System.Drawing.Color.Transparent;
             this.btnSendClubAll.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
             this.btnSendClubAll.ForeColor = System.Drawing.Color.Red;
@@ -189,7 +190,7 @@
             this.btnSendClubAll.Size = new System.Drawing.Size(145, 25);
             this.btnSendClubAll.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.btnSendClubAll.TabIndex = 7;
-            this.btnSendClubAll.Text = "入選社團通知";
+            this.btnSendClubAll.Text = "選社結果通知";
             this.btnSendClubAll.Click += new System.EventHandler(this.btnSendClubAll_Click);
             // 
             // VolunteerStudentForm

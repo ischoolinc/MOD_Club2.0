@@ -214,5 +214,25 @@ namespace K12.Club.Volunteer
             }
             return dic;
         }
+
+        static public int SortClass(社團志願分配的Row row1, 社團志願分配的Row row2)
+        {
+            string Grat1 = row1._GradeYear.PadLeft(1, '0');
+            Grat1 += row1._Class_display_order.PadLeft(3, '9');
+            Grat1 += row1._Class.PadLeft(10, '0');
+
+            string Grat2 = row2._GradeYear.PadLeft(1, '0');
+            Grat2 += row2._Class_display_order.PadLeft(3, '9');
+            Grat2 += row2._Class.PadLeft(10, '0');
+
+            return Grat1.CompareTo(Grat2);
+        }
+
+        static public int SortMergeList(一名學生 s1, 一名學生 s2)
+        {
+            string ss1 = s1.seat_no.HasValue ? s1.seat_no.Value.ToString().PadLeft(3, '0') : "999";
+            string ss2 = s2.seat_no.HasValue ? s2.seat_no.Value.ToString().PadLeft(3, '0') : "999";
+            return ss1.CompareTo(ss2);
+        }
     }
 }

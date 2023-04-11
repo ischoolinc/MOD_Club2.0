@@ -46,10 +46,13 @@ namespace K12.Club.Volunteer
 
             Workbook template = new Workbook();
             template.Open(new MemoryStream(Properties.Resources.社團成績單_範本));
+
+
             //Style sy = template.Worksheets[0].Cells[3, 0].Style;
             //每一張
             Workbook prototype = new Workbook();
             prototype.Copy(template);
+            prototype.CopyTheme(template);
             Worksheet ptws = prototype.Worksheets[0];
 
             #region 建立標頭Column
@@ -71,7 +74,7 @@ namespace K12.Club.Volunteer
 
             int ColumnNameIndex = 0;
             //Jean 更新Aspose
-            Style style = prototype.CreateStyle();
+            Style style = prototype.Worksheets[0].Cells[0,2].GetStyle();
             style.IsTextWrapped = true;
 
             foreach (string each in ColumnNameList)
@@ -82,6 +85,9 @@ namespace K12.Club.Volunteer
                 {
                     ptws.Cells.SetColumnWidth(ColumnNameIndex, 8);
                     tool.SetCellBro(ptws, 2, ColumnNameIndex, 1, 1);
+
+                    //設定Style
+                    //SetCellStyle(ptws, 2, ColumnNameIndex);
                 }
                 ColumnNameIndex++;
             }
@@ -94,6 +100,7 @@ namespace K12.Club.Volunteer
             //建立Excel檔案
             Workbook wb = new Workbook();
             wb.Copy(prototype);
+            wb.CopyTheme(template);
 
             //取得第一張
             Worksheet ws = wb.Worksheets[0];
@@ -110,8 +117,10 @@ namespace K12.Club.Volunteer
             foreach (string clubID in GetPoint.TraDic.Keys)
             {
                 //每一個社團
-                ws.Cells.CreateRange(dataIndex, 3, false).CopyStyle(ptHeader);
+                ws.Cells.CreateRange(dataIndex, 3, false).Copy(ptHeader);
                 ws.Cells.CreateRange(dataIndex, 3, false).CopyValue(ptHeader);
+                ws.Cells.CreateRange(dataIndex, 3, false).CopyData(ptHeader);
+
                 CLUBRecord cr = GetPoint.CLUBDic[clubID];
 
                 //第一行 - 建立標頭內容
@@ -138,6 +147,8 @@ namespace K12.Club.Volunteer
                 {
                     ws.Cells.CreateRange(dataIndex, 1, false).CopyStyle(ptEachRow);
                     ws.Cells.CreateRange(dataIndex, 1, false).CopyValue(ptEachRow);
+                    ws.Cells.CreateRange(dataIndex, 1, false).CopyData(ptEachRow);
+
                     //基本資料
                     tool.SetCellBro(ws, dataIndex, 0, 1, 1);
                     ws.Cells[dataIndex, 0].PutValue(each.student.Class != null ? each.student.Class.Name : "");
@@ -179,7 +190,12 @@ namespace K12.Club.Volunteer
                         tool.SetCellBro(ws, dataIndex, ColumnNameList.Count - 2, 1, 1);
                         string Score = each.RSR.ResultScore.HasValue ? each.RSR.ResultScore.Value.ToString() : "";
                         ws.Cells[dataIndex, ColumnNameList.Count - 2].PutValue(Score);
-                        //ws.Cells[dataIndex, ColumnNameList.Count - 1].Style = sy;
+                        //ws.Cells[dataIndex, ColumnNameList.Count - 2].SetStyle(style);
+                    }
+                    else
+                    {
+                        ws.Cells.SetColumnWidth(ColumnNameList.Count - 2, 8);
+                        tool.SetCellBro(ws, dataIndex, ColumnNameList.Count - 2, 1, 1);
                     }
 
                     //社團幹部
@@ -189,7 +205,12 @@ namespace K12.Club.Volunteer
                         tool.SetCellBro(ws, dataIndex, ColumnNameList.Count - 1, 1, 1);
                         string CardreName = each.RSR.CadreName;
                         ws.Cells[dataIndex, ColumnNameList.Count - 1].PutValue(CardreName);
-                        //ws.Cells[dataIndex, ColumnNameList.Count - 1].Style = sy;
+                        //ws.Cells[dataIndex, ColumnNameList.Count - 1].SetStyle(style);
+                    }
+                    else
+                    {
+                        ws.Cells.SetColumnWidth(ColumnNameList.Count - 1, 8);
+                        tool.SetCellBro(ws, dataIndex, ColumnNameList.Count - 1, 1, 1);
                     }
 
                     dataIndex++;
@@ -203,7 +224,7 @@ namespace K12.Club.Volunteer
                 ws.Cells.Merge(dataIndex, 0, 1, 5);
                 //SetCellBro(ws, dataIndex, 0, 1, ColumnNameList.Count);
                 ws.Cells[dataIndex, 0].PutValue(DateName);
-                //ws.Cells[dataIndex, 0].Style = sy;
+                ws.Cells[dataIndex, 0].SetStyle(style);
                 ws.HPageBreaks.Add(dataIndex + 1, ColumnNameList.Count);
                 dataIndex++;
             }
@@ -297,20 +318,21 @@ namespace K12.Club.Volunteer
         {
             string name = "";
             //老師1
-            if (!string.IsNullOrEmpty(cr.RefTeacherID))
-            {
-                TeacherRecord tr = GetPoint.TeacherDic[cr.RefTeacherID];
-                if (string.IsNullOrEmpty(tr.Nickname))
+
+                if (GetPoint.TeacherDic.ContainsKey(cr.RefTeacherID))
                 {
-                    name += tr.Name;
+                    TeacherRecord tr = GetPoint.TeacherDic[cr.RefTeacherID];
+                    if (string.IsNullOrEmpty(tr.Nickname))
+                    {
+                        name += tr.Name;
+                    }
+                    else
+                    {
+                        name += tr.Name + "(" + tr.Nickname + ")";
+                    }
                 }
-                else
-                {
-                    name += tr.Name + "(" + tr.Nickname + ")";
-                }
-            }
             //老師2
-            if (!string.IsNullOrEmpty(cr.RefTeacherID2))
+            if (GetPoint.TeacherDic.ContainsKey(cr.RefTeacherID2))
             {
                 TeacherRecord tr = GetPoint.TeacherDic[cr.RefTeacherID2];
                 if (string.IsNullOrEmpty(tr.Nickname))
@@ -323,7 +345,7 @@ namespace K12.Club.Volunteer
                 }
             }
             //老師3
-            if (!string.IsNullOrEmpty(cr.RefTeacherID3))
+            if (GetPoint.TeacherDic.ContainsKey(cr.RefTeacherID3))
             {
                 TeacherRecord tr = GetPoint.TeacherDic[cr.RefTeacherID3];
                 if (string.IsNullOrEmpty(tr.Nickname))

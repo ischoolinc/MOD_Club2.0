@@ -383,6 +383,7 @@
             // btnSendMessageStud
             // 
             this.btnSendMessageStud.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
+            this.btnSendMessageStud.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSendMessageStud.AutoSize = true;
             this.btnSendMessageStud.BackColor = System.Drawing.Color.Transparent;
             this.btnSendMessageStud.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
