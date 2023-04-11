@@ -261,6 +261,7 @@ namespace K12.Club.Volunteer
                 totle["報表"]["社團成績單"].Enable = false;
                 totle["報表"]["社團成績單"].Click += delegate
                 {
+                    MsgBox.Show("說明:成績單部分資料需透過結算產生.\n如幹部紀錄,學期成績");
                     ClubTranscript insert = new ClubTranscript();
                 };
                 ClubAdmin.Instance.SelectedSourceChanged += delegate

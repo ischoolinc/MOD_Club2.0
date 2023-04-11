@@ -74,21 +74,19 @@ namespace K12.Club.Volunteer
 
             int ColumnNameIndex = 0;
             //Jean 更新Aspose
-            Style style = prototype.Worksheets[0].Cells[0,2].GetStyle();
+            Style style = prototype.Worksheets[0].Cells[0, 2].GetStyle();
             style.IsTextWrapped = true;
 
             foreach (string each in ColumnNameList)
             {
                 ptws.Cells[2, ColumnNameIndex].SetStyle(style);
                 ptws.Cells[2, ColumnNameIndex].PutValue(each);
-                if (ColumnNameIndex >= 5)
-                {
-                    ptws.Cells.SetColumnWidth(ColumnNameIndex, 8);
-                    tool.SetCellBro(ptws, 2, ColumnNameIndex, 1, 1);
 
-                    //設定Style
-                    //SetCellStyle(ptws, 2, ColumnNameIndex);
-                }
+                ptws.Cells.SetColumnWidth(ColumnNameIndex, 8);
+                tool.SetCellBro(ptws, 2, ColumnNameIndex, 1, 1);
+
+                //設定Style
+                //SetCellStyle(ptws, 2, ColumnNameIndex);
                 ColumnNameIndex++;
             }
 
@@ -100,7 +98,7 @@ namespace K12.Club.Volunteer
             //建立Excel檔案
             Workbook wb = new Workbook();
             wb.Copy(prototype);
-            wb.CopyTheme(template);
+            wb.CopyTheme(prototype);
 
             //取得第一張
             Worksheet ws = wb.Worksheets[0];
@@ -118,9 +116,9 @@ namespace K12.Club.Volunteer
             {
                 //每一個社團
                 ws.Cells.CreateRange(dataIndex, 3, false).Copy(ptHeader);
+                ws.Cells.CreateRange(dataIndex, 3, false).CopyStyle(ptHeader);
                 ws.Cells.CreateRange(dataIndex, 3, false).CopyValue(ptHeader);
                 ws.Cells.CreateRange(dataIndex, 3, false).CopyData(ptHeader);
-
                 CLUBRecord cr = GetPoint.CLUBDic[clubID];
 
                 //第一行 - 建立標頭內容
@@ -319,18 +317,18 @@ namespace K12.Club.Volunteer
             string name = "";
             //老師1
 
-                if (GetPoint.TeacherDic.ContainsKey(cr.RefTeacherID))
+            if (GetPoint.TeacherDic.ContainsKey(cr.RefTeacherID))
+            {
+                TeacherRecord tr = GetPoint.TeacherDic[cr.RefTeacherID];
+                if (string.IsNullOrEmpty(tr.Nickname))
                 {
-                    TeacherRecord tr = GetPoint.TeacherDic[cr.RefTeacherID];
-                    if (string.IsNullOrEmpty(tr.Nickname))
-                    {
-                        name += tr.Name;
-                    }
-                    else
-                    {
-                        name += tr.Name + "(" + tr.Nickname + ")";
-                    }
+                    name += tr.Name;
                 }
+                else
+                {
+                    name += tr.Name + "(" + tr.Nickname + ")";
+                }
+            }
             //老師2
             if (GetPoint.TeacherDic.ContainsKey(cr.RefTeacherID2))
             {
