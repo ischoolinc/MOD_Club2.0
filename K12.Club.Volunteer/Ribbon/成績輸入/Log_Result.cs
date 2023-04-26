@@ -36,10 +36,14 @@ namespace K12.Club.Volunteer
             _NewItemDic = new Dictionary<string, string>();
             IsChange = false;
             _sch = sch;
+
+            _OldItemDic.Add("評語", _sch.Comment);
+            _NewItemDic.Add("評語", _sch.Comment);
+
             foreach (string each in list)
             {
-                _OldItemDic.Add(each, _sch.Comment);
-                _NewItemDic.Add(each, _sch.Comment);
+                _OldItemDic.Add(each, "");
+                _NewItemDic.Add(each, "");
             }
 
             if (!string.IsNullOrEmpty(sch.Score))
