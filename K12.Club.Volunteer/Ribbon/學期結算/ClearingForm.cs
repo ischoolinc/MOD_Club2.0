@@ -474,6 +474,7 @@ WITH data_row AS(
                 rsr.RefSCJoinID = scj.UID; //參與記錄ID
 
                 rsr.ClubName = cr.ClubName;
+                rsr.Comment = scj.Comment; // 評語
 
                 rsr.ClubLevel = cr.Level; //社團評等
 
