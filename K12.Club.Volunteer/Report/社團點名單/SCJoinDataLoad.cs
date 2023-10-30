@@ -58,6 +58,7 @@ namespace K12.Club.Volunteer
         {
             //取得社團清單
             ClubList = _AccessHelper.Select<CLUBRecord>("UID in ('" + string.Join("','", ClubAdmin.Instance.SelectedSource) + "')");
+            ClubList.Sort(SortByClubNumber);
             //取得學生修課記錄
             SCJoinList = _AccessHelper.Select<SCJoin>("ref_club_id in ('" + string.Join("','", ClubAdmin.Instance.SelectedSource) + "')");
 
@@ -99,6 +100,20 @@ namespace K12.Club.Volunteer
             //老師資料也必須建立
             //老師ID:老師Record
             TeacherDic = GetTeacherDic(TeacherIDList);
+        }
+
+        /// <summary>
+        /// 依據社團代碼排序
+        /// </summary>
+        private int SortByClubNumber(CLUBRecord x, CLUBRecord y)
+        {
+            string clubSortStringX = x.ClubNumber.PadLeft(20, '0');
+            string clubSortStringY = y.ClubNumber.PadLeft(20, '0');
+
+             clubSortStringX += x.ClubName.PadLeft(20, '0');
+             clubSortStringY += y.ClubName.PadLeft(20, '0');
+
+            return clubSortStringX.CompareTo(clubSortStringY);
         }
 
         /// <summary>

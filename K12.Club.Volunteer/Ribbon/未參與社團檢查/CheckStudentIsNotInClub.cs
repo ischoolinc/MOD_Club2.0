@@ -800,88 +800,57 @@ ORDER BY class.grade_year,class.class_name,student.seat_no");
             //如果沒有設定過,才進行分配
             if (row.Cells[colSelectClub.Index].Value == null)
             {
-                //當學生是一年級時
                 if (stud.grade_year == "1" || stud.grade_year == "7")
                 {
-
-                    if (club.Grade1Limit.HasValue)
-                    {
-                        if (club.Grade1Limit.Value > club.NewGrade1Limit)
-                        {
-                            if (club.GenderRestrict != "")
-                            {
-                                //性別判斷
-                                if (club.GenderRestrict == stud.gender)
-                                {
-                                    NowSetRow(row, club, stud, "1");
-                                }
-                            }
-                            else
-                            {
-                                NowSetRow(row, club, stud, "1");
-                            }
-                        }
-                    }
-                    else
-                    {
-                        NowSetRow(row, club, stud, "1");
-                    }
+                    CheckRestrictAndLimit(row, club, stud, club.Grade3Limit, club.NewGrade3Limit, "1");
                 }
                 else if (stud.grade_year == "2" || stud.grade_year == "8")
                 {
-                    if (club.Grade2Limit.HasValue)
-                    {
-                        if (club.Grade2Limit.Value > club.NewGrade2Limit)
-                        {
-                            if (club.GenderRestrict != "")
-                            {
-                                //性別判斷
-                                if (club.GenderRestrict == stud.gender)
-                                {
-                                    NowSetRow(row, club, stud, "2");
-                                }
-                            }
-                            else
-                            {
-                                NowSetRow(row, club, stud, "2");
-                            }
-                        }
-                    }
-                    else
-                    {
-                        NowSetRow(row, club, stud, "2");
-                    }
+                    CheckRestrictAndLimit(row, club, stud, club.Grade3Limit, club.NewGrade3Limit, "2");
                 }
                 else if (stud.grade_year == "3" || stud.grade_year == "9")
                 {
-                    if (club.Grade3Limit.HasValue)
-                    {
-                        //三年級人數上限還沒滿
-                        if (club.Grade3Limit.Value > club.NewGrade3Limit)
-                        {
-                            if (club.GenderRestrict != "")
-                            {
-                                //性別判斷
-                                if (club.GenderRestrict == stud.gender)
-                                {
-                                    NowSetRow(row, club, stud, "3");
-                                }
-                            }
-                            else
-                            {
-                                NowSetRow(row, club, stud, "3");
-                            }
-                        }
-                    }
-                    else
-                    {
-                        NowSetRow(row, club, stud, "3");
-                    }
+                    CheckRestrictAndLimit(row, club, stud, club.Grade3Limit, club.NewGrade3Limit, "3");
                 }
             }
         }
 
-        private void NowSetRow(DataGridViewRow row, CLUBRecord club, StudRecord stud, string v)
+        public void CheckRestrictAndLimit(DataGridViewRow row, CLUBRecord club, StudRecord stud, int? limit, int newGrade3Limit, string number)
+        {
+            if (limit.HasValue)
+            {
+                //三年級人數上限還沒滿
+                if (limit.Value > newGrade3Limit)
+                {
+                    if (club.GenderRestrict != "")
+                    {
+                        //性別判斷
+                        if (club.GenderRestrict == stud.gender)
+                        {
+                            NowSetRow(row, club, stud, number);
+                        }
+                    }
+                    else
+                    {
+                        NowSetRow(row, club, stud, number);
+                    }
+                }
+            }
+            else
+            {
+                if (club.GenderRestrict != "")
+                {
+                    //性別判斷
+                    if (club.GenderRestrict == stud.gender)
+                    {
+                        NowSetRow(row, club, stud, number);
+                    }
+                }
+            }
+
+        }
+
+        private void NowSetRow(DataGridViewRow row, CLUBRecord club, StudRecord stud, string number)
         {
             row.Cells[colSelectClub.Index].Value = "" + club.ClubName;
             row.Cells[colSelectClub.Index].Tag = club;
@@ -893,15 +862,15 @@ ORDER BY class.grade_year,class.class_name,student.seat_no");
                 ClubAddDic[club.UID].Add(stud.id);
             }
 
-            if (v == "1")
+            if (number == "1")
             {
                 club.NewGrade1Limit++;
             }
-            else if (v == "2")
+            else if (number == "2")
             {
                 club.NewGrade2Limit++;
             }
-            else if (v == "3")
+            else if (number == "3")
             {
                 club.NewGrade3Limit++;
             }
