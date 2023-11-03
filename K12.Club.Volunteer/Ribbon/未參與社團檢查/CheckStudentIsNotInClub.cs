@@ -766,47 +766,18 @@ ORDER BY class.grade_year,class.class_name,student.seat_no");
             dataGridViewX1.Sort(new RowComparer());
         }
 
-        private class RowComparer : System.Collections.IComparer
-        {
-            public RowComparer()
-            {
-
-            }
-
-            public int Compare(object x, object y)
-            {
-                DataGridViewRow DataGridViewRow1 = (DataGridViewRow)x;
-                DataGridViewRow DataGridViewRow2 = (DataGridViewRow)y;
-
-                //指定社團名稱
-                string name1 = ("" + DataGridViewRow1.Cells[6].Value).PadLeft(20, 'z');
-                string name2 = ("" + DataGridViewRow2.Cells[6].Value).PadLeft(20, 'z');
-                //年級
-                name1 += ("" + DataGridViewRow1.Cells[0].Value).PadLeft(5, '0');
-                name2 += ("" + DataGridViewRow2.Cells[0].Value).PadLeft(5, '0');
-                //班級
-                name1 += ("" + DataGridViewRow1.Cells[1].Value).PadLeft(10, '0');
-                name2 += ("" + DataGridViewRow2.Cells[1].Value).PadLeft(10, '0');
-                //座號
-                name1 += ("" + DataGridViewRow1.Cells[2].Value).PadLeft(5, '0');
-                name2 += ("" + DataGridViewRow2.Cells[2].Value).PadLeft(5, '0');
-                return name1.CompareTo(name2);
-            }
-        }
-
-
         private void NowRunRow(DataGridViewRow row, CLUBRecord club, StudRecord stud)
         {
             //如果沒有設定過,才進行分配
-            if (row.Cells[colSelectClub.Index].Value == null)
+            if ("" + row.Cells[colSelectClub.Index].Value == "")
             {
                 if (stud.grade_year == "1" || stud.grade_year == "7")
                 {
-                    CheckRestrictAndLimit(row, club, stud, club.Grade3Limit, club.NewGrade3Limit, "1");
+                    CheckRestrictAndLimit(row, club, stud, club.Grade1Limit, club.NewGrade1Limit, "1");
                 }
                 else if (stud.grade_year == "2" || stud.grade_year == "8")
                 {
-                    CheckRestrictAndLimit(row, club, stud, club.Grade3Limit, club.NewGrade3Limit, "2");
+                    CheckRestrictAndLimit(row, club, stud, club.Grade2Limit, club.NewGrade2Limit, "2");
                 }
                 else if (stud.grade_year == "3" || stud.grade_year == "9")
                 {
@@ -829,6 +800,10 @@ ORDER BY class.grade_year,class.class_name,student.seat_no");
                         {
                             NowSetRow(row, club, stud, number);
                         }
+                        else
+                        {
+                            //不符合性別條件
+                        }
                     }
                     else
                     {
@@ -845,6 +820,15 @@ ORDER BY class.grade_year,class.class_name,student.seat_no");
                     {
                         NowSetRow(row, club, stud, number);
                     }
+                    else
+                    {
+                        //不符合性別條件
+                    }
+                }
+                else
+                {
+                    //沒有限制男,女
+                    NowSetRow(row, club, stud, number);
                 }
             }
 
@@ -927,6 +911,34 @@ ORDER BY class.grade_year,class.class_name,student.seat_no");
         private void dataGridViewX1_SelectionChanged(object sender, EventArgs e)
         {
             btnSendMessageStud.Text = string.Format("未選社團推播({0})", dataGridViewX1.SelectedRows.Count);
+        }
+    }
+
+    public class RowComparer : System.Collections.IComparer
+    {
+        public RowComparer()
+        {
+
+        }
+
+        public int Compare(object x, object y)
+        {
+            DataGridViewRow DataGridViewRow1 = (DataGridViewRow)x;
+            DataGridViewRow DataGridViewRow2 = (DataGridViewRow)y;
+
+            //指定社團名稱
+            string name1 = ("" + DataGridViewRow1.Cells[6].Value).PadLeft(20, 'z');
+            string name2 = ("" + DataGridViewRow2.Cells[6].Value).PadLeft(20, 'z');
+            //年級
+            name1 += ("" + DataGridViewRow1.Cells[0].Value).PadLeft(5, '0');
+            name2 += ("" + DataGridViewRow2.Cells[0].Value).PadLeft(5, '0');
+            //班級
+            name1 += ("" + DataGridViewRow1.Cells[1].Value).PadLeft(10, '0');
+            name2 += ("" + DataGridViewRow2.Cells[1].Value).PadLeft(10, '0');
+            //座號
+            name1 += ("" + DataGridViewRow1.Cells[2].Value).PadLeft(5, '0');
+            name2 += ("" + DataGridViewRow2.Cells[2].Value).PadLeft(5, '0');
+            return name1.CompareTo(name2);
         }
     }
 

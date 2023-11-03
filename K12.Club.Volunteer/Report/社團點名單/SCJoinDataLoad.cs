@@ -107,11 +107,11 @@ namespace K12.Club.Volunteer
         /// </summary>
         private int SortByClubNumber(CLUBRecord x, CLUBRecord y)
         {
-            string clubSortStringX = x.ClubNumber.PadLeft(20, '0');
-            string clubSortStringY = y.ClubNumber.PadLeft(20, '0');
+            string clubSortStringX = string.IsNullOrEmpty(x.ClubNumber) ? "".PadLeft(20, 'z') : x.ClubNumber.PadLeft(20, '0');
+            string clubSortStringY = string.IsNullOrEmpty(y.ClubNumber) ? "".PadLeft(20, 'z') : y.ClubNumber.PadLeft(20, '0');
 
-             clubSortStringX += x.ClubName.PadLeft(20, '0');
-             clubSortStringY += y.ClubName.PadLeft(20, '0');
+            clubSortStringX += x.ClubName.PadLeft(20, '0');
+            clubSortStringY += y.ClubName.PadLeft(20, '0');
 
             return clubSortStringX.CompareTo(clubSortStringY);
         }

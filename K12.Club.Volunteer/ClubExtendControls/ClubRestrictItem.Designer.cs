@@ -214,6 +214,7 @@
             this.listDepartment.Border.Class = "ListViewBorder";
             this.listDepartment.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.listDepartment.CheckBoxes = true;
+            this.listDepartment.HideSelection = false;
             this.listDepartment.Location = new System.Drawing.Point(276, 46);
             this.listDepartment.Name = "listDepartment";
             this.listDepartment.Size = new System.Drawing.Size(251, 136);
@@ -257,7 +258,7 @@
             this.Controls.Add(this.lbGrade3Limit);
             this.Controls.Add(this.lbLimit);
             this.Name = "ClubRestrictItem";
-            this.Size = new System.Drawing.Size(550, 295);
+            this.Size = new System.Drawing.Size(550, 300);
             this.ResumeLayout(false);
             this.PerformLayout();
 
