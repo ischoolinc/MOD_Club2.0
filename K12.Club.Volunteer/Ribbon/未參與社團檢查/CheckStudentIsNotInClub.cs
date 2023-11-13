@@ -98,27 +98,20 @@ namespace K12.Club.Volunteer
 
             #region 因應需要支援跨學期選社，在這邊做檢查，防止使用者沒有設定 選社學年、學期
             AccessHelper _AccessHelper = new AccessHelper();
-            List<UDT.OpenSchoolYearSemester> opensemester = new List<UDT.OpenSchoolYearSemester>();
-
-            opensemester = _AccessHelper.Select<UDT.OpenSchoolYearSemester>();
-
-
+            List<UDT.OpenSchoolYearSemester> opensemester = _AccessHelper.Select<UDT.OpenSchoolYearSemester>();
 
             //填入之前的紀錄
-            if (opensemester.Count > 0)
+            if (opensemester.Count == 0)
             {
-                seting_school_year = opensemester[0].SchoolYear;
-                seting_school_semester = opensemester[0].Semester;
-
-                labelX1.Text = string.Format("選社學年度  {0}學年度　第{1}學期 未選社清單：", seting_school_year, seting_school_semester);
-            }
-            else
-            {
-                MsgBox.Show("沒有設定 選社學年、選社學期，請至'選社開放時間'功能內設定。");
+                MsgBox.Show("沒有設定選社學年期，請至'選社開放時間'功能設定。");
 
                 this.Close();
                 return;
             }
+
+            seting_school_year = opensemester[0].SchoolYear;
+            seting_school_semester = opensemester[0].Semester;
+
             #endregion 
 
             if (!BGW.IsBusy)
@@ -228,11 +221,13 @@ ORDER BY class.grade_year,class.class_name,student.seat_no");
 
             #region 學生
 
+            //未選社清單： (1)滑鼠右鍵可以清除指定社團(2)依據選社時間設定的學年期檢查
+
             // 舊的 抓取 系統 學年度
             //labelX1.Text = string.Format("{0}學年度　第{1}學期　未選社清單(共{2}人)：", School.DefaultSchoolYear, School.DefaultSemester, IsStudentList.Count);
 
             // 新的 抓取 人為設定選社學年度
-            labelX1.Text = string.Format("{0}學年度　第{1}學期　未選社清單(共{2}人)：", seting_school_year, seting_school_semester, IsStudentList.Count);
+            labelX1.Text = string.Format("{0}學年度　第{1}學期　未選社清單(共{2}人)：\n(1)滑鼠右鍵可以清除指定社團 (2)依據「開放選社時間」學年期檢查", seting_school_year, seting_school_semester, IsStudentList.Count);
 
 
             foreach (StudRecord stud in IsStudentList)
@@ -386,6 +381,9 @@ ORDER BY class.grade_year,class.class_name,student.seat_no");
             {
                 //取得課程Record
                 CLUBRecord club = (CLUBRecord)row.Cells[colSelectClub.Index].Tag;
+
+                if (club == null) continue;
+
                 clublist.Add(club);
                 //該課程目前有多少選課學生
                 int count = 0;
@@ -591,14 +589,12 @@ ORDER BY class.grade_year,class.class_name,student.seat_no");
         private void btnStartAuto_Click(object sender, EventArgs e)
         {
 
-            DialogResult dr = MsgBox.Show("本功能將依據「社團選社限制」進行亂數分配\n確認開始?", MessageBoxButtons.YesNo, MessageBoxDefaultButton.Button2);
+            DialogResult dr = MsgBox.Show("1.本功能將依據「選社限制」進行亂數分配\n2.「自動分配」僅限一次,重新分配請重新開啟本畫面\n\n確認開始?", MessageBoxButtons.YesNo, MessageBoxDefaultButton.Button2);
             if (dr == DialogResult.No)
             {
                 MsgBox.Show("已取消");
                 return;
             }
-
-
 
             //開始自動分配
             //1.取得系統內的各社團的條件
@@ -764,6 +760,8 @@ ORDER BY class.grade_year,class.class_name,student.seat_no");
             RefreshButtonItem(InsertClubLimit);
 
             dataGridViewX1.Sort(new RowComparer());
+
+            btnStartAuto.Enabled = false;
         }
 
         private void NowRunRow(DataGridViewRow row, CLUBRecord club, StudRecord stud)
@@ -877,7 +875,7 @@ ORDER BY class.grade_year,class.class_name,student.seat_no");
 
         private void btnSendMessageStud_Click(object sender, EventArgs e)
         {
-            DialogResult dr = MsgBox.Show(string.Format("請確認要對所選「{0}」名學生,\n推播未參與社團訊息?", dataGridViewX1.SelectedRows.Count), MessageBoxButtons.YesNo, MessageBoxDefaultButton.Button2);
+            DialogResult dr = MsgBox.Show(string.Format("請確認要對所選「{0}」名學生\n推播「未參與社團」訊息?", dataGridViewX1.SelectedRows.Count), MessageBoxButtons.YesNo, MessageBoxDefaultButton.Button2);
             if (dr == DialogResult.Yes)
             {
                 List<string> StudentIDList = new List<string>();

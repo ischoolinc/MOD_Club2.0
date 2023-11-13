@@ -18,7 +18,8 @@ namespace K12.Club.Volunteer
 
         public Dictionary<string, TeacherRecord> TeacherIDDic { get; set; }
 
-        public Dictionary<string, CadresRecord> CadreIDDic { get; set; }
+        //社團ID , 學生ID , 幹部紀錄
+        public Dictionary<string, Dictionary<string, List<CadresRecord>>> CadreIDDic { get; set; }
 
         public Dictionary<string, StudDe> StudentDic { get; set; }
 
@@ -163,11 +164,11 @@ namespace K12.Club.Volunteer
         /// <summary>
         /// 取得老師清單 Name:Record
         /// </summary>
-        public Dictionary<string, TeacherRecord> GetTeacherDic()
+        public void GetTeacherDic()
         {
             TeacherIDDic = new Dictionary<string, TeacherRecord>();
+            TeacherNameDic = new Dictionary<string, TeacherRecord>();
 
-            Dictionary<string, TeacherRecord> dic = new Dictionary<string, TeacherRecord>();
             List<TeacherRecord> TeacherList = K12.Data.Teacher.SelectAll();
             foreach (TeacherRecord each in TeacherList)
             {
@@ -184,9 +185,9 @@ namespace K12.Club.Volunteer
                         teacherName = each.Name + "(" + each.Nickname + ")";
                     }
 
-                    if (!dic.ContainsKey(teacherName))
+                    if (!TeacherNameDic.ContainsKey(teacherName))
                     {
-                        dic.Add(teacherName, each);
+                        TeacherNameDic.Add(teacherName, each);
                     }
                     #endregion
 
@@ -197,40 +198,33 @@ namespace K12.Club.Volunteer
                     }
                 }
             }
-
-            return dic;
         }
 
         /// <summary>
         /// 取得幹部清單 Name:Record
         /// </summary>
-        public Dictionary<string, CadresRecord> GetCadreDic()
+        public void GetCadreDic()
         {
-            CadreIDDic = new Dictionary<string, CadresRecord>();
+            CadreIDDic = new Dictionary<string, Dictionary<string, List<CadresRecord>>>();
 
-            Dictionary<string, CadresRecord> dic = new Dictionary<string, CadresRecord>();
-
-            //Select();
-            List<CadresRecord> CadresList = new List<CadresRecord>();
-
+            List<CadresRecord> CadresList = tool._A.Select<CadresRecord>();
 
             foreach (CadresRecord each in CadresList)
             {
-                string cadreName = each.CadreName;
 
-                if (!dic.ContainsKey(cadreName))
-                {
-                    dic.Add(cadreName, each);
-                }
-
-                //建立老師對照 ID:Record
+                //建立對照 ID:Record
                 if (!CadreIDDic.ContainsKey(each.RefClubID))
                 {
-                    CadreIDDic.Add(each.RefClubID, each);
+                    CadreIDDic.Add(each.RefClubID, new Dictionary<string, List<CadresRecord>>());
                 }
-            }
 
-            return dic;
+                if (!CadreIDDic[each.RefClubID].ContainsKey(each.RefStudentID))
+                {
+                    CadreIDDic[each.RefClubID].Add(each.RefStudentID, new List<CadresRecord>());
+                }
+
+                CadreIDDic[each.RefClubID][each.RefStudentID].Add(each);
+            }
         }
 
         /// <summary>
@@ -251,20 +245,18 @@ namespace K12.Club.Volunteer
         /// <summary>
         /// 取得社團清單 school + semester + name:Record
         /// </summary>
-        public Dictionary<string, CLUBRecord> GetCLUBDic()
+        public void GetCLUBDic()
         {
-            Dictionary<string, CLUBRecord> dic = new Dictionary<string, CLUBRecord>();
-
+            ClubDic = new Dictionary<string, CLUBRecord>();
             List<CLUBRecord> CLUBList = tool._A.Select<CLUBRecord>();
             foreach (CLUBRecord each in CLUBList)
             {
                 string CourseKey = each.SchoolYear + "," + each.Semester + "," + each.ClubName;
-                if (!dic.ContainsKey(CourseKey))
+                if (!ClubDic.ContainsKey(CourseKey))
                 {
-                    dic.Add(CourseKey, each);
+                    ClubDic.Add(CourseKey, each);
                 }
             }
-            return dic;
         }
 
         /// <summary>

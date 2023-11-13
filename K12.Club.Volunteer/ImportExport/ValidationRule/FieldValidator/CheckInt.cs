@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Campus.DocumentValidator;
 
-namespace K12.Club.Volunteer.Ribbon.Import.ValidationRule
+namespace K12.Club.Volunteer
 {
     class CheckInt : IFieldValidator
     {

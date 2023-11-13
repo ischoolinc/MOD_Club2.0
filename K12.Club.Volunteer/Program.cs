@@ -360,6 +360,17 @@ namespace K12.Club.Volunteer
                     insert.ShowDialog();
                 };
 
+                //check["未選志願檢查"].Size = RibbonBarButton.MenuButtonSize.Medium;
+                //check["未選志願檢查"].Image = Properties.Resources.group_help_64;
+                //check["未選志願檢查"].Enable = Permissions.未參與社團學生權限;
+                //check["未選志願檢查"].Click += delegate
+                //{
+                //    //1.依據選設設定的學年度學期進行檢查
+                //    //2.已經存在社團的學生不予檢查
+                //    //3.已經填社團的學生不予檢查
+                //    //4.是否檢查未填滿的學生
+                //};
+
                 check["重覆選社檢查"].Size = RibbonBarButton.MenuButtonSize.Medium;
                 check["重覆選社檢查"].Image = Properties.Resources.meeting_64;
                 check["重覆選社檢查"].Enable = Permissions.重覆選社檢查權限;

@@ -106,9 +106,9 @@ namespace K12.Club.Volunteer
         {
             mOption = Option;
 
-            Importbot.ClubDic = Importbot.GetCLUBDic();
+            Importbot.GetCLUBDic();
 
-            Importbot.TeacherNameDic = Importbot.GetTeacherDic();
+             Importbot.GetTeacherDic();
         }
 
         public override ImportAction GetSupportActions()

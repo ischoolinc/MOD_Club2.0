@@ -102,6 +102,7 @@ namespace K12.Club.Volunteer
                                 sb_log.AppendLine(string.Format("學年度「{0}」學期「{1}」社團名稱「{2}」", SchoolYear, Semester, CLUBName));
                                 sb_log.AppendLine(string.Format("班級「{0}」座號「{1}」姓名「{2}」幹部名稱「{3}」", stud.ClassName, stud.seat_no, stud.Name, CadreName));
                                 sb_log.AppendLine("");
+
                             }
                         }
                     }
@@ -139,9 +140,9 @@ namespace K12.Club.Volunteer
         {
             mOption = Option;
             //取得社團基本資料
-            Importbot.ClubDic = Importbot.GetCLUBDic();
-
-            Importbot.CadreIDDic = Importbot.GetCadreDic();
+            Importbot.GetCLUBDic();
+            //取得幹部紀錄
+            Importbot.GetCadreDic();
 
         }
     }

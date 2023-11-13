@@ -248,6 +248,7 @@
       <DependentUpon>DetailContentBase.cs</DependentUpon>
     </Compile>
     <Compile Include="ImportExport\Export\匯出社團志願序\ExportVolunteerRecord.cs" />
+    <Compile Include="ImportExport\ValidationRule\RowValidator\CheckStudentINCadres.cs" />
     <Compile Include="ImportExport\Import\匯入社團基本資料\CLUBImportBOT.cs" />
     <Compile Include="ImportExport\Import\匯入社團基本資料\ImputLog.cs" />
     <Compile Include="ImportExport\Import\匯入社團幹部清單\ImportClubCadres.cs" />
@@ -359,10 +360,10 @@
       <DependentUpon>CommentForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Ribbon\CopyClubRecord.cs" />
-    <Compile Include="Ribbon\Export\frmExportSCJoin.cs">
+    <Compile Include="ImportExport\Export\frmExportSCJoin.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ribbon\Export\frmExportSCJoin.Designer.cs">
+    <Compile Include="ImportExport\Export\frmExportSCJoin.Designer.cs">
       <DependentUpon>frmExportSCJoin.cs</DependentUpon>
     </Compile>
     <Compile Include="Ribbon\ImportToCourse\frmImportToCourse.cs">
@@ -371,9 +372,9 @@
     <Compile Include="Ribbon\ImportToCourse\frmImportToCourse.Designer.cs">
       <DependentUpon>frmImportToCourse.cs</DependentUpon>
     </Compile>
-    <Compile Include="Ribbon\Import\ImportSCJoinData.cs" />
-    <Compile Include="Ribbon\Import\ValidationRule\CheckInt.cs" />
-    <Compile Include="Ribbon\Import\ValidationRule\CheckStudentNumberInIschool.cs" />
+    <Compile Include="ImportExport\Import\ImportSCJoinData.cs" />
+    <Compile Include="ImportExport\ValidationRule\FieldValidator\CheckInt.cs" />
+    <Compile Include="ImportExport\ValidationRule\FieldValidator\CheckStudentNumberInIschool.cs" />
     <Compile Include="Ribbon\志願_其它功能\GetVolunteer.cs" />
     <Compile Include="Ribbon\志願_其它功能\StudentMergeClub.cs" />
     <Compile Include="Ribbon\志願_分配功能\ReportTeacherForm.cs">
@@ -622,7 +623,7 @@
     <EmbeddedResource Include="Ribbon\CommentForm.resx">
       <DependentUpon>CommentForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ribbon\Export\frmExportSCJoin.resx">
+    <EmbeddedResource Include="ImportExport\Export\frmExportSCJoin.resx">
       <DependentUpon>frmExportSCJoin.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Ribbon\ImportToCourse\frmImportToCourse.resx">
@@ -843,7 +844,9 @@
   <ItemGroup>
     <None Include="Resources\brand_write_64.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="ImportExport\Import\ValidationRule\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -134,8 +134,8 @@ namespace K12.Club.Volunteer.CLUB
                             {
                                 case "學年度": row.Add(field, "" + Result._Club.SchoolYear); break;
                                 case "學期": row.Add(field, "" + Result._Club.Semester); break;
-                                case "社團名稱": row.Add(field, "" + Result._Club.ClubName); break;
                                 case "代碼": row.Add(field, CLUBCode); break;
+                                case "社團名稱": row.Add(field, "" + Result._Club.ClubName); break;
                                 case "班級": row.Add(field, string.IsNullOrEmpty(sr.RefClassID) ? "" : sr.Class.Name); break;
                                 case "座號": row.Add(field, sr.SeatNo.HasValue ? sr.SeatNo.Value.ToString() : ""); break;
                                 case "學號": row.Add(field, sr.StudentNumber); break;

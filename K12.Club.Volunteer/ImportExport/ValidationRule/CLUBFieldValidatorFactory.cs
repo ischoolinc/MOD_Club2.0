@@ -30,9 +30,9 @@ namespace K12.Club.Volunteer
                 case "STUDENTNUMBERSTATUS":
                     return new StudentNumberStatusValidator(); //學生狀況是一般或延修生
                 case "CHECKSTUDENTNUMBERINISCHOOL":
-                    return new Ribbon.Import.ValidationRule.CheckStudentNumberInIschool(); // 檢查學號是否存在系統中
+                    return new CheckStudentNumberInIschool(); // 檢查學號是否存在系統中
                 case "INTPARSE":
-                    return new Ribbon.Import.ValidationRule.CheckInt();
+                    return new CheckInt();
                 default:
                     return null;
             }

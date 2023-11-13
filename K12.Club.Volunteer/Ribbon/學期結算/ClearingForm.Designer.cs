@@ -40,7 +40,7 @@
             this.btnStart.AutoSize = true;
             this.btnStart.BackColor = System.Drawing.Color.Transparent;
             this.btnStart.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnStart.Location = new System.Drawing.Point(145, 127);
+            this.btnStart.Location = new System.Drawing.Point(220, 142);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(75, 25);
             this.btnStart.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -55,7 +55,7 @@
             this.btnExit.AutoSize = true;
             this.btnExit.BackColor = System.Drawing.Color.Transparent;
             this.btnExit.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnExit.Location = new System.Drawing.Point(226, 127);
+            this.btnExit.Location = new System.Drawing.Point(301, 142);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(75, 25);
             this.btnExit.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -72,20 +72,22 @@
             // 
             this.lbHelp.BackgroundStyle.Class = "";
             this.lbHelp.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.lbHelp.Location = new System.Drawing.Point(12, 11);
+            this.lbHelp.Location = new System.Drawing.Point(22, 15);
             this.lbHelp.Name = "lbHelp";
-            this.lbHelp.Size = new System.Drawing.Size(248, 91);
+            this.lbHelp.Size = new System.Drawing.Size(339, 108);
             this.lbHelp.TabIndex = 2;
-            this.lbHelp.Text = "說明：\r\n進行學期結算將會把老師輸入之成績項目\r\n依據評量比例計算出一個學期成績記錄\r\n此記錄包含:\r\n[社團名稱/學期成績/幹部名稱]..等";
+            this.lbHelp.Text = "說明：\r\n*.進行[學期結算]會把老師輸入之成績項目\r\n依據評量比例計算結果儲存至[學生->社團成績]資料項目\r\n(此記錄包含 : 社團名稱/學期成績/評語/幹部" +
+    "名稱)\r\n\r\n*.另將結算幹部狀態至[學生->幹部紀錄]資料項目";
             // 
             // ClearingForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(313, 163);
+            this.ClientSize = new System.Drawing.Size(388, 178);
             this.Controls.Add(this.lbHelp);
             this.Controls.Add(this.btnExit);
             this.Controls.Add(this.btnStart);
+            this.DoubleBuffered = true;
             this.Name = "ClearingForm";
             this.Text = "學期結算";
             this.Load += new System.EventHandler(this.ClearingForm_Load);

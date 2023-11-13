@@ -6,7 +6,7 @@ using Campus.DocumentValidator;
 using FISCA.Data;
 using System.Data;
 
-namespace K12.Club.Volunteer.Ribbon.Import.ValidationRule
+namespace K12.Club.Volunteer
 {
     /// <summary>
     /// 檢查學年度、學期、社團資料是否存在系統中

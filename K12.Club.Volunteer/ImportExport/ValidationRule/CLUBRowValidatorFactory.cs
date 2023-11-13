@@ -12,9 +12,6 @@ namespace K12.Club.Volunteer
         /// <summary>
         /// 根據typeName建立對應的RowValidator
         /// </summary>
-        /// <param name="typeName"></param>
-        /// <param name="validatorDescription"></param>
-        /// <returns></returns>
         public IRowVaildator CreateRowValidator(string typeName, System.Xml.XmlElement validatorDescription)
         {
             switch (typeName.ToUpper())
@@ -27,6 +24,8 @@ namespace K12.Club.Volunteer
                     return new CLUBCadresCheck();
                 case "CLUBTEACHERDOUBLE":
                     return new CLUBTeacherCheck();
+                case "STUDENTINCLUBCADRE":
+                    return new CheckStudentINCadres(); // 檢查學號是否存在系統中
                 default:
                     return null;
             }

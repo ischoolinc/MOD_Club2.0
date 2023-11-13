@@ -117,23 +117,23 @@ Order by club.school_year,club.semester,club.club_number,class.grade_year,class.
                         case "學期":
                             wb.Worksheets[0].Cells[rowIndex, col].PutValue("" + row["semester"]);
                             break;
-                        case "社團代碼":
+                        case "代碼":
                             wb.Worksheets[0].Cells[rowIndex, col].PutValue("" + row["club_number"]);
                             break;
                         case "社團名稱":
                             wb.Worksheets[0].Cells[rowIndex, col].PutValue("" + row["club_name"]);
-                            break;
-                        case "姓名":
-                            wb.Worksheets[0].Cells[rowIndex, col].PutValue("" + row["name"]);
-                            break;
-                        case "學號":
-                            wb.Worksheets[0].Cells[rowIndex, col].PutValue("" + row["student_number"]);
                             break;
                         case "班級":
                             wb.Worksheets[0].Cells[rowIndex, col].PutValue("" + row["class_name"]);
                             break;
                         case "座號":
                             wb.Worksheets[0].Cells[rowIndex, col].PutValue("" + row["seat_no"]);
+                            break;
+                        case "學號":
+                            wb.Worksheets[0].Cells[rowIndex, col].PutValue("" + row["student_number"]);
+                            break;
+                        case "姓名":
+                            wb.Worksheets[0].Cells[rowIndex, col].PutValue("" + row["name"]);
                             break;
                     }
                 }
