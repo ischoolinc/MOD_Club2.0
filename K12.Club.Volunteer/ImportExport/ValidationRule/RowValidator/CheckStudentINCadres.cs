@@ -9,7 +9,7 @@ using System.Data;
 namespace K12.Club.Volunteer
 {
     /// <summary>
-    /// 檢查學年度、學期、社團資料是否存在系統中
+    /// 檢查學年度、學期、社團 是否重複擔任幹部
     /// </summary>
     class CheckStudentINCadres : IRowVaildator
     {

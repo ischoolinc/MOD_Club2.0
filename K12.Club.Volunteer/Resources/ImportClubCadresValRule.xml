@@ -30,7 +30,7 @@
       <Validate AutoCorrect="False" Description="「學號」於系統內有多名學生。" ErrorType="Error" Validator="學號是否重覆" When=""/>
       <Validate AutoCorrect="False" Description="「學號」於系統內必須是一般或延修生。" ErrorType="Error" Validator="學號必須是一般生" When=""/>
     </Field>
-    <Field Required="True" Name="幹部名稱" EmptyAlsoValidate="False" Description="學生在社團擔任的幹部名稱">
+    <Field Required="True" Name="幹部名稱" EmptyAlsoValidate="False" Description="學生社團擔任的幹部名稱(社長/副社長,單一社團僅能各有一位)">
     </Field>
   </FieldList>
   <ValidatorList>
@@ -62,11 +62,13 @@
  
     <RowValidator Name="學生是否存在本社團" Type="STUDENTINCLUBISTRUE" />
     <RowValidator Name="學生在社團是否擔任過幹部" Type="STUDENTINCLUBCADRE" />
+    <RowValidator Name="社長只能有一位" Type="STUDENTCADREPRESIDENT" />
   </ValidatorList>
 
   <RowValidate>
     <Validate AutoCorrect="false" Description="「學號」擔任幹部必須是社團學生" ErrorType="Error" Validator="學生是否存在本社團" When=""/>
     <Validate AutoCorrect="false" Description="「學生+社團名稱+幹部名稱」學生已經擔任系統內相同幹部職位" ErrorType="Error" Validator="學生在社團是否擔任過幹部" When=""/>
+    <Validate AutoCorrect="false" Description="「學生+社團名稱+幹部名稱」相同社團的社長/副社長只能有一位" ErrorType="Error" Validator="社長只能有一位" When=""/>
   </RowValidate>
   <ConditionList/>
 </ValidateRule>

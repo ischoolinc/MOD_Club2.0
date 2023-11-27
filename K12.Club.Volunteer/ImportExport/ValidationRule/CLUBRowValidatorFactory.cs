@@ -26,6 +26,8 @@ namespace K12.Club.Volunteer
                     return new CLUBTeacherCheck();
                 case "STUDENTINCLUBCADRE":
                     return new CheckStudentINCadres(); // 檢查學號是否存在系統中
+                case "STUDENTCADREPRESIDENT":
+                    return new CheckPresidentDouble(); // 檢查是否重複擔任社長或副社長
                 default:
                     return null;
             }
