@@ -8,6 +8,9 @@ namespace K12.Club.Volunteer
 {
     class CheckInt : IFieldValidator
     {
+        /// <summary>
+        /// 檢查是否為ing
+        /// </summary>
         public string Correct(string Value)
         {
             return string.Empty;

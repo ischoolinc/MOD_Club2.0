@@ -249,6 +249,7 @@
     </Compile>
     <Compile Include="ImportExport\Export\匯出社團志願序\ExportVolunteerRecord.cs" />
     <Compile Include="ImportExport\ValidationRule\RowValidator\CheckPresidentDouble.cs" />
+    <Compile Include="ImportExport\ValidationRule\RowValidator\CheckPresidentRow.cs" />
     <Compile Include="ImportExport\ValidationRule\RowValidator\CheckStudentINCadres.cs" />
     <Compile Include="ImportExport\Import\匯入社團基本資料\CLUBImportBOT.cs" />
     <Compile Include="ImportExport\Import\匯入社團基本資料\ImputLog.cs" />

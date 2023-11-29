@@ -63,12 +63,14 @@
     <RowValidator Name="學生是否存在本社團" Type="STUDENTINCLUBISTRUE" />
     <RowValidator Name="學生在社團是否擔任過幹部" Type="STUDENTINCLUBCADRE" />
     <RowValidator Name="社長只能有一位" Type="STUDENTCADREPRESIDENT" />
+    <RowValidator Name="社長不能重複擔任" Type="STUDENROWDOUBLEPRESIDENT" />
   </ValidatorList>
 
   <RowValidate>
-    <Validate AutoCorrect="false" Description="「學號」擔任幹部必須是社團學生" ErrorType="Error" Validator="學生是否存在本社團" When=""/>
-    <Validate AutoCorrect="false" Description="「學生+社團名稱+幹部名稱」學生已經擔任系統內相同幹部職位" ErrorType="Error" Validator="學生在社團是否擔任過幹部" When=""/>
-    <Validate AutoCorrect="false" Description="「學生+社團名稱+幹部名稱」相同社團的社長/副社長只能有一位" ErrorType="Error" Validator="社長只能有一位" When=""/>
+    <Validate AutoCorrect="false" Description="「學生」擔任幹部者必須是社團參與學生" ErrorType="Error" Validator="學生是否存在本社團" When=""/>
+    <Validate AutoCorrect="false" Description="「學生」已經擔任系統內相同幹部職位" ErrorType="Error" Validator="學生在社團是否擔任過幹部" When=""/>
+    <Validate AutoCorrect="false" Description="「系統內」相同社團的社長/副社長只能有一位" ErrorType="Error" Validator="社長只能有一位" When=""/>
+    <Validate AutoCorrect="false" Description="「資料中」相同社團的社長/副社長只能有一位" ErrorType="Error" Validator="社長不能重複擔任" When=""/>
   </RowValidate>
   <ConditionList/>
 </ValidateRule>
