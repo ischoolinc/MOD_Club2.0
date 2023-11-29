@@ -39,7 +39,7 @@ namespace K12.Club.Volunteer
                 string CadreStudent = Value.GetValue("幹部名稱");
                 if (CadreStudent == "社長" || CadreStudent == "副社長")
                 {
-                    string CourseKey = SchoolYear + "," + Semester + "," + CourseName;
+                    string CourseKey = SchoolYear + "," + Semester + "," + CourseName+","+ CadreStudent;
 
                     if (!_listStudentNumber.Contains(CourseKey))
                     {
