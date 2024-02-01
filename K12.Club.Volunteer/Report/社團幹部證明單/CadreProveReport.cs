@@ -120,6 +120,11 @@ namespace K12.Club.Volunteer
             List<ResultScoreRecord> ResultList = tool._A.Select<ResultScoreRecord>(string.Format("ref_student_id in ('{0}')", string.Join("','", StudentIDList)));
             List<string> CLUBIDList = new List<string>();
 
+            FISCA.Data.QueryHelper _Q = new FISCA.Data.QueryHelper();
+            DataTable dt = _Q.Select("select now()");
+            string stringNow = "" + dt.Rows[0][0];
+            DateTime Now = DateTime.Parse(stringNow);
+
             List<string> StudentOkList = new List<string>();
 
             foreach (ResultScoreRecord each in ResultList)
@@ -233,6 +238,13 @@ namespace K12.Club.Volunteer
                 name.Add("姓名");
                 value.Add(student.Name);
 
+                name.Add("日期");
+                string salesDate = String.Format("中華民國 {0}年{1}月{2}日",
+          FormatChineseDate((Now.Year - 1911).ToString()),
+          FormatChineseDate("" + Now.Month),
+          FormatChineseDate("" + Now.Day));
+                value.Add(salesDate);
+
                 name.Add("學號");
                 value.Add(student.StudentNumber);
 
@@ -286,7 +298,27 @@ namespace K12.Club.Volunteer
             e.Result = _doc;
 
         }
-        //Jean Aspose
+
+        static string FormatChineseDate(string dateName)
+        {
+            string[] chineseNumerals = { "零", "一", "二", "三", "四", "五", "六", "七", "八", "九" };
+
+            string yearStr = "";
+            foreach (char digit in dateName)
+            {
+                if (char.IsDigit(digit))
+                {
+                    int digitValue = int.Parse(digit.ToString());
+                    yearStr += chineseNumerals[digitValue];
+                }
+                else
+                {
+                    yearStr += digit;
+                }
+            }
+
+            return yearStr;
+        }
 
         class MailMerge_MergeField : Aspose.Words.Reporting.IFieldMergingCallback
         {
