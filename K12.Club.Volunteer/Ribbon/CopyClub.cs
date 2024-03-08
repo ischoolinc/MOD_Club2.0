@@ -39,7 +39,7 @@ namespace K12.Club.Volunteer
         /// </summary>
         List<CLUBRecord> _NewInsertList = new List<CLUBRecord>();
 
-        List<SCJoin> _InsertSCJList = new List<SCJoin>();
+        Dictionary<string, SCJoin> _InsertSCJDic = new Dictionary<string, SCJoin>();
 
         List<string> _SkipList = new List<string>();
 
@@ -280,7 +280,7 @@ namespace K12.Club.Volunteer
                     studentCadreDic[each.RefClubID].Add(each);
                 }
 
-                _InsertSCJList = new List<SCJoin>();
+                _InsertSCJDic = new Dictionary<string, SCJoin>();
                 List<CadresRecord> newCadresRecordList = new List<CadresRecord>();
 
                 foreach (CLUBRecord newClubRec in newClubRecord)
@@ -293,9 +293,7 @@ namespace K12.Club.Volunteer
                             {
                                 foreach (var scjRec in studentSCJDic[copyClubRec.UID])
                                 {
-                                    if (_CopyPresidentStudent
-                                        && (copyClubRec.President == scjRec.RefStudentID
-                                        || copyClubRec.VicePresident == scjRec.RefStudentID))
+                                    if (_CopyPresidentStudent && (copyClubRec.President == scjRec.RefStudentID || copyClubRec.VicePresident == scjRec.RefStudentID))
                                     {
                                         #region 複製社長副社長
                                         SCJoin scj = new SCJoin();
@@ -308,12 +306,10 @@ namespace K12.Club.Volunteer
                                         else
                                             scj.Lock = true;
 
-                                        _InsertSCJList.Add(scj);
+                                        _InsertSCJDic.Add(scj.RefStudentID, scj);
                                         #endregion
-                                        continue;
                                     }
-                                    if (_CopyCadresStudent
-                                        && studentCadreDic.ContainsKey(copyClubRec.UID))
+                                    if (_CopyCadresStudent && studentCadreDic.ContainsKey(copyClubRec.UID))
                                     {
                                         bool match = false;
                                         #region 複製社團幹部
@@ -336,8 +332,10 @@ namespace K12.Club.Volunteer
                                                     scj.Lock = scjRec.Lock;
                                                 else
                                                     scj.Lock = true;
-
-                                                _InsertSCJList.Add(scj);
+                                                if (!_InsertSCJDic.ContainsKey(scj.RefStudentID))
+                                                {
+                                                    _InsertSCJDic.Add(scj.RefStudentID, scj);
+                                                }
                                                 match = true;
                                                 break;
                                             }
@@ -359,10 +357,11 @@ namespace K12.Club.Volunteer
                                             scj.Lock = scjRec.Lock;
                                         else
                                             scj.Lock = true;
-
-                                        _InsertSCJList.Add(scj);
+                                        if (!_InsertSCJDic.ContainsKey(scj.RefStudentID))
+                                        {
+                                            _InsertSCJDic.Add(scj.RefStudentID, scj);
+                                        }
                                         #endregion
-                                        continue;
                                     }
                                 }
                             }
@@ -373,7 +372,9 @@ namespace K12.Club.Volunteer
 
                 try
                 {
-                    _AccessHelper.InsertValues(_InsertSCJList);
+                    //新增修課學生
+                    _AccessHelper.InsertValues(_InsertSCJDic.Values.ToList());
+                    //新增幹部紀錄
                     _AccessHelper.InsertValues(newCadresRecordList);
                 }
                 catch (Exception ex)
@@ -428,7 +429,7 @@ namespace K12.Club.Volunteer
                 sb.AppendLine("共" + _SkipList.Count + "個重覆社團,已略過處理!!");
                 if (_CopyOtherStudent)
                 {
-                    sb.AppendLine("已同步建立" + _InsertSCJList.Count + "名學生的社團參與記錄!!");
+                    sb.AppendLine("已同步建立" + _InsertSCJDic.Keys.Count + "名學生的社團參與記錄!!");
                 }
 
                 if (_CopyCadresStudent)
@@ -451,7 +452,7 @@ namespace K12.Club.Volunteer
                 sb.AppendLine("共" + _NewInsertList.Count + "個社團複製成功!!\n");
                 if (_CopyOtherStudent)
                 {
-                    sb.AppendLine("已同步建立" + _InsertSCJList.Count + "名學生的社團參與記錄!!");
+                    sb.AppendLine("已同步建立" + _InsertSCJDic.Keys.Count + "名學生的社團參與記錄!!");
                 }
 
                 if (_CopyCadresStudent)
