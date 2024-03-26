@@ -463,6 +463,7 @@ ORDER BY
 
                                 if (this._dicClubRecordByName[clubName].IsImport == "否")
                                 {
+                                    //科目名稱保留空白 - 2024/3/26 Dyaln
                                     string data = string.Format(@"
 SELECT
     '{0}'::TEXT AS course_name
@@ -479,7 +480,7 @@ SELECT
                                     , this._dicClubRecordByName[clubName].TeacherID1 == "" ? "null" : this._dicClubRecordByName[clubName].TeacherID1
                                     , cbxSchoolYear.SelectedItem.ToString()
                                     , cbxSemester.SelectedItem.ToString()
-                                    , clubName
+                                    , ""
                                     , "2"
                                     , "1"
                                     , "1"
