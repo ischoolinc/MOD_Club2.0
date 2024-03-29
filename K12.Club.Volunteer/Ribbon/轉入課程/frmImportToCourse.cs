@@ -21,6 +21,9 @@ namespace K12.Club.Volunteer
         private string _examTemplateID;
         private string _examTemplateName;
 
+        string SetupName_1 = "社團轉入課程選項";
+        K12.Data.Configuration.ConfigData DateSetting { get; set; }
+
         //2019/9/11 - Dylan
         //新增評分樣版內容
         private string _examID;
@@ -68,6 +71,21 @@ namespace K12.Club.Volunteer
 
             //類別
             InitTag();
+
+            //儲存轉入設定
+            DateSetting = K12.Data.School.Configuration[SetupName_1];
+            bool xx = true;
+            if (DateSetting["科目名稱設定"] != "")
+            {
+                bool.TryParse(DateSetting["科目名稱設定"], out xx);
+                cbIsEmpty.Checked = xx;
+                cbIsClubName.Checked = !xx;
+            }
+            else
+            {
+                cbIsEmpty.Checked = true;
+                cbIsClubName.Checked = false;
+            }
 
             // Init SchoolYear
             int schoolYear = int.Parse(K12.Data.School.DefaultSchoolYear == "" ? null : K12.Data.School.DefaultSchoolYear);
@@ -226,7 +244,7 @@ FROM
     insert_data
 ";
                     DataTable insertDt = this._qh.Select(
-                        string.Format(insertSQl, _examTemplateID, _examID, "100", "1" , "0", @"<Extension><UseScore>是</UseScore><UseEffort>否</UseEffort><UseText>否</UseText></Extension>")
+                        string.Format(insertSQl, _examTemplateID, _examID, "100", "1", "0", @"<Extension><UseScore>是</UseScore><UseEffort>否</UseEffort><UseText>否</UseText></Extension>")
                         );
                 }
                 catch (Exception ex)
@@ -437,6 +455,9 @@ ORDER BY
 
         private void btnImport_Click(object sender, EventArgs e)
         {
+            DateSetting["科目名稱設定"] = "" + cbIsEmpty.Checked;
+            DateSetting.Save();
+
             if (dataGridViewX1.SelectedRows.Count > 0)
             {
                 List<string> listSelectedClubName = new List<string>();
@@ -453,7 +474,7 @@ ORDER BY
                     List<string> skipIDList = new List<string>(); //跳過的社團編號
                     #region 建立課程，並取回課程資料
                     {
-                        
+
                         #region 資料整理
                         foreach (DataGridViewRow dgvrow in dataGridViewX1.SelectedRows)
                         {
@@ -480,7 +501,7 @@ SELECT
                                     , this._dicClubRecordByName[clubName].TeacherID1 == "" ? "null" : this._dicClubRecordByName[clubName].TeacherID1
                                     , cbxSchoolYear.SelectedItem.ToString()
                                     , cbxSemester.SelectedItem.ToString()
-                                    , ""
+                                    , cbIsEmpty.Checked ? "" : clubName.Replace("'", "''")
                                     , "2"
                                     , "1"
                                     , "1"
@@ -614,7 +635,7 @@ SELECT
                                     {
                                         listCourseTeacher.Add(ctData);
                                     }
-                                    
+
                                     CheckTeacherID.Add(ctCheck);
                                 }
                             }
@@ -780,7 +801,7 @@ FROM
                     //2.引發高雄社團更新事件
                     //2019/9/10 - Dylan
                     eh(null, EventArgs.Empty);
-            
+
 
                     if (skipIDList.Count > 0)
                     {
@@ -792,8 +813,10 @@ FROM
                             ClubAdmin.Instance.AddToTemp(skipIDList);
                         }
                     }
-                    
+
                     ReloadDataGridView();
+
+                    MsgBox.Show(string.Format("轉入成功!\n共{0}個社團課程", listCourseData.Count));
                 }
             }
             else

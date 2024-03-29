@@ -368,10 +368,10 @@
     <Compile Include="ImportExport\Export\frmExportSCJoin.Designer.cs">
       <DependentUpon>frmExportSCJoin.cs</DependentUpon>
     </Compile>
-    <Compile Include="Ribbon\ImportToCourse\frmImportToCourse.cs">
+    <Compile Include="Ribbon\轉入課程\frmImportToCourse.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ribbon\ImportToCourse\frmImportToCourse.Designer.cs">
+    <Compile Include="Ribbon\轉入課程\frmImportToCourse.Designer.cs">
       <DependentUpon>frmImportToCourse.cs</DependentUpon>
     </Compile>
     <Compile Include="ImportExport\Import\ImportSCJoinData.cs" />
@@ -628,7 +628,7 @@
     <EmbeddedResource Include="ImportExport\Export\frmExportSCJoin.resx">
       <DependentUpon>frmExportSCJoin.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ribbon\ImportToCourse\frmImportToCourse.resx">
+    <EmbeddedResource Include="Ribbon\轉入課程\frmImportToCourse.resx">
       <DependentUpon>frmImportToCourse.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Ribbon\志願_分配功能\ReportTeacherForm.resx">

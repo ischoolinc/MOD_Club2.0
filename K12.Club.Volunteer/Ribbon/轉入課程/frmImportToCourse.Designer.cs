@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.btnImport = new DevComponents.DotNetBar.ButtonX();
             this.btnLeave = new DevComponents.DotNetBar.ButtonX();
             this.labelX1 = new DevComponents.DotNetBar.LabelX();
@@ -49,6 +49,9 @@
             this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.labelX2 = new DevComponents.DotNetBar.LabelX();
+            this.cbIsEmpty = new DevComponents.DotNetBar.Controls.CheckBoxX();
+            this.cbIsClubName = new DevComponents.DotNetBar.Controls.CheckBoxX();
+            this.labelX4 = new DevComponents.DotNetBar.LabelX();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewX1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -126,14 +129,14 @@
             this.Column4,
             this.Column7,
             this.Column2});
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridViewX1.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewX1.DefaultCellStyle = dataGridViewCellStyle1;
             this.dataGridViewX1.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(215)))), ((int)(((byte)(229)))));
             this.dataGridViewX1.Location = new System.Drawing.Point(12, 41);
             this.dataGridViewX1.Name = "dataGridViewX1";
@@ -259,11 +262,66 @@
             this.labelX2.TabIndex = 9;
             this.labelX2.Text = "說明 : 如無法正常轉入,請至[課程頁籤]確認是否已轉入過相同社團";
             // 
+            // cbIsEmpty
+            // 
+            this.cbIsEmpty.AutoSize = true;
+            this.cbIsEmpty.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.cbIsEmpty.BackgroundStyle.Class = "";
+            this.cbIsEmpty.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.cbIsEmpty.CheckBoxStyle = DevComponents.DotNetBar.eCheckBoxStyle.RadioButton;
+            this.cbIsEmpty.Checked = true;
+            this.cbIsEmpty.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbIsEmpty.CheckValue = "Y";
+            this.cbIsEmpty.Location = new System.Drawing.Point(516, 13);
+            this.cbIsEmpty.Name = "cbIsEmpty";
+            this.cbIsEmpty.Size = new System.Drawing.Size(80, 21);
+            this.cbIsEmpty.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
+            this.cbIsEmpty.TabIndex = 10;
+            this.cbIsEmpty.Text = "保留空白";
+            // 
+            // cbIsClubName
+            // 
+            this.cbIsClubName.AutoSize = true;
+            this.cbIsClubName.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.cbIsClubName.BackgroundStyle.Class = "";
+            this.cbIsClubName.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.cbIsClubName.CheckBoxStyle = DevComponents.DotNetBar.eCheckBoxStyle.RadioButton;
+            this.cbIsClubName.Location = new System.Drawing.Point(598, 13);
+            this.cbIsClubName.Name = "cbIsClubName";
+            this.cbIsClubName.Size = new System.Drawing.Size(107, 21);
+            this.cbIsClubName.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
+            this.cbIsClubName.TabIndex = 11;
+            this.cbIsClubName.Text = "填入社團名稱";
+            // 
+            // labelX4
+            // 
+            this.labelX4.AutoSize = true;
+            this.labelX4.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.labelX4.BackgroundStyle.Class = "";
+            this.labelX4.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX4.Location = new System.Drawing.Point(454, 12);
+            this.labelX4.Name = "labelX4";
+            this.labelX4.Size = new System.Drawing.Size(60, 21);
+            this.labelX4.TabIndex = 12;
+            this.labelX4.Text = "科目名稱";
+            // 
             // frmImportToCourse
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(759, 486);
+            this.Controls.Add(this.labelX4);
+            this.Controls.Add(this.cbIsClubName);
+            this.Controls.Add(this.cbIsEmpty);
             this.Controls.Add(this.labelX2);
             this.Controls.Add(this.cbxSemester);
             this.Controls.Add(this.cbxSchoolYear);
@@ -305,5 +363,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column7;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
         private DevComponents.DotNetBar.LabelX labelX2;
+        private DevComponents.DotNetBar.Controls.CheckBoxX cbIsEmpty;
+        private DevComponents.DotNetBar.Controls.CheckBoxX cbIsClubName;
+        private DevComponents.DotNetBar.LabelX labelX4;
     }
 }
