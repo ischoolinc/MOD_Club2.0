@@ -4,6 +4,7 @@ using FISCA.UDT;
 using K12.Club.Volunteer;
 using K12.Data;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -105,7 +106,7 @@ namespace K12.Club.Volunteer
 
                 FISCA.LogAgent.ApplicationLog.Log("[特殊歷程]", "全校亂數選社", sb_log.ToString());
 
-                MsgBox.Show("全校亂數選社 作業完成!!");
+                MsgBox.Show("全校亂數選社 作業完成!!\n(共" + VolList.Count + "筆 志願序紀錄)");
             }
             else
             {
@@ -154,9 +155,9 @@ namespace K12.Club.Volunteer
 
                 _A.DeletedValues(list3);
 
-                FISCA.LogAgent.ApplicationLog.Log("[特殊歷程]", "清除社團參與記錄", "已清除社團參與紀錄\n" + "學年度:" + integerInput1.Value.ToString() + " 學期:" + integerInput2.Value.ToString() + "\n\n共" + list3.Count + "筆社團參與紀錄");
+                FISCA.LogAgent.ApplicationLog.Log("[特殊歷程]", "清除社團參與記錄", "已清除社團參與紀錄\n" + "學年度:" + integerInput1.Value.ToString() + " 學期:" + integerInput2.Value.ToString() + "\n\n共" + list3.Count + "筆 社團參與紀錄");
 
-                MsgBox.Show("清除社團參與記錄 作業完成!!");
+                MsgBox.Show("清除社團參與記錄 作業完成!!\n(共" + list3.Count + "筆 社團參與紀錄)");
             }
             else
             {
@@ -176,14 +177,71 @@ namespace K12.Club.Volunteer
                 List<VolunteerRecord> list = _A.Select<VolunteerRecord>(string.Format("school_year={0} and semester={1}", integerInput1.Value.ToString(), integerInput2.Value.ToString()));
                 _A.DeletedValues(list);
 
-                FISCA.LogAgent.ApplicationLog.Log("[特殊歷程]", "清除志願序記錄", "已清除志願序記錄\n" + "學年度:" + integerInput1.Value.ToString() + " 學期:" + integerInput2.Value.ToString() + "\n\n共" + list.Count + "筆志願序紀錄");
+                FISCA.LogAgent.ApplicationLog.Log("[特殊歷程]", "清除志願序記錄", "已清除志願序記錄\n" + "學年度:" + integerInput1.Value.ToString() + " 學期:" + integerInput2.Value.ToString() + "\n\n共" + list.Count + "筆 志願序紀錄");
 
-                MsgBox.Show("清除志願序記錄 作業完成!!");
+                MsgBox.Show("清除志願序記錄 作業完成!!\n(共" + list.Count + "筆 志願序記錄)");
             }
             else
             {
                 MsgBox.Show("已取消");
             }
+        }
+
+        /// <summary>
+        /// 清除社團紀錄
+        /// </summary>
+        private void buttonX4_Click(object sender, EventArgs e)
+        {
+            DialogResult dr = MsgBox.Show(string.Format("確認清除 {0}學年度 {1}學期 社團項目?(單位如 : 籃球社)", integerInput1.Value.ToString(), integerInput2.Value.ToString()), MessageBoxButtons.YesNo, MessageBoxDefaultButton.Button2);
+
+            if (dr == DialogResult.Yes)
+            {
+                List<string> list2 = new List<string>();
+                List<CLUBRecord> list1 = _A.Select<CLUBRecord>(string.Format("school_year={0} and semester={1}", integerInput1.Value.ToString(), integerInput2.Value.ToString()));
+
+                _A.DeletedValues(list1);
+
+                FISCA.LogAgent.ApplicationLog.Log("[特殊歷程]", "清除社團項目", "已清除社團項目\n" + "學年度:" + integerInput1.Value.ToString() + " 學期:" + integerInput2.Value.ToString() + "\n\n共" + list1.Count + "筆 社團項目");
+
+                MsgBox.Show("清除社團項目 作業完成!!\n(共" + list1.Count + "筆 社團項目)");
+            }
+            else
+            {
+                MsgBox.Show("已取消");
+            }
+        }
+
+        /// <summary>
+        /// 刪除社團結算成績
+        /// </summary>
+        private void buttonX5_Click(object sender, EventArgs e)
+        {
+            DialogResult dr = MsgBox.Show(string.Format("確認清除 {0}學年度 {1}學期 社團結算成績?", integerInput1.Value.ToString(), integerInput2.Value.ToString()), MessageBoxButtons.YesNo, MessageBoxDefaultButton.Button2);
+
+            if (dr == DialogResult.Yes)
+            {
+                List<ResultScoreRecord> list3 = _A.Select<ResultScoreRecord>(string.Format("school_year={0} and semester={1}", integerInput1.Value.ToString(), integerInput2.Value.ToString()));
+
+                _A.DeletedValues(list3);
+
+                FISCA.LogAgent.ApplicationLog.Log("[特殊歷程]", "清除社團結算成績", "已清除社團結算成績\n" + "學年度:" + integerInput1.Value.ToString() + " 學期:" + integerInput2.Value.ToString() + "\n\n共" + list3.Count + "筆 成績紀錄");
+
+                MsgBox.Show("清除社團參與記錄 作業完成!!\n(共" + list3.Count + "筆 成績紀錄)");
+            }
+            else
+            {
+                MsgBox.Show("已取消");
+            }
+        }
+
+        private void integerInput1_ValueChanged(object sender, EventArgs e)
+        {
+            ClubList = _A.Select<CLUBRecord>(string.Format("school_year={0} and semester={1}", integerInput1.Value, integerInput2.Value));
+        }
+
+        private void integerInput2_ValueChanged(object sender, EventArgs e)
+        {
+            ClubList = _A.Select<CLUBRecord>(string.Format("school_year={0} and semester={1}", integerInput1.Value, integerInput2.Value));
         }
     }
 }
