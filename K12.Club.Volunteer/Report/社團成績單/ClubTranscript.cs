@@ -238,12 +238,17 @@ namespace K12.Club.Volunteer
             string StudentA = "";
             if (a1.student.Class != null)
             {
+                // 20250425 至涵 https://3.basecamp.com/4399967/buckets/20646185/todos/8576470278
+                // 加入 a1 Class.GradeYear 排序
+                StudentA += a1.student.Class.GradeYear.ToString().PadLeft(2, '0');
                 StudentA += a1.student.Class.DisplayOrder.PadLeft(10, '0');
                 StudentA += a1.student.Class.Name.PadLeft(10, '0');
             }
             else
             {
-                StudentA += "00000000000000000000";
+                // 20250425 至涵 https://3.basecamp.com/4399967/buckets/20646185/todos/8576470278
+                // 若 a1 無班級，加入00
+                StudentA += "0000000000000000000000";
             }
 
             StudentA += a1.student.SeatNo.HasValue ? a1.student.SeatNo.Value.ToString().PadLeft(10, '0') : "0000000000";
@@ -252,12 +257,17 @@ namespace K12.Club.Volunteer
             string StudentB = "";
             if (b1.student.Class != null)
             {
+                // 20250425 至涵 https://3.basecamp.com/4399967/buckets/20646185/todos/8576470278
+                // 加入 b1 Class.GradeYear 排序
+                StudentB += b1.student.Class.GradeYear.ToString().PadLeft(2, '0');
                 StudentB += b1.student.Class.DisplayOrder.PadLeft(10, '0');
                 StudentB += b1.student.Class.Name.PadLeft(10, '0');
             }
             else
             {
-                StudentB += "00000000000000000000";
+                // 20250425 至涵 https://3.basecamp.com/4399967/buckets/20646185/todos/8576470278
+                // 若 b1 無班級，加入00
+                StudentB += "0000000000000000000000";
             }
             StudentB += b1.student.SeatNo.HasValue ? b1.student.SeatNo.Value.ToString().PadLeft(10, '0') : "0000000000";
             StudentB += b1.student.Name.PadLeft(10, '0');
